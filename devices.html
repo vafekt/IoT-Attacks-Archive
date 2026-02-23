@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devices — IoT Security Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.proto-section { margin-bottom: 2.5rem; }
+.proto-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px 10px 0 0;
+  border-bottom: none;
+}
+.proto-header.standalone { border-radius:10px; border-bottom:1px solid var(--border); margin-bottom:.5rem; }
+.proto-icon { font-size:1.4rem; }
+.proto-hname { font-size:1.05rem; font-weight:700; }
+.proto-hfull { font-size:.78rem; color:var(--muted); }
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .7rem;
+  border: 1px solid var(--border);
+  border-radius: 0 0 10px 10px;
+  padding: .9rem;
+  background: var(--bg);
+}
+.device-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  transition: border-color .15s;
+}
+.device-card:hover { border-color: rgba(0,229,255,.3); }
+.device-name { font-weight:700; font-size:.88rem; margin-bottom:.25rem; }
+.device-type { display:inline-block;margin-bottom:.5rem; }
+.device-desc { font-size:.77rem; color:var(--muted); line-height:1.6; }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
+    <a class="nav-link" href="datasets.html"><span class="icon">🗄</span> Datasets</a>
+    <a class="nav-link" href="protocols.html"><span class="icon">📡</span> Protocols</a>
+    <a class="nav-link" href="attacks.html"><span class="icon">⚔</span> Attacks</a>
+    <a class="nav-link" href="tools.html"><span class="icon">🔧</span> Tools</a>
+    <a class="nav-link active" href="devices.html"><span class="icon">📟</span> Devices</a>
+    <a class="nav-link" href="ai-models.html"><span class="icon">🤖</span> AI Models</a>
+  </div>
+</nav>
+<div class="page-body">
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-orb" style="width:380px;height:380px;background:rgba(255,180,0,.05);top:-60px;right:-60px;"></div>
+  <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Devices</div>
+  <h1>Devices <span class="accent">per Protocol</span></h1>
+  <p>Real-world devices and platforms that implement each IoT protocol — from microcontrollers and SBCs to smart home hubs, industrial PLCs, and cloud platforms.</p>
+  <div class="hero-chips">
+    <div class="hero-chip"><span class="val">15</span> protocols</div>
+    <div class="hero-chip"><span class="val">100+</span> device profiles</div>
+    <div class="hero-chip">Microcontrollers · SBCs · Industrial · Consumer</div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="controls fade">
+    <div class="search-wrap">
+      <span class="search-ico">⌕</span>
+      <input type="text" id="devSearch" placeholder="Search devices or protocols..." oninput="filterDevices()">
+    </div>
+    <div class="filter-group" id="devTypeFilter">
+      <button class="filter-btn active" onclick="setDevType(this,'all')">All</button>
+      <button class="filter-btn" onclick="setDevType(this,'Microcontroller')">MCU</button>
+      <button class="filter-btn" onclick="setDevType(this,'SBC')">SBC</button>
+      <button class="filter-btn" onclick="setDevType(this,'Industrial')">Industrial</button>
+      <button class="filter-btn" onclick="setDevType(this,'Medical')">Medical</button>
+      <button class="filter-btn" onclick="setDevType(this,'Security')">Smart Lock/Security</button>
+      <button class="filter-btn" onclick="setDevType(this,'Platform')">Platform/Cloud</button>
+      <button class="filter-btn" onclick="setDevType(this,'Gateway')">Gateway</button>
+    </div>
+    <span class="results-count" id="devCount"></span>
+  </div>
+
+  <div id="deviceSections" class="fade"></div>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-note">IoT Security Hub · Device Reference</div>
+  <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+let devTypeFilter = 'all';
+
+const DEVICE_TYPE_COLORS = {
+  Microcontroller:'cyan', SBC:'green', Industrial:'amber', Medical:'purple',
+  Security:'red', Platform:'cyan', Cloud:'cyan', 'Cloud Platform':'cyan',
+  Gateway:'amber', RTOS:'gray', 'RTOS Platform':'gray', Camera:'gray',
+  BAS:'amber', HVAC:'amber', Lighting:'green', 'Smart Speaker':'cyan',
+  'Border Router':'purple', Wearable:'purple', Beacon:'gray',
+  Metering:'amber', Server:'gray', Networking:'gray', Mobile:'cyan',
+  Infrastructure:'gray', Desktop:'gray', Sensor:'green', Actuator:'amber'
+};
+
+function getTypeColor(type) { return DEVICE_TYPE_COLORS[type] || 'gray'; }
+
+// Find protocol info from PROTOCOLS
+function getProtoInfo(name) { return PROTOCOLS.find(p => p.name === name) || {icon:'📡',full:name}; }
+
+function renderDevices() {
+  const q = document.getElementById('devSearch').value.toLowerCase();
+  const container = document.getElementById('deviceSections');
+  let totalDevices = 0;
+  let html = '';
+  DEVICES.forEach(entry => {
+    const protoInfo = getProtoInfo(entry.protocol);
+    const visDevices = entry.devices.filter(d => {
+      const mq = !q || d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q) || entry.protocol.toLowerCase().includes(q);
+      const mt = devTypeFilter==='all' || d.type===devTypeFilter || d.type.includes(devTypeFilter);
+      return mq && mt;
+    });
+    if (visDevices.length === 0) return;
+    totalDevices += visDevices.length;
+    const devCards = visDevices.map(d => `
+      <div class="device-card">
+        <div class="device-name">${d.name}</div>
+        <span class="device-type">${badge(d.type, getTypeColor(d.type))}</span>
+        <div class="device-desc">${d.desc}</div>
+      </div>
+    `).join('');
+    html += `
+    <div class="proto-section">
+      <div class="proto-header">
+        <div class="proto-icon">${protoInfo.icon || '📡'}</div>
+        <div>
+          <div class="proto-hname">${entry.protocol} ${badge(entry.protocol, entry.color)}</div>
+          <div class="proto-hfull">${protoInfo.full || entry.protocol}</div>
+        </div>
+        <span style="margin-left:auto;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted)">${visDevices.length} device${visDevices.length!==1?'s':''}</span>
+      </div>
+      <div class="device-grid">${devCards}</div>
+    </div>`;
+  });
+  container.innerHTML = html || '<p style="color:var(--muted);font-family:\'Space Mono\',monospace;font-size:.75rem;padding:2rem 0">No devices match the current filters.</p>';
+  document.getElementById('devCount').innerHTML = `<span>${totalDevices}</span> devices shown`;
+}
+
+function filterDevices() { renderDevices(); }
+function setDevType(btn, val) {
+  document.querySelectorAll('#devTypeFilter .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  devTypeFilter = val;
+  renderDevices();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderDevices();
+  initMobileNav(); initFade();
+});
+</script>
+</body>
+</html>

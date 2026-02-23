@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Models — IoT Security Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.coming-soon-banner {
+  display: flex; align-items: center; gap: 1rem;
+  background: rgba(0,229,255,.05);
+  border: 1px solid rgba(0,229,255,.15);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+  font-size: .88rem; color: var(--muted); line-height: 1.65;
+}
+.coming-soon-banner .icon { font-size:1.75rem; flex-shrink:0; }
+.coming-soon-banner strong { color: var(--cyan); display:block; margin-bottom:.3rem; }
+.placeholder-card {
+  background: var(--bg2);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 3rem;
+  text-align: center;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: .75rem;
+}
+.placeholder-card .ph-icon { font-size:2.5rem; margin-bottom:1rem; opacity:.4; }
+.placeholder-card .ph-title { color:var(--text); font-size:1rem; font-weight:700; margin-bottom:.5rem; font-family:'Syne',sans-serif; }
+.model-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+.model-placeholder {
+  background: var(--bg2); border:1px dashed var(--border); border-radius:10px;
+  padding:1.5rem; display:flex; flex-direction:column; gap:.5rem;
+  font-family:'Space Mono',monospace;
+}
+.mp-label { font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+.mp-name { font-size:.9rem; font-weight:700; color:var(--text); }
+.mp-desc { font-size:.75rem; color:var(--muted); line-height:1.6; }
+.mp-status { display:flex; align-items:center; gap:.5rem; margin-top:.5rem; }
+.dot-soon { width:8px; height:8px; border-radius:50%; background:var(--amber); animation:blink 1.5s ease-in-out infinite; }
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
+    <a class="nav-link" href="datasets.html"><span class="icon">🗄</span> Datasets</a>
+    <a class="nav-link" href="protocols.html"><span class="icon">📡</span> Protocols</a>
+    <a class="nav-link" href="attacks.html"><span class="icon">⚔</span> Attacks</a>
+    <a class="nav-link" href="tools.html"><span class="icon">🔧</span> Tools</a>
+    <a class="nav-link" href="devices.html"><span class="icon">📟</span> Devices</a>
+    <a class="nav-link active" href="ai-models.html"><span class="icon">🤖</span> AI Models</a>
+  </div>
+</nav>
+<div class="page-body">
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-orb" style="width:400px;height:400px;background:rgba(0,229,255,.05);top:-80px;right:-60px;"></div>
+  <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>AI Models</div>
+  <h1>AI <span class="accent">Detection</span> Models</h1>
+  <p>Machine learning and deep learning architectures for IoT intrusion detection — benchmarks, feature engineering, and the unified AI-IDS pipeline across 16 heterogeneous datasets.</p>
+  <div class="hero-chips">
+    <div class="hero-chip"><span class="val">In Progress</span></div>
+    <div class="hero-chip">PyTorch · TensorFlow</div>
+    <div class="hero-chip">Zeek · ICSNPP · Spicy</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Banner -->
+  <div class="coming-soon-banner fade">
+    <div class="icon">🤖</div>
+    <div>
+      <strong>Content Coming Soon</strong>
+      This section will document AI/ML models trained on the unified IoT dataset corpus — including architectures, hyperparameters, feature sets, and cross-dataset detection performance. The pipeline description and planned model families are outlined below.
+    </div>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="section-label fade">Unified AI-IDS Pipeline</div>
+  <h2 class="section-title fade">From Raw PCAPs to Detection</h2>
+  <p class="section-desc fade">The 8-step process for building a unified intrusion detection system across 16 heterogeneous IoT datasets.</p>
+  <div class="timeline fade" id="pipelineEl"></div>
+
+  <!-- Planned Models -->
+  <div style="margin-top:3.5rem">
+    <div class="section-label fade">Planned Model Coverage</div>
+    <h2 class="section-title fade">Model Families</h2>
+    <p class="section-desc fade">The following model architectures are planned for evaluation against the unified dataset corpus.</p>
+    <div class="model-grid fade" id="modelGrid"></div>
+  </div>
+
+  <!-- Benchmark Table Placeholder -->
+  <div style="margin-top:3.5rem">
+    <div class="section-label fade">Performance Benchmarks</div>
+    <h2 class="section-title fade">Detection Results</h2>
+    <div class="placeholder-card fade">
+      <div class="ph-icon">📊</div>
+      <div class="ph-title">Benchmark Table — Coming Soon</div>
+      <p style="font-family:'Syne',sans-serif;font-size:.82rem;line-height:1.6;margin-top:.5rem">
+        Results will include per-dataset and cross-dataset accuracy, precision, recall, F1-score, and false positive rate for each model architecture.
+      </p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-note">IoT Security Hub · AI Models</div>
+  <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+const PIPELINE = [
+  { n:"01", title:"PCAP Extraction", desc:"Extract PCAPs from all 16 datasets plus new attack captures using Zeek with ICSNPP extensions and custom Spicy scripts for IoT-specific protocols (Modbus, BACnet, MQTT, Zigbee, Z-Wave)." },
+  { n:"02", title:"Feature Harmonization", desc:"Apply a core feature schema across all protocols — aligning TCP/IP, Modbus, MQTT, BACnet, KNX, Zigbee, and Z-Wave captures into a common network flow feature set." },
+  { n:"03", title:"Label Taxonomy Mapping", desc:"Map heterogeneous dataset labels to a unified attack taxonomy. Output standardized log files with consistent class labels across all 16 datasets." },
+  { n:"04", title:"Data Quality Assurance", desc:"Remove duplicate records, handle missing values, and eliminate protocol-specific features that would prevent cross-dataset generalization. Validate class distributions." },
+  { n:"05", title:"Dataset Merging & Balanced Sampling", desc:"Merge all cleaned datasets into a unified corpus. Apply balanced sampling strategies — oversampling rare attack types, undersampling majority classes — to address severe class imbalance." },
+  { n:"06", title:"Feature Engineering", desc:"Derive higher-level statistical, temporal, and protocol-specific features. Encode categorical protocol identifiers. Normalize numerical features. Apply PCA or feature importance analysis." },
+  { n:"07", title:"Model Architecture (PyTorch / TensorFlow)", desc:"Implement and compare deep learning architectures: CNN-LSTM for temporal patterns, Graph Neural Networks for device relationship modeling, Transformer-based anomaly detection, and ensemble classifiers." },
+  { n:"08", title:"Validation via PCAP Replay", desc:"Replay both existing dataset PCAPs and newly generated attack traffic through the trained model. Evaluate detection performance, analyze confusion matrices, and iterate for improvement." }
+];
+
+const PLANNED_MODELS = [
+  { name:"Random Forest", family:"Classical ML", desc:"Baseline ensemble classifier. Proven strong baseline for network intrusion detection with tabular flow features. Expected to perform well on seen-protocol detection.", status:"Planned" },
+  { name:"XGBoost / LightGBM", family:"Gradient Boosting", desc:"Gradient boosted trees with fast inference. Handles class imbalance well with sample_weight. Likely strong overall F1 on balanced training set.", status:"Planned" },
+  { name:"CNN-LSTM", family:"Deep Learning", desc:"Convolutional layers for feature extraction from flow windows followed by LSTM for temporal dependencies. Targets protocol-sequence-aware anomaly detection.", status:"Planned" },
+  { name:"Transformer (BERT-style)", family:"Attention-based", desc:"Self-attention architecture treating network flows as token sequences. Aims to capture long-range dependencies in attack campaign traffic patterns.", status:"Planned" },
+  { name:"Graph Neural Network", family:"Graph ML", desc:"Models the IoT device interaction graph. Nodes = devices, edges = communication patterns. Targets botnet and lateral movement detection.", status:"Planned" },
+  { name:"Autoencoder / VAE", family:"Anomaly Detection", desc:"Unsupervised anomaly detection via reconstruction error. Trained only on benign traffic. Targets zero-day and novel attack detection without labeled attack data.", status:"Planned" },
+  { name:"Federated Learning (IID/non-IID)", family:"Privacy-preserving ML", desc:"Distributed training across simulated IoT gateway nodes. Each node trains on local protocol-specific data; global model aggregated via FedAvg.", status:"Research" },
+  { name:"Multi-task Learning IDS", family:"Deep Learning", desc:"Single model simultaneously predicting: (1) binary normal/attack, (2) attack category, (3) specific attack type. Shared encoder with task-specific heads.", status:"Research" }
+];
+
+function renderPipeline() {
+  document.getElementById('pipelineEl').innerHTML = PIPELINE.map(s => `
+    <div class="tl-step">
+      <div class="tl-dot">${s.n}</div>
+      <div>
+        <div class="tl-title">${s.title}</div>
+        <div class="tl-desc">${s.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderModels() {
+  document.getElementById('modelGrid').innerHTML = PLANNED_MODELS.map(m => `
+    <div class="model-placeholder">
+      <div class="mp-label">${m.family}</div>
+      <div class="mp-name">${m.name}</div>
+      <div class="mp-desc">${m.desc}</div>
+      <div class="mp-status">
+        <div class="dot-soon"></div>
+        <span style="font-size:.62rem;color:var(--amber)">${m.status}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderPipeline(); renderModels();
+  initMobileNav(); initFade();
+});
+</script>
+</body>
+</html>

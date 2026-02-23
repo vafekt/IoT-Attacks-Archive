@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attack Tools — IoT Security Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.tool-name { font-family:'Space Mono',monospace; color:var(--cyan); font-weight:700; font-size:.85rem; }
+.tool-desc { font-size:.78rem; color:var(--muted); line-height:1.55; }
+.tool-link { font-family:'Space Mono',monospace; font-size:.65rem; color:var(--cyan); }
+.tool-link:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
+    <a class="nav-link" href="datasets.html"><span class="icon">🗄</span> Datasets</a>
+    <a class="nav-link" href="protocols.html"><span class="icon">📡</span> Protocols</a>
+    <a class="nav-link" href="attacks.html"><span class="icon">⚔</span> Attacks</a>
+    <a class="nav-link active" href="tools.html"><span class="icon">🔧</span> Tools</a>
+    <a class="nav-link" href="devices.html"><span class="icon">📟</span> Devices</a>
+    <a class="nav-link" href="ai-models.html"><span class="icon">🤖</span> AI Models</a>
+  </div>
+</nav>
+<div class="page-body">
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-orb" style="width:380px;height:380px;background:rgba(192,132,252,.06);top:-60px;right:-60px;"></div>
+  <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Tools</div>
+  <h1>Attack <span class="accent">Tools</span></h1>
+  <p>37 tools and frameworks used across the 16 datasets — from standard network attack tools to specialized IoT protocol attack frameworks.</p>
+  <div class="hero-chips">
+    <div class="hero-chip"><span class="val">37</span> tools</div>
+    <div class="hero-chip"><span class="val">8</span> categories</div>
+    <div class="hero-chip">With dataset attribution and links</div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="controls fade">
+    <div class="search-wrap">
+      <span class="search-ico">⌕</span>
+      <input type="text" id="toolSearch" placeholder="Search tools or attacks..." oninput="filterTools()">
+    </div>
+    <div class="filter-group" id="toolCatFilter">
+      <button class="filter-btn active" onclick="setToolCat(this,'all')">All</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Network')">Network</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Recon')">Recon</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Web')">Web</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Brute Force')">Brute Force</button>
+      <button class="filter-btn" onclick="setToolCat(this,'IoT Protocol')">IoT Protocol</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Wireless')">Wireless</button>
+      <button class="filter-btn" onclick="setToolCat(this,'MITM')">MITM</button>
+      <button class="filter-btn" onclick="setToolCat(this,'ICS/OT')">ICS/OT</button>
+    </div>
+    <span class="results-count" id="toolCount"></span>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap fade">
+    <table id="toolsTable">
+      <thead>
+        <tr>
+          <th data-sort>Tool / Framework</th>
+          <th data-sort>Category</th>
+          <th>Attack Type(s)</th>
+          <th>Description</th>
+          <th>Used In Datasets</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody id="toolsTbody"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-note">IoT Security Hub · Attack Tools Reference</div>
+  <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+let toolCatFilter = 'all';
+
+function renderTools() {
+  const q = document.getElementById('toolSearch').value.toLowerCase();
+  const visible = TOOLS.filter(t => {
+    const mq = !q || t.tool.toLowerCase().includes(q) || t.attacks.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q) || t.used.toLowerCase().includes(q);
+    const mc = toolCatFilter==='all' || t.cat===toolCatFilter;
+    return mq && mc;
+  });
+  document.getElementById('toolCount').innerHTML = `<span>${visible.length}</span> / ${TOOLS.length}`;
+  document.getElementById('toolsTbody').innerHTML = visible.map(t => `
+    <tr>
+      <td><span class="tool-name">${t.tool}</span></td>
+      <td>${badge(t.cat)}</td>
+      <td style="font-size:.78rem;color:var(--muted);max-width:220px">${t.attacks}</td>
+      <td><span class="tool-desc">${t.desc}</span></td>
+      <td>${t.used.split(', ').map(d=>`<span class="ds-chip">${d}</span>`).join(' ')}</td>
+      <td>${t.link&&t.link!='#'?`<a class="tool-link" href="${t.link}" target="_blank">→ Repo</a>`:'<span style="color:var(--muted);font-size:.7rem">—</span>'}</td>
+    </tr>
+  `).join('') || `<tr><td colspan="6" class="no-results">No tools match the current filters.</td></tr>`;
+}
+
+function filterTools() { renderTools(); }
+function setToolCat(btn, cat) {
+  document.querySelectorAll('#toolCatFilter .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  toolCatFilter = cat;
+  renderTools();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderTools();
+  initTableSort('toolsTable');
+  initMobileNav(); initFade();
+});
+</script>
+</body>
+</html>

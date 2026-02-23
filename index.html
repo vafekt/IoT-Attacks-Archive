@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IoT Security Hub — datasets, protocols, attacks, tools, and devices for IoT security research.">
+<title>IoT Security Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 6rem 5vw 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+.orb1 { width:480px;height:480px;background:rgba(0,229,255,.07);top:-80px;right:-60px; }
+.orb2 { width:360px;height:360px;background:rgba(0,255,157,.06);bottom:-80px;left:8%; }
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: .68rem; color: var(--cyan);
+  letter-spacing: .22em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.hero-eyebrow::before { content:''; width:36px;height:1px;background:var(--cyan); }
+h1 { font-size: clamp(2.8rem,6vw,5.8rem); font-weight:800; line-height:1.04; max-width:860px; margin-bottom:1.25rem; }
+h1 em { font-style:normal; color:var(--cyan); }
+h1 em.g { color:var(--green); }
+.hero-lead { font-size:1.05rem;color:var(--muted);max-width:580px;line-height:1.75;margin-bottom:3rem; }
+.hero-stats { display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:3.5rem; }
+.stat { display:flex;flex-direction:column;gap:.15rem; }
+.stat-n { font-family:'Space Mono',monospace;font-size:2.2rem;font-weight:700;color:var(--cyan);line-height:1; }
+.stat-l { font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em; }
+
+/* ── NAV TILES ── */
+.nav-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 900px;
+}
+@media (max-width:700px) { .nav-tiles { grid-template-columns:1fr 1fr; } }
+@media (max-width:440px) { .nav-tiles { grid-template-columns:1fr; } }
+.tile {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.5rem 1.2rem;
+  display: flex; flex-direction:column; gap: .65rem;
+  text-decoration: none;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  position: relative; overflow: hidden;
+}
+.tile::before {
+  content:''; position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--tile-a),var(--tile-b));
+  opacity:0; transition:opacity .2s;
+}
+.tile:hover {
+  border-color: rgba(0,229,255,.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,.3);
+}
+.tile:hover::before { opacity:1; }
+.tile-icon { font-size:1.75rem; }
+.tile-title { font-size:1.05rem;font-weight:700; }
+.tile-desc { font-size:.78rem;color:var(--muted);line-height:1.6; }
+.tile-count {
+  margin-top:.25rem;
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.tile-count .n { color:var(--cyan);font-weight:700; }
+
+/* scroll hint */
+.scroll-hint { position:absolute;bottom:2.5rem;left:5vw;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.1em;display:flex;align-items:center;gap:.65rem;animation:ph 2s ease-in-out infinite; }
+@keyframes ph{0%,100%{opacity:.4}50%{opacity:1}}
+.s-arr{width:18px;height:28px;border:1px solid var(--muted);border-radius:9px;display:flex;justify-content:center;align-items:flex-start;padding-top:3px;}
+.s-dot{width:3px;height:7px;background:var(--muted);border-radius:2px;animation:sd 1.5s ease-in-out infinite;}
+@keyframes sd{0%{transform:translateY(0);opacity:1}100%{transform:translateY(9px);opacity:0}}
+
+/* about section */
+#about { padding:5rem 5vw; }
+.about-grid { display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start; }
+@media(max-width:700px){.about-grid{grid-template-columns:1fr;gap:2rem;}}
+.about-body p { font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:1rem; }
+.about-body p strong { color:var(--text); }
+.meta-list { list-style:none;display:flex;flex-direction:column;gap:.6rem; }
+.meta-list li { display:flex;align-items:center;gap:.75rem;font-size:.82rem;color:var(--muted); }
+.meta-list li strong { color:var(--text);min-width:110px;font-family:'Space Mono',monospace;font-size:.75rem; }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link active" href="index.html" data-page="home"><span class="icon">⌂</span> Hub</a>
+    <a class="nav-link" href="datasets.html" data-page="datasets"><span class="icon">🗄</span> Datasets</a>
+    <a class="nav-link" href="protocols.html" data-page="protocols"><span class="icon">📡</span> Protocols</a>
+    <a class="nav-link" href="attacks.html" data-page="attacks"><span class="icon">⚔</span> Attacks</a>
+    <a class="nav-link" href="tools.html" data-page="tools"><span class="icon">🔧</span> Tools</a>
+    <a class="nav-link" href="devices.html" data-page="devices"><span class="icon">📟</span> Devices</a>
+    <a class="nav-link" href="ai-models.html" data-page="ai"><span class="icon">🤖</span> AI Models</a>
+  </div>
+</nav>
+
+<div class="page-body">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-eyebrow">IoT Security Research</div>
+  <h1>Datasets, Protocols<br>&amp; <em>Attack</em> <em class="g">Analysis</em></h1>
+  <p class="hero-lead">
+    A comprehensive open reference covering 16 IoT/IIoT security datasets,
+    15 protocols, 88+ attack techniques, 37 attack tools, and platform-level device profiles — 
+    spanning smart home, healthcare, industrial, and building automation systems.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">16</div><div class="stat-l">Datasets</div></div>
+    <div class="stat"><div class="stat-n">88+</div><div class="stat-l">Attack Types</div></div>
+    <div class="stat"><div class="stat-n">15</div><div class="stat-l">Protocols</div></div>
+    <div class="stat"><div class="stat-n">37</div><div class="stat-l">Attack Tools</div></div>
+  </div>
+
+  <div class="nav-tiles">
+    <a class="tile" href="datasets.html" style="--tile-a:var(--cyan);--tile-b:var(--green)">
+      <div class="tile-icon">🗄</div>
+      <div class="tile-title">Datasets</div>
+      <div class="tile-desc">16 IoT/IIoT security datasets with protocol coverage, attack categories, testbed details, and links.</div>
+      <div class="tile-count"><span class="n">16</span> datasets · 2020–2025</div>
+    </a>
+    <a class="tile" href="protocols.html" style="--tile-a:var(--green);--tile-b:var(--purple)">
+      <div class="tile-icon">📡</div>
+      <div class="tile-title">Protocols</div>
+      <div class="tile-desc">15 IoT protocols — MQTT, Zigbee, Z-Wave, Thread, BACnet, KNX, CoAP, BLE and more.</div>
+      <div class="tile-count"><span class="n">15</span> protocols · coverage matrix</div>
+    </a>
+    <a class="tile" href="attacks.html" style="--tile-a:var(--red);--tile-b:var(--amber)">
+      <div class="tile-icon">⚔</div>
+      <div class="tile-title">Attacks</div>
+      <div class="tile-desc">88+ attack techniques across 15 categories — DDoS, spoofing, covert channel, energy depletion, fuzzing and more.</div>
+      <div class="tile-count"><span class="n">88+</span> techniques · 15 categories</div>
+    </a>
+    <a class="tile" href="tools.html" style="--tile-a:var(--purple);--tile-b:var(--cyan)">
+      <div class="tile-icon">🔧</div>
+      <div class="tile-title">Attack Tools</div>
+      <div class="tile-desc">37 tools and frameworks used across the datasets — from hping3 and nmap to killerbee, bacpypes, and KNXSmartFuzzer.</div>
+      <div class="tile-count"><span class="n">37</span> tools · 8 categories</div>
+    </a>
+    <a class="tile" href="devices.html" style="--tile-a:var(--amber);--tile-b:var(--green)">
+      <div class="tile-icon">📟</div>
+      <div class="tile-title">Devices</div>
+      <div class="tile-desc">Real-world devices using each IoT protocol — from ESP32 to Philips Hue, Siemens PLCs, Nordic nRF52, and Apple Thread Border Routers.</div>
+      <div class="tile-count"><span class="n">15</span> protocols · 100+ devices</div>
+    </a>
+    <a class="tile" href="ai-models.html" style="--tile-a:var(--cyan);--tile-b:var(--purple)">
+      <div class="tile-icon">🤖</div>
+      <div class="tile-title">AI Models</div>
+      <div class="tile-desc">AI/ML models for IoT intrusion detection — architectures, performance benchmarks, and unified IDS pipeline.</div>
+      <div class="tile-count"><span class="n">Coming</span> soon</div>
+    </a>
+  </div>
+  <div class="scroll-hint"><div class="s-arr"><div class="s-dot"></div></div>SCROLL FOR OVERVIEW</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid fade">
+    <div class="about-body">
+      <div class="section-label">About This Project</div>
+      <h2 class="section-title">Research Context</h2>
+      <p>This hub presents a structured comparative analysis of the available IoT security datasets for training and evaluating machine learning-based intrusion detection systems (IDS). The IoT security landscape is fragmented — datasets use different protocols, feature sets, label taxonomies, and testbed configurations.</p>
+      <p>Our goal is to build a <strong>unified AI-based IDS</strong> capable of detecting attacks across heterogeneous IoT protocols by harmonizing 16 datasets into a single training corpus, from smart home devices to industrial control systems and building automation.</p>
+      <p>This site serves as the public-facing reference for the dataset analysis, protocol survey, and attack taxonomy underlying the research project.</p>
+    </div>
+    <div>
+      <div class="section-label">Quick Reference</div>
+      <ul class="meta-list">
+        <li><strong>Datasets</strong> 16 IoT/IIoT security datasets reviewed</li>
+        <li><strong>Years</strong> 2020–2025</li>
+        <li><strong>Attacks</strong> 88+ attack techniques across 15 categories</li>
+        <li><strong>Protocols</strong> MQTT, Zigbee, Z-Wave, Thread, BLE, BACnet, KNX, Modbus, CoAP, AMQP, XMPP, STOMP, Wi-Fi, 6LoWPAN, RPL</li>
+        <li><strong>Testbeds</strong> Physical, simulated, hybrid, cyber range, real home</li>
+        <li><strong>Tools</strong> 37 attack tools/frameworks catalogued</li>
+        <li><strong>AI Goal</strong> Unified cross-protocol IDS (PyTorch/TensorFlow)</li>
+        <li><strong>Feature Extraction</strong> Zeek + ICSNPP + custom Spicy scripts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div><!-- page-body -->
+
+<footer class="site-footer">
+  <div class="footer-note">IoT Security Research · Dataset &amp; Attack Analysis</div>
+  <div class="footer-note" style="text-align:right">16 datasets · 88+ attacks · 15 protocols</div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileNav();
+  initFade();
+});
+</script>
+</body>
+</html>

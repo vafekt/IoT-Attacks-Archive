@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IoT Security Datasets — 16 datasets comparison table and detailed profiles.">
+<title>Datasets — IoT Security Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.view-toggle { display:flex;gap:.4rem; }
+.view-btn { background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Space Mono',monospace;font-size:.68rem;padding:.55rem .8rem;transition:all .2s; }
+.view-btn:hover { border-color:var(--cyan);color:var(--cyan); }
+.view-btn.active { background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan); }
+.view-panel { display:none; }
+.view-panel.active { display:block; }
+.card-link { display:inline-block;margin-top:.75rem;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--cyan); }
+.card-link:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html" data-page="home"><span class="icon">⌂</span> Hub</a>
+    <a class="nav-link active" href="datasets.html" data-page="datasets"><span class="icon">🗄</span> Datasets</a>
+    <a class="nav-link" href="protocols.html" data-page="protocols"><span class="icon">📡</span> Protocols</a>
+    <a class="nav-link" href="attacks.html" data-page="attacks"><span class="icon">⚔</span> Attacks</a>
+    <a class="nav-link" href="tools.html" data-page="tools"><span class="icon">🔧</span> Tools</a>
+    <a class="nav-link" href="devices.html" data-page="devices"><span class="icon">📟</span> Devices</a>
+    <a class="nav-link" href="ai-models.html" data-page="ai"><span class="icon">🤖</span> AI Models</a>
+  </div>
+</nav>
+<div class="page-body">
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-orb" style="width:400px;height:400px;background:rgba(0,229,255,.06);top:-100px;right:-80px;"></div>
+  <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Datasets</div>
+  <h1>IoT Security <span class="accent">Datasets</span></h1>
+  <p>16 curated IoT/IIoT security datasets — from smart home and healthcare to building automation and industrial control systems.</p>
+  <div class="hero-chips">
+    <div class="hero-chip"><span class="val">16</span> datasets</div>
+    <div class="hero-chip"><span class="val">2020–2025</span></div>
+    <div class="hero-chip"><span class="val">PCAP + CSV</span> formats</div>
+    <div class="hero-chip"><span class="val">Physical / Hybrid / Simulated</span> testbeds</div>
+  </div>
+</div>
+
+<div class="content">
+  <!-- Controls -->
+  <div class="controls fade">
+    <div class="search-wrap">
+      <span class="search-ico">⌕</span>
+      <input type="text" id="dsSearch" placeholder="Search datasets..." oninput="filterDs()">
+    </div>
+    <div class="filter-group" id="protoFilter">
+      <button class="filter-btn active" onclick="setProtoFilter(this,'all')">All</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'MQTT')">MQTT</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'Zigbee')">Zigbee</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'Z-Wave')">Z-Wave</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'BACnet')">BACnet</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'Modbus')">Modbus</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'Thread')">Thread</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'KNX')">KNX</button>
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" onclick="setView(this,'table')">☰ Table</button>
+      <button class="view-btn" onclick="setView(this,'cards')">⊞ Cards</button>
+    </div>
+    <span class="results-count" id="dsCount"></span>
+  </div>
+
+  <!-- TABLE VIEW -->
+  <div id="tablePanel" class="view-panel active fade">
+    <div class="table-wrap">
+      <table id="dsTable">
+        <thead>
+          <tr>
+            <th data-sort>#</th>
+            <th data-sort>Dataset</th>
+            <th data-sort>Year</th>
+            <th>Format</th>
+            <th>Primary Protocols</th>
+            <th data-sort>Attacks</th>
+            <th>Benign</th>
+            <th data-sort>Testbed</th>
+            <th>Institution</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody id="dsTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CARDS VIEW -->
+  <div id="cardsPanel" class="view-panel fade">
+    <div class="cards-grid" id="dsCards"></div>
+  </div>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-note">IoT Security Hub · Datasets Reference</div>
+  <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+let protoFilter = 'all';
+
+function matchDs(d) {
+  const q = document.getElementById('dsSearch').value.toLowerCase();
+  const matchQ = !q || d.name.toLowerCase().includes(q) || d.protocols.join(' ').toLowerCase().includes(q) || d.institution.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q);
+  const matchP = protoFilter === 'all' || d.protocols.some(p => p.toLowerCase().includes(protoFilter.toLowerCase()));
+  return matchQ && matchP;
+}
+
+function renderTable() {
+  const tb = document.getElementById('dsTbody');
+  const visible = DATASETS.filter(matchDs);
+  tb.innerHTML = visible.map(d => `
+    <tr>
+      <td class="mono">${String(d.id).padStart(2,'0')}</td>
+      <td><strong>${d.name}</strong></td>
+      <td>${badge(String(d.year),'cyan')}</td>
+      <td class="mono">${d.format}</td>
+      <td>${protoBadges(d.protocols)}</td>
+      <td><strong style="font-family:'Space Mono',monospace;color:var(--green)">${d.attacks}</strong></td>
+      <td>${d.benign==='Yes'?'<span class="check-y">✓</span>':d.benign==='Partial'?'<span class="check-p">~</span>':'<span class="check-n">✗</span>'}</td>
+      <td>${badge(d.testbed)}</td>
+      <td class="mono" style="font-size:.72rem">${d.institution}</td>
+      <td>${d.link&&d.link!='#'?`<a href="${d.link}" target="_blank" style="color:var(--cyan);font-family:'Space Mono',monospace;font-size:.68rem">→ Link</a>`:'<span style="color:var(--muted);font-size:.7rem">—</span>'}</td>
+    </tr>
+  `).join('') || `<tr><td colspan="10" class="no-results">No datasets match the current filters.</td></tr>`;
+  document.getElementById('dsCount').innerHTML = `<span>${visible.length}</span> / ${DATASETS.length}`;
+}
+
+function renderCards() {
+  const grid = document.getElementById('dsCards');
+  const visible = DATASETS.filter(matchDs);
+  grid.innerHTML = visible.map(d => {
+    const cats = d.attackCats.map((c,i) => `<li><div class="bullet-dot"></div><div><strong>${c}</strong>${d.attackDetails[i]?' — '+d.attackDetails[i]:''}</div></li>`).join('');
+    return `
+    <div class="card">
+      <div class="card-eyebrow">DATASET ${String(d.id).padStart(2,'0')} · ${d.year} · ${d.institution}</div>
+      <div class="card-title">${d.name}</div>
+      <div class="card-tags">${protoBadges(d.protocols,5)} ${badge(d.testbed)}</div>
+      <div class="card-desc">${d.desc}</div>
+      <div class="card-meta">
+        <div class="card-meta-item">Attacks<br><span class="val">${d.attacks}</span></div>
+        <div class="card-meta-item">Format<br><span class="val" style="font-size:.68rem">${d.format}</span></div>
+        <div class="card-meta-item">Benign<br><span class="val">${d.benign}</span></div>
+        <div class="card-meta-item">Testbed<br><span class="val">${d.testbed}</span></div>
+      </div>
+      <div class="card-more">
+        <div class="card-more-inner">
+          <div class="card-section-label cyan">ATTACK CATEGORIES</div>
+          <ul class="bullet-list">${cats}</ul>
+          <div class="card-section-label amber" style="margin-top:.75rem">DEVICES</div>
+          <p style="font-size:.78rem;color:var(--muted);line-height:1.6">${d.devices}</p>
+          ${d.link&&d.link!='#'?`<a class="card-link" href="${d.link}" target="_blank">→ Dataset Link</a>`:''}
+        </div>
+      </div>
+      <button class="expand-btn" onclick="toggleCard(this)">▼ EXPAND DETAILS</button>
+    </div>`;
+  }).join('') || '<p style="color:var(--muted);font-family:\'Space Mono\',monospace;font-size:.75rem">No datasets match.</p>';
+}
+
+function toggleCard(btn) {
+  const card = btn.closest('.card');
+  card.classList.toggle('open');
+  btn.textContent = card.classList.contains('open') ? '▲ COLLAPSE' : '▼ EXPAND DETAILS';
+}
+
+function filterDs() { renderTable(); renderCards(); }
+function setProtoFilter(btn, val) {
+  document.querySelectorAll('#protoFilter .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  protoFilter = val;
+  filterDs();
+}
+function setView(btn, view) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tablePanel').classList.toggle('active', view==='table');
+  document.getElementById('cardsPanel').classList.toggle('active', view==='cards');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderTable(); renderCards();
+  initTableSort('dsTable');
+  initMobileNav(); initFade();
+});
+</script>
+</body>
+</html>
