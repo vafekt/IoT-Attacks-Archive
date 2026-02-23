@@ -164,7 +164,7 @@ body::after {
   line-height: 1.1;
   margin-bottom: 1rem;
 }
-.page-hero .accent { color: var(--cyan); }
+
 .page-hero p {
   font-size: 1.1rem;
   color: var(--text-soft);
