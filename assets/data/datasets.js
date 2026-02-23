@@ -88,7 +88,7 @@
     attackCats:["DDoS","DoS","Reconnaissance","Brute Force","Spoofing","Web-based","Mirai","MITM","Z-Wave-specific (24 classes)","MQTT-specific"],
     attackDetails:["SYN/UDP/ICMP/HTTP/TCP Flood variants","Slowloris, SlowHTTPTest, GoldenEye, RUDY","Port Scanning, OS Fingerprinting, Vulnerability Scanning","SSH/FTP/Telnet Brute Force, Dictionary Attacks","ARP/DNS/IP Spoofing","SQL Injection, XSS, Command Injection","Mirai Scanning, Infection, DDoS variants","Man-in-the-Middle attacks","Z-Wave Replay, Jamming, Spoofing, Flooding, Unauthorized Command Injection, Network Disruption, Downgrade Attack","MQTT Flooding, Unauthorized Access, Message Injection, Spoofing"],
     devices:"Z-Wave sensors (door, motion, temp, humidity, water, smoke), actuators, smart plugs, IP cameras, Zigbee devices, Raspberry Pis",
-    link:"http://bccc.laps.yorku.ca/BCCC-IoTIDS-ZWave-2025/" },
+    link:"https://bccc.laps.yorku.ca/BCCC-IoTIDS-ZWave-2025/" },
   { id:16, name:"TON_IoT Dataset", year:2020, format:"PCAP, CSV, logs", protocols:["MQTT","Modbus TCP/IP","HTTP","TCP/IP","UDP","ICMP"], attacks:9, benign:"Yes", testbed:"Hybrid", institution:"UNSW",
     desc:"Three-layer edge/fog/cloud architecture. Node-RED, Mosquitto MQTT, Zeek/Bro IDS. 7 IoT sensor types. Extensively labelled (binary + 10-class). Kali Linux attack VMs.",
     attackCats:["DoS/DDoS (2)","Reconnaissance (1)","Web-based (2)","Credential (1)","MITM (1)","Malware (2)"],
