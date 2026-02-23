@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
 
 /* ════════════════════════════════════════════
    TOKENS
@@ -13,13 +13,17 @@
   --amber:   #ffb400;
   --red:     #ff3b6b;
   --purple:  #c084fc;
-  --text:    #e2e8f0;
-  --muted:   #64748b;
+  --text:    #e7edf7;
+  --muted:   #8da1b9;
+  --text-soft:#bac7d8;
   --border:  #1e2d45;
   --glow:    rgba(0,229,255,.12);
   --glow2:   rgba(0,255,157,.10);
   --radius:  8px;
   --nav-h:   56px;
+  --font-body: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Syne', 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
 }
 
 /* ════════════════════════════════════════════
@@ -30,9 +34,17 @@ html { scroll-behavior:smooth; font-size:16px; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
   min-height: 100vh;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: .01em;
 }
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; font-family: inherit; border: none; background: none; }
@@ -61,7 +73,7 @@ body::after {
   z-index: 200;
 }
 .nav-brand {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .78rem;
   color: var(--cyan);
   letter-spacing: .12em;
@@ -75,7 +87,7 @@ body::after {
   display: flex; align-items: center; gap: .4rem;
   padding: 0 1rem;
   height: var(--nav-h);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .68rem;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -130,7 +142,7 @@ body::after {
   pointer-events: none;
 }
 .page-hero .breadcrumb {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem;
   color: var(--muted);
   letter-spacing: .12em;
@@ -148,10 +160,10 @@ body::after {
 }
 .page-hero .accent { color: var(--cyan); }
 .page-hero p {
-  font-size: 1rem;
-  color: var(--muted);
+  font-size: 1.05rem;
+  color: var(--text-soft);
   max-width: 650px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 .hero-chips {
   display: flex; gap: .75rem; flex-wrap: wrap;
@@ -162,7 +174,7 @@ body::after {
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: .35rem .9rem;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .68rem;
   color: var(--muted);
   display: flex; align-items: center; gap: .4rem;
@@ -196,8 +208,8 @@ input[type=text] {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text);
-  font-family: 'Space Mono', monospace;
-  font-size: .75rem;
+  font-family: var(--font-body);
+  font-size: .9rem;
   padding: .6rem 1rem .6rem 2.4rem;
   outline: none;
   transition: border-color .2s, box-shadow .2s;
@@ -213,7 +225,7 @@ input[type=text]:focus {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--muted);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .68rem;
   padding: .55rem .9rem;
   transition: all .2s;
@@ -226,7 +238,7 @@ input[type=text]:focus {
   color: var(--cyan);
 }
 .results-count {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .68rem;
   color: var(--muted);
   margin-left: auto;
@@ -244,12 +256,12 @@ input[type=text]:focus {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: .83rem;
+  font-size: .9rem;
 }
 thead th {
   background: var(--bg2);
   color: var(--cyan);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem;
   text-transform: uppercase;
   letter-spacing: .1em;
@@ -277,14 +289,14 @@ tbody td {
   line-height: 1.5;
 }
 td.mono {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .75rem;
   color: var(--muted);
 }
 .no-results {
   text-align: center;
   color: var(--muted);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .75rem;
   padding: 3rem 1rem;
 }
@@ -296,7 +308,7 @@ td.mono {
   display: inline-flex; align-items: center; gap: .25rem;
   padding: .18rem .5rem;
   border-radius: 4px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .62rem;
   letter-spacing: .04em;
   font-weight: 700;
@@ -343,7 +355,7 @@ td.mono {
 }
 .card:hover::before { opacity: 1; }
 .card-eyebrow {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .6rem; color: var(--muted);
   letter-spacing: .12em; text-transform: uppercase;
   margin-bottom: .35rem;
@@ -354,8 +366,10 @@ td.mono {
 }
 .card-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .85rem; }
 .card-desc {
-  font-size: .8rem; color: var(--muted);
-  line-height: 1.65; margin-bottom: .9rem;
+  font-size: .9rem;
+  color: var(--text-soft);
+  line-height: 1.75;
+  margin-bottom: .9rem;
 }
 .card-meta {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -365,7 +379,7 @@ td.mono {
   font-size: .72rem; color: var(--muted);
 }
 .card-meta-item .val {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   color: var(--text);
   font-size: .72rem;
 }
@@ -379,7 +393,7 @@ td.mono {
   padding-top: .9rem;
 }
 .card-section-label {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
   margin-bottom: .4rem;
 }
@@ -407,7 +421,7 @@ td.mono {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 6px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem;
   color: var(--muted);
   letter-spacing: .08em;
@@ -438,7 +452,7 @@ td.mono {
 .acc-header-left { display: flex; align-items: center; gap: .75rem; }
 .acc-header-right { display: flex; align-items: center; gap: 1rem; }
 .acc-count {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem; color: var(--muted);
 }
 .chevron { color: var(--muted); transition: transform .2s; font-size: .75rem; }
@@ -458,7 +472,7 @@ td.mono {
 .acc-tech { font-weight: 600; color: var(--text); line-height: 1.5; }
 .ds-chips { display: flex; flex-wrap: wrap; gap: .3rem; }
 .ds-chip {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .58rem;
   background: rgba(0,229,255,.055);
   border: 1px solid rgba(0,229,255,.14);
@@ -480,7 +494,7 @@ td.mono {
 .heatmap-tbl th {
   background: var(--bg2);
   padding: .65rem .55rem;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .55rem; text-transform: uppercase; letter-spacing: .06em;
   color: var(--muted);
   border-right: 1px solid var(--border);
@@ -513,7 +527,7 @@ td.mono {
 .cell-d  { background: rgba(192,132,252,.07); color: var(--purple); }
 .hm-legend {
   display: flex; gap: 1.5rem; flex-wrap: wrap;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem; color: var(--muted);
 }
 .hm-legend-item { display: flex; align-items: center; gap: .4rem; }
@@ -545,7 +559,7 @@ td.mono {
   border: 1px solid var(--border);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .6rem; color: var(--cyan);
   z-index: 1;
 }
@@ -556,7 +570,7 @@ td.mono {
    SECTION LABELS
 ════════════════════════════════════════════ */
 .section-label {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem; color: var(--green);
   letter-spacing: .18em; text-transform: uppercase;
   margin-bottom: .5rem;
@@ -565,7 +579,7 @@ td.mono {
   font-size: clamp(1.5rem, 2.8vw, 2.4rem);
   font-weight: 800; margin-bottom: .6rem;
 }
-.section-desc { font-size: .9rem; color: var(--muted); line-height: 1.7; max-width: 700px; margin-bottom: 2rem; }
+.section-desc { font-size: 1rem; color: var(--text-soft); line-height: 1.8; max-width: 700px; margin-bottom: 2rem; }
 
 /* ════════════════════════════════════════════
    FADE-IN ANIMATION
@@ -583,7 +597,7 @@ td.mono {
   flex-wrap: wrap; gap: 1rem;
 }
 .footer-note {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .65rem; color: var(--muted); line-height: 1.7;
 }
 .footer-note a { color: var(--cyan); }
