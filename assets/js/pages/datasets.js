@@ -33,7 +33,7 @@ function renderCards() {
   grid.innerHTML = visible.map(d => {
     const cats = d.attackCats.map((c,i) => `<li><div class="bullet-dot"></div><div><strong>${c}</strong>${d.attackDetails[i]?' — '+d.attackDetails[i]:''}</div></li>`).join('');
     return `
-    <div class="card">
+    <div class="card" data-dataset-id="${d.id}">
       <div class="card-eyebrow">DATASET ${String(d.id).padStart(2,'0')} · ${d.year} · ${d.institution}</div>
       <div class="card-title">${d.name}</div>
       <div class="card-tags">${protoBadges(d.protocols,5)} ${badge(d.testbed)}</div>
@@ -82,4 +82,30 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTable(); renderCards();
   initTableSort('dsTable');
   initMobileNav(); initFade();
+  
+  // Handle scroll to dataset from Protocols page
+  const params = new URLSearchParams(window.location.search);
+  const scrollToId = params.get('scrollToId');
+  if (scrollToId) {
+    // Switch to cards view
+    const viewBtns = document.querySelectorAll('.view-btn');
+    viewBtns.forEach(btn => {
+      if (btn.textContent.includes('Cards')) {
+        btn.classList.add('active');
+        document.getElementById('cardsPanel').classList.add('active');
+      } else {
+        btn.classList.remove('active');
+        document.getElementById('tablePanel').classList.remove('active');
+      }
+    });
+    // Wait for render and scroll to dataset
+    setTimeout(() => {
+      const card = document.querySelector(`[data-dataset-id="${scrollToId}"]`);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.style.boxShadow = '0 0 20px rgba(0,229,255,.4)';
+        setTimeout(() => { card.style.boxShadow = ''; }, 2000);
+      }
+    }, 100);
+  }
 });

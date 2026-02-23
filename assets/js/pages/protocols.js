@@ -42,7 +42,7 @@ function setStack(btn, val) {
 function renderHeatmap() {
   const { protocols, datasets, data } = HEATMAP;
   let h = `<table class="heatmap-tbl"><thead><tr><th class="rh">Protocol</th>`;
-  datasets.forEach(d => { h += `<th>${d.replace('\n','<br>')}</th>`; });
+  datasets.forEach(d => { h += `<th><a href="datasets.html?scrollToId=${d.id}" style="color:var(--text);text-decoration:none;cursor:pointer;transition:color .2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text)'" title="${d.name}">${d.display.replace('\n','<br>')}</a></th>`; });
   h += `</tr></thead><tbody>`;
   protocols.forEach((proto, i) => {
     h += `<tr><th class="rh">${proto}</th>`;
