@@ -6,14 +6,26 @@
 <title>Datasets — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
+.page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
 .view-toggle { display:flex;gap:.4rem; }
-.view-btn { background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Space Mono',monospace;font-size:.68rem;padding:.55rem .8rem;transition:all .2s; }
+.view-btn { background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:var(--font-mono);font-size:.68rem;padding:.55rem .8rem;transition:all .2s; }
 .view-btn:hover { border-color:var(--cyan);color:var(--cyan); }
 .view-btn.active { background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan); }
 .view-panel { display:none; }
 .view-panel.active { display:block; }
-.card-link { display:inline-block;margin-top:.75rem;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--cyan); }
+.card-link { display:inline-block;margin-top:.75rem;font-family:var(--font-mono);font-size:.68rem;color:var(--cyan); }
 .card-link:hover { text-decoration:underline; }
+.legend-note {
+  margin-top: .75rem;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  color: var(--muted);
+  letter-spacing: .03em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+}
+.legend-note .legend-item { display: inline-flex; align-items: center; gap: .35rem; }
 </style>
 </head>
 <body>
@@ -56,7 +68,11 @@
     <div class="filter-group" id="protoFilter">
       <button class="filter-btn active" onclick="setProtoFilter(this,'all')">All</button>
       <button class="filter-btn" onclick="setProtoFilter(this,'MQTT')">MQTT</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'CoAP')">CoAP</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'AMQP')">AMQP</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'XMPP')">XMPP</button>
       <button class="filter-btn" onclick="setProtoFilter(this,'Zigbee')">Zigbee</button>
+      <button class="filter-btn" onclick="setProtoFilter(this,'IEEE 802.15.4')">IEEE 802.15.4</button>
       <button class="filter-btn" onclick="setProtoFilter(this,'Z-Wave')">Z-Wave</button>
       <button class="filter-btn" onclick="setProtoFilter(this,'BACnet')">BACnet</button>
       <button class="filter-btn" onclick="setProtoFilter(this,'Modbus')">Modbus</button>
@@ -90,6 +106,11 @@
         </thead>
         <tbody id="dsTbody"></tbody>
       </table>
+    </div>
+    <div class="legend-note" aria-label="Benign legend">
+      <span class="legend-item"><span class="check-y">✓</span> Yes (includes benign traffic)</span>
+      <span class="legend-item"><span class="check-p">~</span> Partial (limited benign traffic)</span>
+      <span class="legend-item"><span class="check-n">✗</span> No benign traffic</span>
     </div>
   </div>
 

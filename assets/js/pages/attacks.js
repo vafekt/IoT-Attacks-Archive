@@ -1,10 +1,10 @@
 let catFilter = 'all';
 const CAT_FILTER_MAP = {
   DDoS:['DDoS'], DoS:['DoS'],
-  Recon:['Reconnaissance'], Brute:['Brute Force / Credential'],
-  Web:['Web-based Attacks'], Spoof:['Spoofing'],
-  MITM:['MITM / Interception'],
-  Wireless:['Energy Depletion','Jamming / RF Interference','Wireless Network Disruption','Replay Attacks','Covert Channel','Fuzzing']
+  Recon:['Reconnaissance'], Brute:['Brute Force'],
+  Web:['Web-based','MQTT-specific'], Spoof:['Spoofing'],
+  MITM:['MITM'],
+  Others:['Energy Depletion','Jamming','Replay','Covert Channel','Fuzzing','BLE-specific','Z-Wave-specific','Commissioning Exploitation','Device Reset']
 };
 
 function matchCat(cat) {

@@ -4,10 +4,13 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Attacks — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
+<style>
+.page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
+</style>
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-brand">IoT Security<span class="dot">//</span>Attacks</div>
   <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
   <div class="nav-links">
     <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
@@ -26,10 +29,10 @@
   <div class="page-hero-orb" style="width:400px;height:400px;background:rgba(255,59,107,.05);top:-80px;right:-60px;"></div>
   <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Attacks</div>
   <h1>Attack Taxonomy</h1>
-  <p>88+ attack techniques across 15 categories — from volumetric DDoS to covert channels, Zigbee energy depletion, KNX fuzzing, and cyber-physical rogue device attacks.</p>
+  <p>88+ attack techniques across 20+ categories — from volumetric DDoS to covert channels, Zigbee energy depletion, KNX fuzzing, and cyber-physical rogue device attacks.</p>
   <div class="hero-chips">
     <div class="hero-chip"><span class="val">88+</span> techniques</div>
-    <div class="hero-chip"><span class="val">15</span> categories</div>
+    <div class="hero-chip"><span class="val">20+</span> categories</div>
     <div class="hero-chip">Per-technique dataset attribution</div>
   </div>
 </div>
@@ -49,7 +52,7 @@
       <button class="filter-btn" onclick="setCatFilter(this,'Web')">Web</button>
       <button class="filter-btn" onclick="setCatFilter(this,'Spoof')">Spoofing</button>
       <button class="filter-btn" onclick="setCatFilter(this,'MITM')">MITM</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'Wireless')">Wireless</button>
+      <button class="filter-btn" onclick="setCatFilter(this,'Others')">Others</button>
     </div>
     <span class="results-count" id="atkCount"></span>
   </div>

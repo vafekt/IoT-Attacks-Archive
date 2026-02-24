@@ -5,15 +5,16 @@
 <title>Attack Tools — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-.tool-name { font-family:'Space Mono',monospace; color:var(--cyan); font-weight:700; font-size:.85rem; }
+.page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
+.tool-name { font-family:var(--font-mono); color:var(--cyan); font-weight:700; font-size:.85rem; }
 .tool-desc { font-size:.78rem; color:var(--muted); line-height:1.55; }
-.tool-link { font-family:'Space Mono',monospace; font-size:.65rem; color:var(--cyan); }
+.tool-link { font-family:var(--font-mono); font-size:.65rem; color:var(--cyan); }
 .tool-link:hover { text-decoration:underline; }
 </style>
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-brand">IoT Security<span class="dot">//</span>Tools</div>
   <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
   <div class="nav-links">
     <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
@@ -35,7 +36,7 @@
   <p>37 tools and frameworks used across the 16 datasets — from standard network attack tools to specialized IoT protocol attack frameworks.</p>
   <div class="hero-chips">
     <div class="hero-chip"><span class="val">37</span> tools</div>
-    <div class="hero-chip"><span class="val">8</span> categories</div>
+    <div class="hero-chip"><span class="val">11</span> categories</div>
     <div class="hero-chip">With dataset attribution and links</div>
   </div>
 </div>
@@ -52,10 +53,13 @@
       <button class="filter-btn" onclick="setToolCat(this,'Recon')">Recon</button>
       <button class="filter-btn" onclick="setToolCat(this,'Web')">Web</button>
       <button class="filter-btn" onclick="setToolCat(this,'Brute Force')">Brute Force</button>
-      <button class="filter-btn" onclick="setToolCat(this,'IoT Protocol')">IoT Protocol</button>
-      <button class="filter-btn" onclick="setToolCat(this,'Wireless')">Wireless</button>
+      <button class="filter-btn" onclick="setToolCat(this,'MQTT')">MQTT</button>
+      <button class="filter-btn" onclick="setToolCat(this,'KNX')">KNX</button>
+      <button class="filter-btn" onclick="setToolCat(this,'BACnet')">BACnet</button>
+      <button class="filter-btn" onclick="setToolCat(this,'BLE')">BLE</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Zigbee')">Zigbee</button>
+      <button class="filter-btn" onclick="setToolCat(this,'Modbus')">Modbus</button>
       <button class="filter-btn" onclick="setToolCat(this,'MITM')">MITM</button>
-      <button class="filter-btn" onclick="setToolCat(this,'ICS/OT')">ICS/OT</button>
     </div>
     <span class="results-count" id="toolCount"></span>
   </div>

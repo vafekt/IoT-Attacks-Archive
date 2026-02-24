@@ -4,10 +4,13 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Protocols — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
+<style>
+.page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
+</style>
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-brand">IoT Security<span class="dot">//</span>Protocols</div>
   <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
   <div class="nav-links">
     <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
@@ -37,7 +40,6 @@
 
   <!-- Protocol Cards -->
   <div class="section-label fade">Protocol Reference</div>
-  <h2 class="section-title fade">All IoT Protocols</h2>
   <div class="controls fade">
     <div class="search-wrap">
       <span class="search-ico">⌕</span>
@@ -57,7 +59,6 @@
   <!-- Heatmap -->
   <div style="margin-top:3.5rem">
     <div class="section-label fade">Coverage Matrix</div>
-    <h2 class="section-title fade">Protocol × Dataset</h2>
     <p class="section-desc fade">Which protocols appear in which datasets. Use this matrix to select datasets for cross-protocol ML training.</p>
     <div class="heatmap-wrap fade" id="heatmapWrap"></div>
     <div class="hm-legend fade">

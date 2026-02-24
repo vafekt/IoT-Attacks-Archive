@@ -49,13 +49,13 @@ function initTableSort(tableId) {
 
 // Badge helpers
 const BADGE_COLORS = {
-  MQTT:'cyan', 'Modbus TCP/IP':'amber', 'BACnet/IP':'amber', 'KNXnet/IP':'amber', KNX:'amber',
+  MQTT:'cyan', 'Modbus TCP':'amber', 'BACnet/IP':'amber', 'KNXnet/IP':'amber', KNX:'amber',
   Zigbee:'green', 'Z-Wave':'purple', Thread:'cyan', BLE:'purple', CoAP:'green',
-  AMQP:'gray', XMPP:'gray', STOMP:'gray', 'Wi-Fi':'cyan', '6LoWPAN':'purple',
+  'IEEE 802.15.4':'purple', AMQP:'cyan', XMPP:'green', STOMP:'amber', 'Wi-Fi':'cyan', '6LoWPAN':'purple',
   Physical:'green', Simulated:'amber', Hybrid:'purple', 'Simulated (Docker)':'amber',
   'Cyber Range':'red', 'Real Home':'cyan',
   Network:'cyan', Recon:'purple', 'Brute Force':'red', MITM:'amber', Web:'green',
-  'IoT Protocol':'cyan', Wireless:'purple', 'ICS/OT':'amber',
+  MQTT:'cyan', KNX:'amber', BACnet:'amber', BLE:'purple', Zigbee:'green', Modbus:'amber',
   red:'red', amber:'amber', cyan:'cyan', green:'green', purple:'purple', gray:'gray'
 };
 function badge(text, colorKey) {

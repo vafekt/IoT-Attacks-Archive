@@ -5,6 +5,7 @@
 <title>AI Models — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
+.page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
 .coming-soon-banner {
   display: flex; align-items: center; gap: 1rem;
   background: rgba(0,229,255,.05);
@@ -23,16 +24,16 @@
   padding: 3rem;
   text-align: center;
   color: var(--muted);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .75rem;
 }
 .placeholder-card .ph-icon { font-size:2.5rem; margin-bottom:1rem; opacity:.4; }
-.placeholder-card .ph-title { color:var(--text); font-size:1rem; font-weight:700; margin-bottom:.5rem; font-family:'Syne',sans-serif; }
+.placeholder-card .ph-title { color:var(--text); font-size:1rem; font-weight:700; margin-bottom:.5rem; font-family:var(--font-heading); }
 .model-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
 .model-placeholder {
   background: var(--bg2); border:1px dashed var(--border); border-radius:10px;
   padding:1.5rem; display:flex; flex-direction:column; gap:.5rem;
-  font-family:'Space Mono',monospace;
+  font-family:var(--font-mono);
 }
 .mp-label { font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
 .mp-name { font-size:.9rem; font-weight:700; color:var(--text); }
@@ -44,7 +45,7 @@
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-brand">IoT Security<span class="dot">//</span>AI Models</div>
   <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
   <div class="nav-links">
     <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
@@ -103,7 +104,7 @@
     <div class="placeholder-card fade">
       <div class="ph-icon">📊</div>
       <div class="ph-title">Benchmark Table — Coming Soon</div>
-      <p style="font-family:'Syne',sans-serif;font-size:.82rem;line-height:1.6;margin-top:.5rem">
+      <p style="font-family:var(--font-heading);font-size:.82rem;line-height:1.6;margin-top:.5rem">
         Results will include per-dataset and cross-dataset accuracy, precision, recall, F1-score, and false positive rate for each model architecture.
       </p>
     </div>

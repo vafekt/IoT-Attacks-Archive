@@ -1,48 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Devices — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
-.proto-section { margin-bottom: 2.5rem; }
-.proto-header {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 1.1rem 1.25rem;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px 10px 0 0;
-  border-bottom: none;
-}
-.proto-header.standalone { border-radius:10px; border-bottom:1px solid var(--border); margin-bottom:.5rem; }
-.proto-icon { font-size:1.4rem; }
-.proto-hname { font-size:1.05rem; font-weight:700; }
-.proto-hfull { font-size:.78rem; color:var(--muted); }
-.device-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: .7rem;
-  border: 1px solid var(--border);
-  border-radius: 0 0 10px 10px;
-  padding: .9rem;
-  background: var(--bg);
-}
-.device-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1rem 1.1rem;
-  transition: border-color .15s;
-}
-.device-card:hover { border-color: rgba(0,229,255,.3); }
-.device-name { font-weight:700; font-size:.88rem; margin-bottom:.25rem; }
-.device-type { display:inline-block;margin-bottom:.5rem; }
-.device-desc { font-size:.77rem; color:var(--muted); line-height:1.6; }
+.page-hero h1{font-size:clamp(32px,5vw,70px);line-height:1.05;letter-spacing:1px;text-transform:uppercase;}
+:root{--bg:#07090d;--bg2:#0c1018;--panel:#10161f;--panel2:#141c28;--border:#1b2d42;--border2:#22374f;--c1:#00e5ff;--c2:#39ff14;--c3:#ff6b35;--c4:#c678dd;--c5:#f0c040;--c6:#ff5577;--c7:#80ffdb;--c8:#ff9a6c;--c9:#7dd8ff;--c10:#aef57c;--txt:#b8cfe0;--txt2:#4a6680;--txtb:#e2f0ff;--mono:'Share Tech Mono',monospace;--sans:'Barlow Condensed',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,229,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.018) 1px,transparent 1px);background-size:48px 48px;}
+.topnav{position:sticky;top:56px;z-index:150;background:rgba(7,9,13,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:8px 0;}
+.topnav .wrap{max-width:1500px;margin:0 auto;padding:0 18px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.nav-lbl{font-family:var(--mono);font-size:9px;color:var(--txt2);letter-spacing:2px;margin-right:4px;}
+a.nb{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;background:transparent;border:1px solid var(--border);color:var(--txt2);text-decoration:none;transition:all .15s;white-space:nowrap;}
+a.nb:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,229,255,.06);}
+.wrap{max-width:1500px;margin:0 auto;padding:0 18px;position:relative;z-index:1;}
+header{padding:44px 0 32px;margin-bottom:32px;border-bottom:1px solid var(--border);position:relative;}
+header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--c1),var(--c2),var(--c5),var(--c3),transparent);}
+.hbadge{font-family:var(--mono);font-size:10px;color:var(--c1);letter-spacing:3px;margin-bottom:10px;opacity:.7;}
+h1{font-family:var(--sans);font-weight:900;font-size:clamp(32px,5vw,70px);color:var(--txtb);letter-spacing:1px;line-height:1.05;text-transform:uppercase;}
+h1 em{color:var(--c1);font-style:normal;}
+.hsub{margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--txt2);}
+.hsub b{color:var(--c2);}
+.stats{display:flex;gap:24px;flex-wrap:wrap;align-items:center;margin-bottom:32px;padding:16px 22px;background:var(--panel);border:1px solid var(--border);border-radius:8px;}
+.sn{font-family:var(--sans);font-weight:900;font-size:32px;color:var(--c1);}
+.sl{font-family:var(--mono);font-size:9px;color:var(--txt2);text-transform:uppercase;letter-spacing:1.5px;}
+.sdiv{width:1px;background:var(--border);align-self:stretch;}
+.legend{margin-bottom:32px;padding:16px 20px;background:var(--panel);border:1px solid var(--border);border-radius:8px;}
+.leg-t{font-family:var(--mono);font-size:9px;color:var(--txt2);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.leg-g{display:flex;flex-wrap:wrap;gap:6px;}
+.csec{margin-bottom:48px;}
+.chead{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);position:relative;}
+.chead::after{content:'';position:absolute;bottom:-1px;left:0;width:100px;height:1px;background:var(--c1);opacity:.35;}
+.cico{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ctitle{font-family:var(--sans);font-weight:700;font-size:19px;color:var(--txtb);text-transform:uppercase;letter-spacing:1.5px;}
+.ccnt{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--txt2);background:var(--panel);border:1px solid var(--border);padding:2px 9px;border-radius:20px;}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:13px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:17px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s;}
+.card:hover{border-color:rgba(0,229,255,.26);transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,0,0,.45);}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sc1::before{background:linear-gradient(90deg,var(--c1),transparent);}
+.sc2::before{background:linear-gradient(90deg,var(--c2),transparent);}
+.sc3::before{background:linear-gradient(90deg,var(--c3),transparent);}
+.sc4::before{background:linear-gradient(90deg,var(--c4),transparent);}
+.sc5::before{background:linear-gradient(90deg,var(--c5),transparent);}
+.sc6::before{background:linear-gradient(90deg,var(--c6),transparent);}
+.sc7::before{background:linear-gradient(90deg,var(--c7),transparent);}
+.sc8::before{background:linear-gradient(90deg,var(--c8),transparent);}
+.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:6px;}
+.brand{font-family:var(--mono);font-size:9px;color:var(--c1);text-transform:uppercase;letter-spacing:2px;opacity:.7;}
+.badge{font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0;}
+.bsh{background:rgba(0,229,255,.1);color:var(--c1);border:1px solid rgba(0,229,255,.22);}
+.btv{background:rgba(128,255,219,.1);color:var(--c7);border:1px solid rgba(128,255,219,.22);}
+.bkit{background:rgba(240,192,64,.1);color:var(--c5);border:1px solid rgba(240,192,64,.22);}
+.bbed{background:rgba(198,120,221,.1);color:var(--c4);border:1px solid rgba(198,120,221,.22);}
+.bliv{background:rgba(255,107,53,.1);color:var(--c3);border:1px solid rgba(255,107,53,.22);}
+.bloc{background:rgba(255,85,119,.1);color:var(--c6);border:1px solid rgba(255,85,119,.22);}
+.bhvac{background:rgba(128,255,219,.08);color:var(--c7);border:1px solid rgba(128,255,219,.18);}
+.bics{background:rgba(255,107,53,.1);color:var(--c3);border:1px solid rgba(255,107,53,.22);}
+.bbms{background:rgba(57,255,20,.08);color:var(--c2);border:1px solid rgba(57,255,20,.2);}
+.bwear{background:rgba(198,120,221,.1);color:var(--c4);border:1px solid rgba(198,120,221,.22);}
+.biov{background:rgba(240,192,64,.1);color:var(--c5);border:1px solid rgba(240,192,64,.22);}
+.bengy{background:rgba(255,154,108,.1);color:var(--c8);border:1px solid rgba(255,154,108,.2);}
+.bmed{background:rgba(255,85,119,.1);color:var(--c6);border:1px solid rgba(255,85,119,.22);}
+.bagri{background:rgba(57,255,20,.07);color:var(--c10);border:1px solid rgba(57,255,20,.16);}
+.bnet{background:rgba(0,229,255,.07);color:var(--c9);border:1px solid rgba(0,229,255,.16);}
+.bsec{background:rgba(255,85,119,.07);color:#ff99b5;border:1px solid rgba(255,85,119,.16);}
+.blit{background:rgba(240,192,64,.07);color:#ffd87a;border:1px solid rgba(240,192,64,.16);}
+.bsns{background:rgba(128,255,219,.07);color:var(--c7);border:1px solid rgba(128,255,219,.16);}
+.brfid{background:rgba(198,120,221,.07);color:#d8a0f0;border:1px solid rgba(198,120,221,.16);}
+.ico-sh{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25);}
+.ico-tv{background:rgba(128,255,219,.1);border:1px solid rgba(128,255,219,.25);}
+.ico-kit{background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.25);}
+.ico-bed{background:rgba(198,120,221,.1);border:1px solid rgba(198,120,221,.25);}
+.ico-liv{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);}
+.ico-loc{background:rgba(255,85,119,.1);border:1px solid rgba(255,85,119,.25);}
+.ico-hvac{background:rgba(128,255,219,.08);border:1px solid rgba(128,255,219,.22);}
+.ico-ics{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);}
+.ico-bms{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.22);}
+.ico-wear{background:rgba(198,120,221,.1);border:1px solid rgba(198,120,221,.25);}
+.ico-iov{background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.25);}
+.ico-engy{background:rgba(255,154,108,.1);border:1px solid rgba(255,154,108,.22);}
+.ico-med{background:rgba(255,85,119,.1);border:1px solid rgba(255,85,119,.25);}
+.ico-agri{background:rgba(57,255,20,.07);border:1px solid rgba(57,255,20,.2);}
+.ico-net{background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.18);}
+.ico-sec{background:rgba(255,85,119,.07);border:1px solid rgba(255,85,119,.18);}
+.ico-lit{background:rgba(240,192,64,.07);border:1px solid rgba(240,192,64,.18);}
+.ico-sns{background:rgba(128,255,219,.07);border:1px solid rgba(128,255,219,.18);}
+.ico-rfid{background:rgba(198,120,221,.07);border:1px solid rgba(198,120,221,.18);}
+.dname{font-family:var(--sans);font-weight:700;font-size:15.5px;color:var(--txtb);margin-bottom:6px;line-height:1.3;}
+.ddesc{font-size:13px;color:var(--txt);line-height:1.55;margin-bottom:11px;}
+.plbl,.qlbl{font-family:var(--mono);font-size:8.5px;color:var(--txt2);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.ptags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:11px;}
+.p{font-family:var(--mono);font-size:10.5px;padding:2px 6px;border-radius:3px;white-space:nowrap;}
+.p-def{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.16);color:var(--c1);}
+.p-mod{background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.18);color:var(--c8);}
+.p-bac{background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.16);color:var(--c2);}
+.p-zwave{background:rgba(198,120,221,.06);border:1px solid rgba(198,120,221,.18);color:var(--c4);}
+.p-zig{background:rgba(240,192,64,.06);border:1px solid rgba(240,192,64,.18);color:var(--c5);}
+.p-mat{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.22);color:var(--c9);}
+.p-knx{background:rgba(255,85,119,.06);border:1px solid rgba(255,85,119,.18);color:#ff99b5;}
+.p-ble{background:rgba(100,149,237,.07);border:1px solid rgba(100,149,237,.2);color:#8ab4f8;}
+.p-thr{background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.14);color:var(--c10);}
+.p-coap{background:rgba(255,200,80,.05);border:1px solid rgba(255,200,80,.16);color:#ffd87a;}
+.p-amqp{background:rgba(200,80,255,.05);border:1px solid rgba(200,80,255,.16);color:#d07aff;}
+.p-opc{background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.15);color:#ffb080;}
+.p-xmpp{background:rgba(128,255,219,.05);border:1px solid rgba(128,255,219,.16);color:var(--c7);}
+.p-lora{background:rgba(150,200,255,.06);border:1px solid rgba(150,200,255,.18);color:#aad4ff;}
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:8px 0 12px;}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;}
+.pk{font-family:var(--mono);font-size:8.5px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;}
+.pv{font-family:var(--mono);font-size:11.5px;color:var(--txtb);}
+footer{margin-top:56px;padding:18px 0 36px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:center;line-height:1.8;}
+@media(max-width:600px){.dgrid{grid-template-columns:1fr;}.pgrid{grid-template-columns:1fr;}.stats{gap:14px;}.sdiv{display:none;}}
 </style>
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-brand">IoT Security<span class="dot">//</span>Devices</div>
   <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
   <div class="nav-links">
     <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
@@ -58,48 +136,996 @@
 
 <div class="page-hero">
   <div class="page-hero-bg"></div>
-  <div class="page-hero-orb" style="width:380px;height:380px;background:rgba(255,180,0,.05);top:-60px;right:-60px;"></div>
+  <div class="page-hero-orb" style="width:420px;height:420px;background:rgba(0,229,255,.08);top:-80px;right:-80px;"></div>
   <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Devices</div>
-  <h1>Devices per Protocol</h1>
-  <p>Real-world devices and platforms that implement each IoT protocol — from microcontrollers and SBCs to smart home hubs, industrial PLCs, and cloud platforms.</p>
+  <h1>IoT Devices</h1>
+  <p>100+ real-world IoT devices across 19 categories: Smart Home, TV, Kitchen, Bedroom, Living Room, Lockers, HVAC, ICS/SCADA, BMS, Wearables, IoV, Energy, Medical, AgriTech, Networking, Security, Lighting, Sensors, RFID. 25+ protocols · 60+ brands.</p>
   <div class="hero-chips">
-    <div class="hero-chip"><span class="val">15</span> protocols</div>
-    <div class="hero-chip"><span class="val">100+</span> device profiles</div>
-    <div class="hero-chip">Microcontrollers · SBCs · Industrial · Consumer</div>
+    <div class="hero-chip"><span class="val">100+</span> devices</div>
+    <div class="hero-chip"><span class="val">19</span> categories</div>
+    <div class="hero-chip"><span class="val">25+</span> protocols</div>
   </div>
 </div>
 
 <div class="content">
-  <div class="controls fade">
-    <div class="search-wrap">
-      <span class="search-ico">⌕</span>
-      <input type="text" id="devSearch" placeholder="Search devices or protocols..." oninput="filterDevices()">
-    </div>
-    <div class="filter-group" id="devTypeFilter">
-      <button class="filter-btn active" onclick="setDevType(this,'all')">All</button>
-      <button class="filter-btn" onclick="setDevType(this,'Microcontroller')">MCU</button>
-      <button class="filter-btn" onclick="setDevType(this,'SBC')">SBC</button>
-      <button class="filter-btn" onclick="setDevType(this,'Industrial')">Industrial</button>
-      <button class="filter-btn" onclick="setDevType(this,'Medical')">Medical</button>
-      <button class="filter-btn" onclick="setDevType(this,'Security')">Smart Lock/Security</button>
-      <button class="filter-btn" onclick="setDevType(this,'Platform')">Platform/Cloud</button>
-      <button class="filter-btn" onclick="setDevType(this,'Gateway')">Gateway</button>
-    </div>
-    <span class="results-count" id="devCount"></span>
+
+<nav class="topnav"><div class="wrap">
+  <span class="nav-lbl">Jump →</span>
+  <a class="nb" href="#hubs">🏠 Hubs</a>
+  <a class="nb" href="#tv">📺 TV & AV</a>
+  <a class="nb" href="#kitchen">🍳 Kitchen</a>
+  <a class="nb" href="#bedroom">🛏 Bedroom</a>
+  <a class="nb" href="#living">🛋 Living Room</a>
+  <a class="nb" href="#lockers">📦 Lockers</a>
+  <a class="nb" href="#hvac">❄️ HVAC</a>
+  <a class="nb" href="#ics">⚙️ ICS/SCADA</a>
+  <a class="nb" href="#bms">🏢 BMS</a>
+  <a class="nb" href="#wear">⌚ Wearables</a>
+  <a class="nb" href="#iov">🚗 IoV</a>
+  <a class="nb" href="#energy">⚡ Energy</a>
+  <a class="nb" href="#medical">🏥 Medical</a>
+  <a class="nb" href="#agri">🌾 AgriTech</a>
+  <a class="nb" href="#network">🔌 Networking</a>
+  <a class="nb" href="#security">🔒 Security</a>
+  <a class="nb" href="#lighting">💡 Lighting</a>
+  <a class="nb" href="#sensors">📡 Sensors</a>
+  <a class="nb" href="#rfid">🏷️ RFID</a>
+</div></nav>
+
+<div class="stats">
+  <div><div class="sn">100+</div><div class="sl">Devices</div></div><div class="sdiv"></div>
+  <div><div class="sn">25+</div><div class="sl">Protocols</div></div><div class="sdiv"></div>
+  <div><div class="sn">19</div><div class="sl">Categories</div></div><div class="sdiv"></div>
+  <div><div class="sn">60+</div><div class="sl">Brands</div></div><div class="sdiv"></div>
+  <div><div class="sn">6</div><div class="sl">New Rooms Added</div></div>
+</div>
+<div class="legend">
+  <div class="leg-t">// Protocol Color Key</div>
+  <div class="leg-g">
+    <span class="p p-def">MQTT · Wi-Fi · HTTP/REST</span>
+    <span class="p p-mod">Modbus · OPC-UA · EtherNet/IP · PROFINET</span>
+    <span class="p p-bac">BACnet/IP · AMQP</span>
+    <span class="p p-zig">Zigbee · 6LoWPAN · RPL</span>
+    <span class="p p-zwave">Z-Wave · CoAP · LwM2M</span>
+    <span class="p p-mat">Matter</span>
+    <span class="p p-thr">Thread</span>
+    <span class="p p-knx">KNX · DALI</span>
+    <span class="p p-ble">BLE · ANT+</span>
+    <span class="p p-xmpp">XMPP · LoRaWAN · NB-IoT · WirelessHART</span>
+    <span class="p p-amqp">AMQP · LLRP</span>
+    <span class="p p-opc">Proprietary / Vendor RF</span>
   </div>
-
-  <div id="deviceSections" class="fade"></div>
-</div>
 </div>
 
-<footer class="site-footer">
-  <div class="footer-note">IoT Security Hub · Device Reference</div>
-  <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
-</footer>
+<!-- ═══ 1. SMART HOME HUBS ═══ -->
+<section class="csec" id="hubs">
+<div class="chead"><div class="cico ico-sh">🏠</div><div class="ctitle">Smart Home Hubs &amp; Controllers</div><div class="ccnt">9 devices</div></div>
+<div class="dgrid">
 
-<script src="assets/data/devices.js"></script>
-<script src="assets/data/protocols.js"></script>
-<script src="assets/js/shared.js"></script>
-<script src="assets/js/pages/devices.js"></script>
+<div class="card sc1"><div class="ctop"><div class="brand">Signify / Philips Hue</div><span class="badge bsh">Hub</span></div>
+<div class="dname">Philips Hue Bridge v2</div>
+<div class="ddesc">Central Zigbee hub for up to 50 lights and 100 accessories. Local REST API (Hue API v2) enables automations without cloud. Matter bridge from firmware 1.55+. One of the most widely deployed smart lighting controllers globally.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-zig">Zigbee 3.0</span><span class="p p-def">HTTP/REST (Hue API v2)</span><span class="p p-def">MQTT</span><span class="p p-mat">Matter Bridge</span><span class="p p-ble">BLE</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-A7</div></div><div><div class="pk">Max Devices</div><div class="pv">50 lights / 100 acc.</div></div><div><div class="pk">Connectivity</div><div class="pv">Ethernet + Zigbee 2.4 GHz</div></div><div><div class="pk">Power</div><div class="pv">5V DC 2A USB-C</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Amazon</div><span class="badge bsh">Hub + Speaker</span></div>
+<div class="dname">Amazon Echo (4th Gen)</div>
+<div class="ddesc">Zigbee hub + Alexa voice assistant + Amazon Sidewalk mesh endpoint. Acts as a Matter commissioner. MQTT via AWS IoT Core for device shadow sync. Dual-band Wi-Fi for high-speed cloud connectivity.</div>
+<div class="ptags"><span class="p p-zig">Zigbee 3.0</span><span class="p p-mat">Matter</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">Wi-Fi 802.11a/b/g/n/ac</span><span class="p p-def">MQTT (AWS IoT)</span><span class="p p-opc">Amazon Sidewalk</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Processor</div><div class="pv">AZ2 Neural Edge</div></div><div><div class="pk">Wi-Fi</div><div class="pv">Dual-band 2.4/5 GHz</div></div><div><div class="pk">Zigbee Radio</div><div class="pv">2.4 GHz 802.15.4</div></div><div><div class="pk">Cloud</div><div class="pv">AWS / Alexa</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Samsung SmartThings</div><span class="badge bsh">Hub</span></div>
+<div class="dname">SmartThings Hub v3 (ET-WV525)</div>
+<div class="ddesc">Multi-protocol hub: Zigbee, Z-Wave, Thread, Matter, BLE, Wi-Fi. Local SmartThings Edge Drivers reduce cloud latency. Acts as Thread border router. Integrates thousands of third-party devices across all ecosystems.</div>
+<div class="ptags"><span class="p p-zig">Zigbee 3.0</span><span class="p p-zwave">Z-Wave Plus</span><span class="p p-mat">Matter</span><span class="p p-thr">Thread</span><span class="p p-ble">BLE</span><span class="p p-def">Wi-Fi</span><span class="p p-def">MQTT</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-A7 quad</div></div><div><div class="pk">RAM/Flash</div><div class="pv">512 MB / 4 GB eMMC</div></div><div><div class="pk">Z-Wave</div><div class="pv">700 series 908.4 MHz</div></div><div><div class="pk">Power</div><div class="pv">5V DC 1.2A</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Google Nest</div><span class="badge bsh">Thermostat + Hub</span></div>
+<div class="dname">Google Nest Thermostat (2020)</div>
+<div class="ddesc">Wi-Fi + Thread thermostat with ML energy scheduling. Acts as Thread border router for Google Home. Matter-certified. Local Matter control works without cloud dependency for fast response times.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-thr">Thread</span><span class="p p-mat">Matter</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTP/REST (Google Cloud)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Display</div><div class="pv">Reflective color LCD 2.08"</div></div><div><div class="pk">Sensors</div><div class="pv">Temp, humidity, proximity, light</div></div><div><div class="pk">Thread Radio</div><div class="pv">IEEE 802.15.4 2.4 GHz</div></div><div><div class="pk">Power</div><div class="pv">C-wire or AAA ×2</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">IKEA</div><span class="badge bsh">Hub</span></div>
+<div class="dname">IKEA DIRIGERA Hub</div>
+<div class="ddesc">IKEA's flagship Matter-compatible Zigbee controller for lights, blinds, sensors, speakers. Local-first — automations run on-device without cloud. DIRIGERA REST API allows Home Assistant integration. Bridges to Apple Home, Google, and Alexa via Matter.</div>
+<div class="ptags"><span class="p p-zig">Zigbee 3.0</span><span class="p p-mat">Matter Bridge</span><span class="p p-def">HTTP/REST (DIRIGERA API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Max Devices</div><div class="pv">~200 Zigbee</div></div><div><div class="pk">Interface</div><div class="pv">Ethernet + Wi-Fi</div></div><div><div class="pk">Local API</div><div class="pv">DIRIGERA REST</div></div><div><div class="pk">Power</div><div class="pv">5V USB-C</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Tuya / Smart Life</div><span class="badge bsh">Hub</span></div>
+<div class="dname">Tuya Zigbee Gateway Hub (ZG-3)</div>
+<div class="ddesc">OEM Zigbee hub sold under 500+ white-label brands (Lidl LIVARNO, Moes, BlitzWolf). Bridges Zigbee to Tuya cloud via MQTT over TLS. Supports local API bypass with open-source tools (LocalTuya, Home Assistant). One of the most widely deployed smart home hubs globally.</div>
+<div class="ptags"><span class="p p-zig">Zigbee 3.0</span><span class="p p-def">MQTT (Tuya Cloud)</span><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-opc">Tuya proprietary</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Zigbee Chip</div><div class="pv">EFR32MG21</div></div><div><div class="pk">Max Devices</div><div class="pv">128 sub-devices</div></div><div><div class="pk">Local API</div><div class="pv">Yes (local key)</div></div><div><div class="pk">Power</div><div class="pv">5V 1A USB</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Eve Systems</div><span class="badge bsh">Smart Plug</span></div>
+<div class="dname">Eve Energy (3rd Gen) — Thread Native</div>
+<div class="ddesc">First consumer Thread/Matter-native smart plug with energy monitoring. No hub required. Extends Thread mesh as a router node. Works with Apple Home, Google, Alexa via Matter 1.0. 1W resolution energy metering for per-device consumption tracking.</div>
+<div class="ptags"><span class="p p-thr">Thread 1.3</span><span class="p p-mat">Matter 1.0</span><span class="p p-ble">BLE (commissioning)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Load</div><div class="pv">16A / 3680W max</div></div><div><div class="pk">Energy Meter</div><div class="pv">1W resolution</div></div><div><div class="pk">Thread Radio</div><div class="pv">802.15.4 2.4 GHz</div></div><div><div class="pk">Power</div><div class="pv">100–240V AC mains</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Aeotec</div><span class="badge bsh">Sensor</span></div>
+<div class="dname">Aeotec MultiSensor 7</div>
+<div class="ddesc">6-in-1 room sensor: motion, temperature, humidity, UV, lux, vibration. Z-Wave Plus v2 with S2 security and SmartStart QR provisioning. Popular in Home Assistant and SmartThings as a versatile multi-room environmental monitor.</div>
+<div class="ptags"><span class="p p-zwave">Z-Wave Plus v2 700 series</span><span class="p p-ble">BLE (provisioning)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Z-Wave Freq.</div><div class="pv">908.4 MHz / 868 MHz</div></div><div><div class="pk">Range</div><div class="pv">300 m open space</div></div><div><div class="pk">Power</div><div class="pv">CR123A ×2 or USB 5V</div></div><div><div class="pk">Security</div><div class="pv">S2 AES-128</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Ecobee</div><span class="badge bsh">Thermostat</span></div>
+<div class="dname">Ecobee SmartThermostat Premium</div>
+<div class="ddesc">Wi-Fi thermostat with built-in Alexa, Apple HomeKit, and Matter. Includes SmartSensor for occupancy-based room zoning. HTTPS/REST to Ecobee cloud; HomeKit via Thread locally. Air quality monitoring. Used in North American utility demand-response programs.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n/ac</span><span class="p p-mat">Matter</span><span class="p p-thr">Thread</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTP/REST (Ecobee API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Display</div><div class="pv">3.5" color touch 480×480</div></div><div><div class="pk">Sensors</div><div class="pv">Temp, humidity, occupancy, AQ</div></div><div><div class="pk">Ecosystems</div><div class="pv">Alexa, Google, HomeKit</div></div><div><div class="pk">Power</div><div class="pv">C-wire required</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 2. SMART TV & ENTERTAINMENT ═══ -->
+<section class="csec" id="tv">
+<div class="chead"><div class="cico ico-tv">📺</div><div class="ctitle">Smart TV &amp; Home Entertainment</div><div class="ccnt">6 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc7"><div class="ctop"><div class="brand">Samsung</div><span class="badge btv">Smart TV</span></div>
+<div class="dname">Samsung Neo QLED 8K QN900C</div>
+<div class="ddesc">Samsung flagship 8K TV running Tizen OS with SmartThings Hub built-in, acting as a Zigbee and Matter controller. Wi-Fi 6E for 6 GHz band streaming. MQTT via SmartThings allows the TV to control lights, thermostats, and cameras from the SmartThings on-screen dashboard. Matter 1.0 commissioner from 2023 firmware.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6E (2.4/5/6 GHz)</span><span class="p p-zig">Zigbee (SmartThings)</span><span class="p p-mat">Matter 1.0</span><span class="p p-thr">Thread (border router)</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">MQTT (SmartThings)</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">Resolution</div><div class="pv">7680×4320 (8K) QLED</div></div><div><div class="pk">Processor</div><div class="pv">Neural Quantum 8K AI</div></div><div><div class="pk">OS</div><div class="pv">Tizen 7.0</div></div><div><div class="pk">Smart Home</div><div class="pv">Zigbee + Matter + Thread</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">LG Electronics</div><span class="badge btv">Smart TV</span></div>
+<div class="dname">LG C3 OLED evo</div>
+<div class="ddesc">Premium OLED TV running webOS 23 with ThinQ AI, Google Assistant, and Alexa. Matter-certified in 2023 firmware as both a controller and bridge. LG ThinQ REST API enables third-party smart home integration including SmartThings and HomeKit.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 5 (802.11ac)</span><span class="p p-mat">Matter 1.0</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTP/REST (ThinQ API)</span><span class="p p-opc">LG ThinQ (WebSocket)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Panel</div><div class="pv">WRGB OLED evo 1000-nit</div></div><div><div class="pk">OS</div><div class="pv">webOS 23</div></div><div><div class="pk">HDR</div><div class="pv">Dolby Vision IQ, HDR10 Pro</div></div><div><div class="pk">Interfaces</div><div class="pv">4× HDMI 2.1, 3× USB</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Apple</div><span class="badge btv">Streaming + Hub</span></div>
+<div class="dname">Apple TV 4K (3rd Gen)</div>
+<div class="ddesc">Premium 4K streaming player and the most capable Thread border router available, forming the backbone of Apple Home ecosystems. Matter controller for all certified devices. HomeKit Secure Video for end-to-end encrypted camera storage. A15 Bionic chip enables edge ML processing.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6 (802.11ax)</span><span class="p p-thr">Thread (border router)</span><span class="p p-mat">Matter controller</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTPS (Apple iCloud)</span><span class="p p-opc">Apple HomeKit (HAP)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Chip</div><div class="pv">Apple A15 Bionic</div></div><div><div class="pk">Thread Radio</div><div class="pv">IEEE 802.15.4 2.4 GHz</div></div><div><div class="pk">4K Output</div><div class="pv">HDMI 2.1 / eARC</div></div><div><div class="pk">Matter Role</div><div class="pv">Commissioner + Controller</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Amazon</div><span class="badge btv">Streaming Stick</span></div>
+<div class="dname">Amazon Fire TV Stick 4K Max (2nd Gen)</div>
+<div class="ddesc">Wi-Fi 6E streaming stick with Amazon Sidewalk mesh networking and Matter controller role. Acts as an Alexa hub. Wi-Fi 6E enables the uncongested 6 GHz band. MQTT via AWS IoT Core for device shadow synchronization. Low-cost Matter hub for apartments and rental properties.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6E (2.4/5/6 GHz)</span><span class="p p-mat">Matter controller</span><span class="p p-ble">BLE 5.0 + LE Audio</span><span class="p p-def">MQTT (AWS IoT)</span><span class="p p-opc">Amazon Sidewalk</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Processor</div><div class="pv">MT8696T quad-core 2.0 GHz</div></div><div><div class="pk">RAM / Storage</div><div class="pv">2 GB / 16 GB</div></div><div><div class="pk">Wi-Fi</div><div class="pv">Wi-Fi 6E tri-band</div></div><div><div class="pk">Power</div><div class="pv">HDMI + USB-C 9W</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Sonos</div><span class="badge btv">Smart Speaker</span></div>
+<div class="dname">Sonos Era 300</div>
+<div class="ddesc">Spatial audio smart speaker with Dolby Atmos. Wi-Fi 6 for streaming; BLE for setup and AirPlay 2. Sonos S2 app uses HTTP/REST API locally. Integrates with Alexa and Google Assistant. A USB-C line-in port enables wired audio sources. Zigbee module connects to Sonos mesh networks.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6 (802.11ax)</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTP/REST (Sonos local API)</span><span class="p p-zig">Zigbee (Sonos mesh)</span><span class="p p-opc">AirPlay 2</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Drivers</div><div class="pv">6 drivers (4 tweeters + 2 woofers)</div></div><div><div class="pk">Audio</div><div class="pv">Dolby Atmos spatial</div></div><div><div class="pk">Input</div><div class="pv">USB-C line-in</div></div><div><div class="pk">API</div><div class="pv">Sonos Local Control API</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">NVIDIA</div><span class="badge btv">Media PC</span></div>
+<div class="dname">NVIDIA SHIELD TV Pro</div>
+<div class="ddesc">Android TV-based 4K media server and AI upscaling box. Google Home Matter controller. Often used as a Home Assistant host via HassOS. REST API for Plex, Emby, and home automation integrations. One of the few media boxes powerful enough to run local AI inference for smart home automation.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 5 (802.11ac)</span><span class="p p-ble">BLE 5.0</span><span class="p p-mat">Matter (Google Home)</span><span class="p p-def">HTTP/REST</span><span class="p p-def">MQTT (HA bridge)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Processor</div><div class="pv">NVIDIA Tegra X1+ 4K</div></div><div><div class="pk">RAM / Storage</div><div class="pv">3 GB / 16 GB</div></div><div><div class="pk">OS</div><div class="pv">Android TV 11</div></div><div><div class="pk">Upscaling</div><div class="pv">AI 4K neural upscaling</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 3. KITCHEN ═══ -->
+<section class="csec" id="kitchen">
+<div class="chead"><div class="cico ico-kit">🍳</div><div class="ctitle">Kitchen &amp; Smart Appliances</div><div class="ccnt">7 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc5"><div class="ctop"><div class="brand">Samsung</div><span class="badge bkit">Smart Fridge</span></div>
+<div class="dname">Samsung Family Hub Refrigerator</div>
+<div class="ddesc">32" touchscreen smart refrigerator with built-in SmartThings hub, internal cameras for remote viewing, and Bixby + Alexa voice control. Acts as a Matter controller and Zigbee hub for the kitchen. Wi-Fi 6 for cloud sync. MQTT via SmartThings sends appliance status (door open, temperature) to the SmartThings cloud.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6 (802.11ax)</span><span class="p p-zig">Zigbee (SmartThings)</span><span class="p p-mat">Matter 1.0</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">MQTT (SmartThings)</span><span class="p p-def">HTTP/REST (SmartThings API)</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">Display</div><div class="pv">32" Full View touchscreen</div></div><div><div class="pk">Cameras</div><div class="pv">3× internal view cameras</div></div><div><div class="pk">Capacity</div><div class="pv">635L (22.4 cu ft)</div></div><div><div class="pk">Voice</div><div class="pv">Bixby + Alexa + Google</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">LG ThinQ</div><span class="badge bkit">Smart Oven</span></div>
+<div class="dname">LG InstaView ThinQ Smart Wall Oven</div>
+<div class="ddesc">Wi-Fi + Matter smart wall oven with LG's InstaView knock-to-see window. ThinQ app allows remote preheat, temperature monitoring, and recipe download. Matter 1.0 certified as of 2024 firmware enabling control from any Matter hub without LG's cloud. BLE meat temperature probe for precision cooking.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-mat">Matter 1.0</span><span class="p p-ble">BLE 5.0 (probe)</span><span class="p p-def">HTTP/REST (ThinQ API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Capacity</div><div class="pv">4.7 cu ft</div></div><div><div class="pk">Probe</div><div class="pv">BLE meat temp probe</div></div><div><div class="pk">Display</div><div class="pv">InstaView + LCD panel</div></div><div><div class="pk">API</div><div class="pv">LG ThinQ REST API</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Bosch Home Connect</div><span class="badge bkit">Dishwasher</span></div>
+<div class="dname">Bosch Series 8 Home Connect Dishwasher</div>
+<div class="ddesc">Wi-Fi connected dishwasher with Bosch Home Connect app for remote start, program monitoring, and energy optimization. Home Connect REST API enables Alexa, Google, IFTTT integration. MQTT for appliance telemetry to Bosch IoT Suite. Part of Bosch's broad Home Appliances IoT ecosystem.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-def">MQTT (Bosch IoT Suite)</span><span class="p p-def">HTTP/REST (Home Connect API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Capacity</div><div class="pv">14 place settings</div></div><div><div class="pk">Noise</div><div class="pv">42 dB ultra-quiet</div></div><div><div class="pk">Energy</div><div class="pv">A+++ EU Energy Label</div></div><div><div class="pk">API</div><div class="pv">Home Connect API (OAuth2)</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">iRobot / Amazon</div><span class="badge bkit">Robot Vacuum</span></div>
+<div class="dname">iRobot Roomba j9+ Combo</div>
+<div class="ddesc">AI-powered robot vacuum and mop with automatic dirt disposal and obstacle avoidance. PrecisionVision Navigation uses onboard camera for real-time object identification. MQTT to iRobot cloud (AWS) publishes cleaning state, map data, and schedules. Works with Alexa, Google, and Apple Shortcuts.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-ble">BLE 5.0 (setup)</span><span class="p p-def">MQTT (iRobot Cloud)</span><span class="p p-def">HTTP/REST (iRobot API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Navigation</div><div class="pv">PrecisionVision + AI</div></div><div><div class="pk">Disposal</div><div class="pv">Auto dirt (60 days)</div></div><div><div class="pk">Battery</div><div class="pv">75 min runtime</div></div><div><div class="pk">Mapping</div><div class="pv">Multi-floor smart maps</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Roborock</div><span class="badge bkit">Robot Vacuum</span></div>
+<div class="dname">Roborock S8 MaxV Ultra</div>
+<div class="ddesc">High-end LiDAR-navigated robot vacuum and mop with ReactiveAI 2.0 for obstacle avoidance using dual cameras. Integrates natively with Apple HomeKit via Matter, Google Home, and Alexa. Local Valetudo API allows Home Assistant integration bypassing cloud, exposing status via MQTT without routing data externally.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6 (802.11ax)</span><span class="p p-def">MQTT (Roborock Cloud)</span><span class="p p-mat">Matter (HomeKit)</span><span class="p p-ble">BLE (setup)</span><span class="p p-opc">Valetudo local API</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Navigation</div><div class="pv">LiDAR + ReactiveAI 2.0</div></div><div><div class="pk">Suction</div><div class="pv">10,000 Pa</div></div><div><div class="pk">Mapping</div><div class="pv">Multi-floor 3D maps</div></div><div><div class="pk">Auto-Empty</div><div class="pv">Yes (6-week station)</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Breville</div><span class="badge bkit">Smart Coffee</span></div>
+<div class="dname">Breville Barista Touch Impress (BES881)</div>
+<div class="ddesc">Automatic espresso machine with BLE connectivity for the Breville app. App enables remote recipe storage, guided cleaning notifications, and shot statistics logging. NFC for accessory recognition (portafilter and basket ID). Cloud sync via app HTTPS/REST to Breville's analytics platform.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.0 (app control)</span><span class="p p-opc">NFC (accessory ID)</span><span class="p p-def">HTTP/REST (Breville Cloud)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Pressure</div><div class="pv">9-bar extraction</div></div><div><div class="pk">Grinder</div><div class="pv">Integrated conical burr</div></div><div><div class="pk">Display</div><div class="pv">4.3" color touchscreen</div></div><div><div class="pk">BLE Range</div><div class="pv">~10 m Bluetooth 5.0</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Whirlpool</div><span class="badge bkit">Smart Washer</span></div>
+<div class="dname">Whirlpool WFW9620HC Smart Washer (Matter)</div>
+<div class="ddesc">Wi-Fi + Matter certified front-load washing machine with remote start and Alexa/Google voice control. Matter 1.3 LaundryWasher device type (added May 2024) enables cross-ecosystem control without Whirlpool's cloud. MQTT for appliance status reporting to 6th Sense Live monitoring platform.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-mat">Matter 1.3 (LaundryWasher)</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">MQTT (6th Sense Live)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Capacity</div><div class="pv">5.0 cu ft</div></div><div><div class="pk">Matter Type</div><div class="pv">LaundryWasher (v1.3)</div></div><div><div class="pk">Energy</div><div class="pv">Energy Star Most Efficient</div></div><div><div class="pk">Voice</div><div class="pv">Alexa + Google + Cortana</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 4. BEDROOM ═══ -->
+<section class="csec" id="bedroom">
+<div class="chead"><div class="cico ico-bed">🛏️</div><div class="ctitle">Bedroom &amp; Sleep Technology</div><div class="ccnt">5 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc4"><div class="ctop"><div class="brand">Sleep Number</div><span class="badge bbed">Smart Bed</span></div>
+<div class="dname">Sleep Number 360 i10 Smart Bed</div>
+<div class="ddesc">Dual-zone smart air mattress with biometric sleep tracking using pressure-sensor arrays embedded in the mattress. Connects via Wi-Fi + BLE to the SleepIQ app. Publishes sleep data (HRV, breathing rate, sleep stages) via HTTPS to Sleep Number cloud. BLE 5.0 communicates with the Responsive Air pump control unit. Integrates with Amazon Alexa and Google Home.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-ble">BLE 5.0 (pump control)</span><span class="p p-def">HTTP/REST (SleepIQ API)</span><span class="p p-def">HTTPS (cloud sync)</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">Firmness</div><div class="pv">0–100 SleepIQ® number</div></div><div><div class="pk">Sensors</div><div class="pv">Pressure array, HRV, RR, motion</div></div><div><div class="pk">Air Pump</div><div class="pv">Responsive Air™ (BLE)</div></div><div><div class="pk">API</div><div class="pv">SleepIQ REST API</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Withings</div><span class="badge bbed">Sleep Sensor</span></div>
+<div class="dname">Withings Sleep Analyzer (WSM02)</div>
+<div class="ddesc">Under-mattress sleep tracking sensor using a pneumatic pressure sensor to detect heart rate, breathing, snoring, and sleep cycles — no wearable needed. Always-on Wi-Fi (not BLE). Forwards data via HTTPS to Withings Health Mate REST API. Can detect apnea events and trigger alerts via IFTTT or HTTP webhooks. Integrated with Apple Health, Google Fit, Samsung Health via OAuth2.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-def">HTTPS/REST (Health Mate API)</span><span class="p p-opc">Pneumatic pressure sensor bus</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Sensors</div><div class="pv">Pneumatic (HR, RR, movement)</div></div><div><div class="pk">Detection</div><div class="pv">Sleep apnea / AFib screening</div></div><div><div class="pk">Power</div><div class="pv">USB 5V (always-on)</div></div><div><div class="pk">API</div><div class="pv">Withings REST (OAuth2)</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Nanoleaf</div><span class="badge bbed">Smart Light Panel</span></div>
+<div class="dname">Nanoleaf Lines Squared (Bedroom Panel)</div>
+<div class="ddesc">Modular RGB LED light panels designed for bedroom walls. Thread-native and Matter-certified — no hub required. BLE for initial commissioning. Nanoleaf's Rhythm module uses a microphone for music-reactive lighting via local signal processing. REST API (Nanoleaf OpenAPI) enables Home Assistant integration. Supports Apple HomeKit, Google Home, and Alexa.</div>
+<div class="ptags"><span class="p p-thr">Thread (native, no hub)</span><span class="p p-mat">Matter 1.0</span><span class="p p-ble">BLE (commissioning)</span><span class="p p-def">HTTP/REST (Nanoleaf OpenAPI)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Color Depth</div><div class="pv">16M colors RGBW</div></div><div><div class="pk">Thread Radio</div><div class="pv">802.15.4 2.4 GHz</div></div><div><div class="pk">Power</div><div class="pv">Mains via controller</div></div><div><div class="pk">API</div><div class="pv">Nanoleaf OpenAPI (REST)</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Philips SmartSleep</div><span class="badge bbed">Wake-Up Light</span></div>
+<div class="dname">Philips SmartSleep Wake-Up Light HF3650</div>
+<div class="ddesc">Clinical-grade sunrise alarm and sleep improvement light recognized by the National Sleep Foundation. BLE 5.0 for pairing with the Philips Sleep &amp; Wake-Up app, which monitors usage and adjusts alarm schedules. Optionally connects via Wi-Fi for cloud sync to Philips SleepMapper API.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.0</span><span class="p p-def">Wi-Fi (optional sync)</span><span class="p p-def">HTTP/REST (SleepMapper API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Max Lux</div><div class="pv">300 lux sunrise sim.</div></div><div><div class="pk">Colors</div><div class="pv">20 brightness + color temp</div></div><div><div class="pk">Sounds</div><div class="pv">Natural wake-up tones</div></div><div><div class="pk">Cert.</div><div class="pv">NSF Certified for Sleep</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Amazon</div><span class="badge bbed">Smart Display</span></div>
+<div class="dname">Amazon Echo Show 10 (3rd Gen)</div>
+<div class="ddesc">10.1" motorized smart display with auto-tracking camera. Zigbee hub for bedroom smart home control. Wi-Fi 6 for video calling and streaming. MQTT to AWS IoT for Alexa routines and device shadows. Acts as a Thread border router (2024 update). The motorized base rotates to follow you while you cook, exercise, or work.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6 (802.11ax)</span><span class="p p-zig">Zigbee 3.0</span><span class="p p-thr">Thread (2024)</span><span class="p p-mat">Matter</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">MQTT (AWS IoT)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Display</div><div class="pv">10.1" 1080p HD auto-rotate</div></div><div><div class="pk">Camera</div><div class="pv">13MP auto-tracking motor</div></div><div><div class="pk">Processor</div><div class="pv">AZ2 Neural Edge</div></div><div><div class="pk">Zigbee Radio</div><div class="pv">2.4 GHz 802.15.4</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 5. LIVING ROOM ═══ -->
+<section class="csec" id="living">
+<div class="chead"><div class="cico ico-liv">🛋️</div><div class="ctitle">Living Room &amp; Home Audio</div><div class="ccnt">5 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc3"><div class="ctop"><div class="brand">Sonos</div><span class="badge bliv">Soundbar</span></div>
+<div class="dname">Sonos Arc Ultra Soundbar</div>
+<div class="ddesc">Wi-Fi 6 soundbar with Dolby Atmos, DTS:X, and Sonos TruePlay room calibration. Zigbee radio connects to other Sonos speakers. REST API (Sonos local API) allows Home Assistant. Apple AirPlay 2 for iOS audio streaming. No Bluetooth audio — Sonos uses Wi-Fi exclusively for lossless multi-room audio synchronization.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 6 (802.11ax)</span><span class="p p-zig">Zigbee (Sonos mesh)</span><span class="p p-def">HTTP/REST (Sonos local API)</span><span class="p p-opc">AirPlay 2</span><span class="p p-ble">BLE 5.0 (setup)</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">Drivers</div><div class="pv">14 drivers (9 class-D amps)</div></div><div><div class="pk">Audio</div><div class="pv">Dolby Atmos + DTS:X</div></div><div><div class="pk">HDMI</div><div class="pv">eARC (HDMI 2.1)</div></div><div><div class="pk">API</div><div class="pv">Sonos Local Control API</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Google</div><span class="badge bliv">Smart Display</span></div>
+<div class="dname">Google Nest Hub Max</div>
+<div class="ddesc">10" Google Home smart display and Thread border router for the living room. Runs Google Home as Matter commissioner. Gesture control via Soli radar chip — touch-free control from across the room. Camera doubles as a presence sensor for Nest Aware subscription features. Central hub for Google Home routines triggered by motion, time, or voice.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 5 (802.11ac)</span><span class="p p-thr">Thread (border router)</span><span class="p p-mat">Matter controller</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTP/REST (Google Home API)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Display</div><div class="pv">10" 1280×800 IPS</div></div><div><div class="pk">Camera</div><div class="pv">6.5MP front + Soli radar</div></div><div><div class="pk">Thread</div><div class="pv">802.15.4 border router</div></div><div><div class="pk">Processor</div><div class="pv">Cortex-A53 quad-core</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">ASSA ABLOY / August</div><span class="badge bliv">Smart Lock</span></div>
+<div class="dname">August Smart Lock Pro (4th Gen)</div>
+<div class="ddesc">Retrofit smart deadbolt fitting existing hardware. BLE for proximity auto-unlock; Z-Wave Plus for hub integration (SmartThings, Vera). August Connect Wi-Fi bridge adds remote access. Supports Apple HomeKit, Google, Alexa via Z-Wave. Popular for renters because it keeps the original exterior key cylinder intact.</div>
+<div class="ptags"><span class="p p-ble">BLE 4.0 (auto-unlock)</span><span class="p p-zwave">Z-Wave Plus 700</span><span class="p p-def">Wi-Fi (August Connect)</span><span class="p p-def">MQTT (August cloud)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Auto-Unlock</div><div class="pv">BLE proximity</div></div><div><div class="pk">Battery</div><div class="pv">4 × AA (~6 months)</div></div><div><div class="pk">Z-Wave Freq.</div><div class="pv">908.42 MHz S2 security</div></div><div><div class="pk">Log</div><div class="pv">100 activity records</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Schlage / Allegion</div><span class="badge bliv">Smart Lock</span></div>
+<div class="dname">Schlage Encode Plus Smart Deadbolt</div>
+<div class="ddesc">Wi-Fi + Matter deadbolt with Apple Home Key (NFC/UWB hands-free unlock) and up to 100 access codes stored locally — no hub required. Matter 1.0 certified; connects directly to any Matter ecosystem over Wi-Fi. First residential lock with Apple Home Key ultra-wideband tap-to-unlock as you approach.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-mat">Matter 1.0</span><span class="p p-ble">BLE 5.0</span><span class="p p-opc">Apple Home Key (NFC + UWB)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Codes</div><div class="pv">100 local access codes</div></div><div><div class="pk">Battery</div><div class="pv">4 × AA (~1 year)</div></div><div><div class="pk">Cert.</div><div class="pv">Matter 1.0, UL 437</div></div><div><div class="pk">UWB</div><div class="pv">Tap-to-unlock (Apple)</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Logitech</div><span class="badge bliv">Universal Remote Hub</span></div>
+<div class="dname">Logitech Harmony Hub</div>
+<div class="ddesc">Universal smart remote hub controlling IR, RF, Zigbee, and Z-Wave from a single app. Bridges infrared AV devices (TVs, receivers, projectors) to smart home platforms (SmartThings, Alexa) via Wi-Fi + MQTT. HTTP/REST Harmony API for Home Assistant integration. Discontinued 2021 but still widely deployed; 270,000+ device IR code database.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-zig">Zigbee</span><span class="p p-zwave">Z-Wave</span><span class="p p-ble">BLE (mobile app)</span><span class="p p-def">MQTT (SmartThings)</span><span class="p p-def">HTTP/REST (Harmony API)</span><span class="p p-opc">IR blaster 38 kHz</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">IR Blasters</div><div class="pv">4 mini IR blasters included</div></div><div><div class="pk">Device DB</div><div class="pv">270,000+ IR device codes</div></div><div><div class="pk">Range</div><div class="pv">30 m IR / 15 m Z-Wave</div></div><div><div class="pk">API</div><div class="pv">Harmony REST + WebSocket</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 6. SMART LOCKERS ═══ -->
+<section class="csec" id="lockers">
+<div class="chead"><div class="cico ico-loc">📦</div><div class="ctitle">Smart Lockers &amp; Package Delivery</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc6"><div class="ctop"><div class="brand">Amazon</div><span class="badge bloc">Smart Locker</span></div>
+<div class="dname">Amazon Hub Locker+ Station</div>
+<div class="ddesc">Self-service package pickup locker deployed in apartment lobbies, retail stores, and transit hubs. Controller communicates with Amazon's fulfillment cloud via LTE 4G (Ethernet backup) using HTTPS/REST. Each door latch controlled via CAN bus. Locker events published to Amazon SNS/SQS via AMQP. BLE 5.0 for manager app authentication without network dependency.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-def">HTTPS/REST (Amazon Cloud)</span><span class="p p-amqp">AMQP (Amazon SNS/SQS)</span><span class="p p-ble">BLE 5.0 (manager auth)</span><span class="p p-def">LTE 4G (primary WAN)</span><span class="p p-opc">CAN bus (door control)</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">Compartments</div><div class="pv">5–42 variable-size doors</div></div><div><div class="pk">WAN</div><div class="pv">LTE 4G + Ethernet fallback</div></div><div><div class="pk">Access</div><div class="pv">QR code + Alexa voice</div></div><div><div class="pk">Power</div><div class="pv">120/240V AC, UPS backup</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Parcel Pending / Quadient</div><span class="badge bloc">Smart Locker</span></div>
+<div class="dname">Parcel Pending by Quadient Smart Locker</div>
+<div class="ddesc">Multi-carrier smart package locker for apartment buildings and corporate campuses. LTE 4G + Wi-Fi dual-WAN for redundancy. MQTT over TLS publishes locker events (delivery, pickup, overflow) to cloud. Resident notification via SMS/email triggered by HTTPS webhook. Integrates with property management systems (Yardi, RealPage) via REST API. Latch actuation controlled internally via RS-485 Modbus.</div>
+<div class="ptags"><span class="p p-def">MQTT (over TLS)</span><span class="p p-def">LTE 4G + Wi-Fi</span><span class="p p-def">HTTP/REST (webhook)</span><span class="p p-mod">Modbus RS-485 (latches)</span><span class="p p-ble">BLE (courier pairing)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Doors</div><div class="pv">10–150 configurable</div></div><div><div class="pk">Carriers</div><div class="pv">All major carriers</div></div><div><div class="pk">Notification</div><div class="pv">SMS + email + push</div></div><div><div class="pk">API</div><div class="pv">Parcel Pending REST API</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Luxer One</div><span class="badge bloc">Smart Locker</span></div>
+<div class="dname">Luxer One Package Room + Smart Locker</div>
+<div class="ddesc">Modular, cloud-managed package locker for multifamily housing. Ethernet + LTE dual connectivity. MQTT publishes status events to Luxer One cloud. REST API integrates with Salesforce, Entrata, Yardi, MRI. QR + PIN + NFC card access. Z-Wave door sensors report latch status every 30 seconds for tamper detection. Deployed in 7,000+ properties across North America.</div>
+<div class="ptags"><span class="p p-def">MQTT (Luxer One Cloud)</span><span class="p p-def">HTTP/REST (Open API)</span><span class="p p-zwave">Z-Wave (door sensors)</span><span class="p p-ble">BLE 5.0 (NFC card)</span><span class="p p-def">LTE + Ethernet</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Units</div><div class="pv">Modular 4–100+ doors</div></div><div><div class="pk">Access Methods</div><div class="pv">QR, PIN, NFC, BLE app</div></div><div><div class="pk">Z-Wave Sensor</div><div class="pv">Door status every 30s</div></div><div><div class="pk">API</div><div class="pv">Luxer One REST API</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">iLOQ</div><span class="badge bloc">Energy-Harvesting Lock</span></div>
+<div class="dname">iLOQ 5 Series Digital Lock (NFC + BLE)</div>
+<div class="ddesc">Battery-free digital lock that harvests energy from the NFC field of the key fob or BLE smartphone to power the locking mechanism — zero batteries ever needed. Used in apartment buildings and storage lockers across Scandinavia and Europe. Door events published via NFC reader to the iLOQ cloud over HTTPS/REST. BLE 5.0 for smartphone-as-key. Supports MQTT integration with building access control systems.</div>
+<div class="ptags"><span class="p p-opc">NFC (energy harvesting key)</span><span class="p p-ble">BLE 5.0 (phone key)</span><span class="p p-def">HTTPS/REST (iLOQ cloud)</span><span class="p p-def">MQTT (access control)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Power Source</div><div class="pv">NFC energy harvesting (0 batteries)</div></div><div><div class="pk">NFC Freq.</div><div class="pv">13.56 MHz ISO 14443</div></div><div><div class="pk">BLE Range</div><div class="pv">~10 m</div></div><div><div class="pk">Cert.</div><div class="pv">EN 1634-1, EN 179, GDPR</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 7. HVAC ═══ -->
+<section class="csec" id="hvac">
+<div class="chead"><div class="cico ico-hvac">❄️</div><div class="ctitle">HVAC, Air Conditioning &amp; Heating</div><div class="ccnt">8 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc7"><div class="ctop"><div class="brand">Daikin</div><span class="badge bhvac">VRF System</span></div>
+<div class="dname">Daikin VRV IV (Variable Refrigerant Volume)</div>
+<div class="ddesc">Commercial multi-zone VRF system. iTM central controller acts as a BACnet/IP server exposing all indoor unit data to BMS. DIII-NET/Modbus adapter bridges to third-party PLCs. Cloud via Daikin One. Up to 64 indoor units per outdoor unit. Widely deployed in offices, hotels, and hospitals.</div>
+<div class="plbl">// Protocols</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP</span><span class="p p-bac">BACnet MS/TP</span><span class="p p-mod">Modbus RTU (DIII-NET adapter)</span><span class="p p-knx">KNX (Intesis)</span><span class="p p-opc">DIII-NET (proprietary)</span><span class="p p-def">MQTT (Daikin One)</span></div>
+<div class="div"></div><div class="qlbl">// Specs</div>
+<div class="pgrid"><div><div class="pk">Capacity</div><div class="pv">8–200 HP</div></div><div><div class="pk">Indoor Units</div><div class="pv">Up to 64 per outdoor</div></div><div><div class="pk">BACnet Objects</div><div class="pv">~220 per indoor unit</div></div><div><div class="pk">Refrigerant</div><div class="pv">R-32 / R-410A</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Mitsubishi Electric</div><span class="badge bhvac">VRF + Gateway</span></div>
+<div class="dname">Mitsubishi City Multi + PAC-USBMB48</div>
+<div class="ddesc">High-efficiency commercial VRF with PAC-USBMB48 Modbus/BACnet gateway. Translates M-NET bus to BACnet/IP and Modbus TCP/RTU. BTL-certified. PAC-KGUP gateway adds KNX support. 48 indoor units per gateway. Widely deployed in hotels, offices, and hospitals worldwide.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP + MS/TP</span><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-opc">M-NET (proprietary)</span><span class="p p-knx">KNX (PAC-KGUP)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Max Units</div><div class="pv">48 per gateway</div></div><div><div class="pk">M-NET Speed</div><div class="pv">2400 bps RS-485</div></div><div><div class="pk">BACnet</div><div class="pv">BTL-certified</div></div><div><div class="pk">Refrigerant</div><div class="pv">R-32</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Viessmann</div><span class="badge bhvac">Gas Boiler</span></div>
+<div class="dname">Viessmann Vitodens 200-W Condensing Boiler</div>
+<div class="ddesc">High-efficiency residential gas boiler with Wi-Fi built-in. OpenTherm and eBus protocols locally. HTTPS/REST to ViCare cloud. MQTT via Vitotroll2MQTT bridge for Home Assistant. XMPP used in legacy Vitodata gateway versions. 98% ErP A-rated efficiency. Popular across Europe for smart boiler upgrades.</div>
+<div class="ptags"><span class="p p-opc">OpenTherm (local)</span><span class="p p-opc">eBus (proprietary)</span><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-def">HTTP/REST (ViCare API)</span><span class="p p-def">MQTT (bridge)</span><span class="p p-xmpp">XMPP (legacy)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Output</div><div class="pv">2.0–35.0 kW modulating</div></div><div><div class="pk">Efficiency</div><div class="pv">98% ErP A-rated</div></div><div><div class="pk">eBus Speed</div><div class="pv">2400 bps 2-wire</div></div><div><div class="pk">API</div><div class="pv">ViCare REST API v2</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Worcester Bosch</div><span class="badge bhvac">Boiler</span></div>
+<div class="dname">Worcester Bosch Greenstar 8000 Life Combi</div>
+<div class="ddesc">UK's most popular combi boiler, compatible with OpenTherm smart thermostats (Tado, Hive, Nest). Worcester Wave thermostat connects via RF 868 MHz and Wi-Fi to EasyControl app (HTTPS/REST). Supports eBus integration with Bosch compatible thermostats. 94% ErP A-rated.</div>
+<div class="ptags"><span class="p p-opc">OpenTherm (2-wire)</span><span class="p p-opc">RF 868 MHz (Worcester Wave)</span><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-def">HTTP/REST (EasyControl)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Output</div><div class="pv">25/30/35 kW variants</div></div><div><div class="pk">Efficiency</div><div class="pv">94% ErP A-rated</div></div><div><div class="pk">RF Freq.</div><div class="pv">868.3 MHz sub-GHz</div></div><div><div class="pk">Cert.</div><div class="pv">ErP A, IPX4</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Vaillant</div><span class="badge bhvac">Boiler + Gateway</span></div>
+<div class="dname">Vaillant ecoTEC plus + sensoNET VR921</div>
+<div class="ddesc">Leading European combi boiler with sensoNET Wi-Fi gateway. VR921 bridges eBus to HTTPS cloud (myVAILLANT). OpenTherm via VR33 adapter. Compatible with Tado, Nest, Honeywell Evohome. 96% seasonal efficiency. MQTT bridging via community integrations for Home Assistant.</div>
+<div class="ptags"><span class="p p-opc">eBus (proprietary)</span><span class="p p-opc">OpenTherm (VR33)</span><span class="p p-def">Wi-Fi (VR921)</span><span class="p p-def">HTTP/REST (myVAILLANT)</span><span class="p p-def">MQTT (HA bridge)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Output</div><div class="pv">18–35 kW variants</div></div><div><div class="pk">Efficiency</div><div class="pv">96% seasonal (SAP)</div></div><div><div class="pk">eBus</div><div class="pv">2400 bps 2-wire</div></div><div><div class="pk">Cloud</div><div class="pv">myVAILLANT (AWS)</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Tado</div><span class="badge bhvac">Smart Thermostat</span></div>
+<div class="dname">Tado Smart Thermostat V3+ Starter Kit</div>
+<div class="ddesc">Multi-protocol thermostat compatible with virtually any boiler: OpenTherm, eBus, On/Off, modulating relay. Internet Bridge connects via Wi-Fi + HTTPS to tado° cloud. Open REST API for Home Assistant, HomeKit, Google, Alexa. Geofencing via smartphone GPS for away-mode energy saving.</div>
+<div class="ptags"><span class="p p-opc">OpenTherm</span><span class="p p-opc">eBus (Vaillant/Viessmann)</span><span class="p p-opc">RF 868 MHz (bridge)</span><span class="p p-def">Wi-Fi + HTTPS</span><span class="p p-def">HTTP/REST (tado° API)</span><span class="p p-xmpp">XMPP (legacy)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Sensors</div><div class="pv">Temp, humidity, CO2 (opt.)</div></div><div><div class="pk">Battery</div><div class="pv">2 × AA (2 years)</div></div><div><div class="pk">RF Freq.</div><div class="pv">868 MHz GFSK</div></div><div><div class="pk">Ecosystems</div><div class="pv">HomeKit, Google, Alexa</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Carrier</div><span class="badge bhvac">HVAC Controller</span></div>
+<div class="dname">Carrier i-Vu® Open BAS Controller (CCN3)</div>
+<div class="ddesc">Open protocol HVAC controller for Carrier rooftop units, chillers, and AHUs. BACnet/IP primary; CCN (Carrier Comfort Network) legacy RS-485 bridged to BACnet. Modbus TCP for third-party sensors. RESTful API for Carrier Connected Buildings cloud analytics. BTL listed.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP + MS/TP</span><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-opc">CCN (proprietary RS-485)</span><span class="p p-def">HTTP/REST (i-Vu API)</span><span class="p p-def">MQTT (Connected Buildings)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">I/O</div><div class="pv">12 UI + 8 AO + 8 DO</div></div><div><div class="pk">BACnet</div><div class="pv">BTL-listed PICS</div></div><div><div class="pk">Power</div><div class="pv">24V AC Class 2</div></div><div><div class="pk">Cloud</div><div class="pv">Carrier Connected Buildings</div></div></div>
+</div>
+
+<div class="card sc7"><div class="ctop"><div class="brand">Carrier</div><span class="badge bhvac">Chiller</span></div>
+<div class="dname">Carrier AquaForce 30XW Water-Cooled Chiller</div>
+<div class="ddesc">Large commercial chiller for hospitals, data centers, and office towers. PIC III controller exposes Modbus TCP and BACnet/IP. Telemetry to Carrier Chiller Plant Manager via MQTT over LTE. Up to 1500 kW cooling with COP up to 6.3. Low-GWP HFO-1234ze refrigerant variant.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP</span><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-def">MQTT (Plant Manager)</span><span class="p p-opc">PIC III controller</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Capacity</div><div class="pv">200–1500 kW cooling</div></div><div><div class="pk">COP</div><div class="pv">Up to 6.3 (IPLV)</div></div><div><div class="pk">Refrigerant</div><div class="pv">HFO-1234ze (low-GWP)</div></div><div><div class="pk">Standard</div><div class="pv">AHRI 551/591</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 8. ICS/SCADA ═══ -->
+<section class="csec" id="ics">
+<div class="chead"><div class="cico ico-ics">⚙️</div><div class="ctitle">ICS / SCADA / Industrial Automation</div><div class="ccnt">8 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc3"><div class="ctop"><div class="brand">Siemens</div><span class="badge bics">PLC</span></div>
+<div class="dname">Siemens SIMATIC S7-1200 PLC</div>
+<div class="ddesc">Compact modular PLC for manufacturing, water, and energy. PROFINET and Modbus TCP native. OPC-UA server for IIoT integration. TIA Portal programming. ~0.1 µs cycle time per binary instruction.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-opc">PROFINET</span><span class="p p-mod">OPC-UA</span><span class="p p-opc">S7-Comm (proprietary)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Work Memory</div><div class="pv">100 KB (CPU 1214C)</div></div><div><div class="pk">I/O</div><div class="pv">14 DI / 10 DO / 2 AI</div></div><div><div class="pk">Network</div><div class="pv">1× PROFINET RJ-45</div></div><div><div class="pk">Cycle Time</div><div class="pv">~0.1 µs/binary op</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Rockwell Automation</div><span class="badge bics">PLC</span></div>
+<div class="dname">Allen-Bradley ControlLogix 5580</div>
+<div class="ddesc">High-performance PAC for discrete and process manufacturing. EtherNet/IP (CIP) native; OPC-UA from firmware v32. 128,000 I/O points. Dual-port Gigabit EtherNet/IP. CIP Motion for servo control. SIL 2 safety variant available.</div>
+<div class="ptags"><span class="p p-opc">EtherNet/IP (CIP)</span><span class="p p-mod">OPC-UA</span><span class="p p-mod">Modbus TCP</span><span class="p p-opc">DeviceNet</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">User Memory</div><div class="pv">3 MB (1756-L85E)</div></div><div><div class="pk">I/O Capacity</div><div class="pv">128,000 points</div></div><div><div class="pk">Network</div><div class="pv">Dual-port EtherNet/IP 1 Gbps</div></div><div><div class="pk">Safety</div><div class="pv">IEC 61511 SIL 2</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Schneider Electric</div><span class="badge bics">PAC</span></div>
+<div class="dname">Schneider Modicon M580 ePAC</div>
+<div class="ddesc">First ICS controller with native MQTT for direct cloud connectivity. Dual-port EtherNet/IP and Modbus TCP. Hot-standby redundancy option. Common in water, oil &amp; gas, and power SCADA. EcoStruxure cloud integration.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-opc">EtherNet/IP</span><span class="p p-def">MQTT</span><span class="p p-mod">OPC-UA</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">App Memory</div><div class="pv">16 MB</div></div><div><div class="pk">Network</div><div class="pv">Dual-port 100 Mbps</div></div><div><div class="pk">Redundancy</div><div class="pv">Hot Standby optional</div></div><div><div class="pk">Op. Temp.</div><div class="pv">0 – 60 °C</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Mitsubishi Electric</div><span class="badge bics">PLC</span></div>
+<div class="dname">Mitsubishi MELSEC iQ-R Series (R08CPU)</div>
+<div class="ddesc">High-speed PLC for semiconductor and automotive manufacturing. CC-Link IE Field (Gigabit). OPC-UA via RD81OPC96 module. MQTT client via RD81MQ15 module for IIoT data forwarding. 0.98 ns per instruction cycle time.</div>
+<div class="ptags"><span class="p p-opc">CC-Link IE Field (1 Gbps)</span><span class="p p-mod">OPC-UA</span><span class="p p-mod">Modbus TCP</span><span class="p p-def">MQTT (RD81MQ15)</span><span class="p p-opc">SLMP (proprietary)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Program Mem.</div><div class="pv">80K steps</div></div><div><div class="pk">Scan Time</div><div class="pv">0.98 ns/step</div></div><div><div class="pk">I/O Max</div><div class="pv">4096 I/O points</div></div><div><div class="pk">Safety</div><div class="pv">SIL 2 IEC 61508</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Beckhoff</div><span class="badge bics">PC-based PLC</span></div>
+<div class="dname">Beckhoff CX2040 + TwinCAT 3</div>
+<div class="ddesc">PC-based industrial controller with TwinCAT 3 real-time runtime on Windows 10 IoT. Broadest protocol stack in its class: EtherCAT, PROFINET, EtherNet/IP, Modbus TCP, OPC-UA, MQTT simultaneously. Popular in machine building and robotics for soft-PLC flexibility.</div>
+<div class="ptags"><span class="p p-opc">EtherCAT</span><span class="p p-opc">PROFINET</span><span class="p p-opc">EtherNet/IP</span><span class="p p-mod">Modbus TCP</span><span class="p p-mod">OPC-UA</span><span class="p p-def">MQTT</span><span class="p p-opc">ADS (TwinCAT)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">Intel Core i7 quad-core</div></div><div><div class="pk">RAM</div><div class="pv">Up to 8 GB DDR4</div></div><div><div class="pk">OS</div><div class="pv">Windows 10 IoT Enterprise</div></div><div><div class="pk">Min Cycle</div><div class="pv">62.5 µs TwinCAT</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">WAGO</div><span class="badge bics">Fieldbus Controller</span></div>
+<div class="dname">WAGO 750-8100 PFC200 Controller</div>
+<div class="ddesc">Compact Linux DIN-rail controller running CODESYS 3. Broadest simultaneous protocol support of any fieldbus controller: MQTT, BACnet/IP, Modbus TCP/RTU, KNXnet/IP, OPC-UA, PROFIBUS, EtherNet/IP. Popular for protocol conversion and smart building edge gateways.</div>
+<div class="ptags"><span class="p p-def">MQTT</span><span class="p p-bac">BACnet/IP</span><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-knx">KNXnet/IP</span><span class="p p-mod">OPC-UA</span><span class="p p-opc">PROFIBUS DP</span><span class="p p-opc">EtherNet/IP</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-A8, 600 MHz</div></div><div><div class="pk">RAM/Flash</div><div class="pv">256 MB / 512 MB</div></div><div><div class="pk">I/O Modules</div><div class="pv">Up to 64 per node</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-20 – 60 °C</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Emerson</div><span class="badge bics">DCS</span></div>
+<div class="dname">Emerson DeltaV DCS (M-Series)</div>
+<div class="ddesc">Enterprise DCS for oil &amp; gas, pharma, and chemicals. HART, Foundation Fieldbus, Modbus. MQTT-based Plantweb Optics for predictive maintenance. OPC-UA and AMQP for enterprise integration. Redundant controllers and networks.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-mod">OPC-UA / OPC-DA</span><span class="p p-opc">HART / FF-H1</span><span class="p p-def">MQTT (Plantweb)</span><span class="p p-amqp">AMQP</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Controller</div><div class="pv">M-Series redundant</div></div><div><div class="pk">Nodes</div><div class="pv">Up to 240 controllers</div></div><div><div class="pk">Redundancy</div><div class="pv">Controller + power + network</div></div><div><div class="pk">Cloud</div><div class="pv">Plantweb Optics (Azure)</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Honeywell</div><span class="badge bics">DCS</span></div>
+<div class="dname">Honeywell Experion PKS C300 Controller</div>
+<div class="ddesc">DCS for refining, chemical, and power generation. OPC-UA + Modbus built-in. Honeywell Forge IIoT adds MQTT analytics. Fault-Tolerant Ethernet (FTE) for network redundancy. ISA/IEC 62443 certified cybersecurity. 300,000 I/O point capacity.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-mod">OPC-UA / OPC-DA</span><span class="p p-def">MQTT (Honeywell Forge)</span><span class="p p-opc">HART / FF H1/HSE</span><span class="p p-opc">FTE (proprietary)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Capacity</div><div class="pv">300,000 I/O points</div></div><div><div class="pk">Security</div><div class="pv">ISA 99 / IEC 62443</div></div><div><div class="pk">Redundancy</div><div class="pv">C300 dual-redundant</div></div><div><div class="pk">Cloud</div><div class="pv">Honeywell Forge / Azure</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 9. BMS ═══ -->
+<section class="csec" id="bms">
+<div class="chead"><div class="cico ico-bms">🏢</div><div class="ctitle">Building Automation (BAS / BMS)</div><div class="ccnt">5 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc2"><div class="ctop"><div class="brand">Johnson Controls</div><span class="badge bbms">BAS Controller</span></div>
+<div class="dname">Johnson Controls Metasys NCE25</div>
+<div class="ddesc">BAS network controller for HVAC, lighting, fire. Native BACnet/IP + MS/TP. Modbus RTU for field devices. REST OpenAPI 3.0 for enterprise IT. OpenBlue cloud for energy analytics. Up to 600 BACnet devices per controller.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP + MS/TP</span><span class="p p-mod">Modbus RTU</span><span class="p p-def">HTTP/REST (OpenAPI)</span><span class="p p-def">MQTT (OpenBlue)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Max Devices</div><div class="pv">600 BACnet</div></div><div><div class="pk">MS/TP Speed</div><div class="pv">9600–76800 bps</div></div><div><div class="pk">Power</div><div class="pv">24V AC / PoE</div></div><div><div class="pk">Cloud</div><div class="pv">JCI OpenBlue</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Tridium / Honeywell</div><span class="badge bbms">BMS Controller</span></div>
+<div class="dname">Tridium JACE 8000 (Niagara N4)</div>
+<div class="ddesc">Industry-standard multi-vendor BMS controller. Bridges BACnet, Modbus, LonWorks, KNX, MQTT onto a unified Niagara N4 tag space via HTTPS/REST + WebSocket. XMPP legacy. 3,000 Niagara objects. The backbone of open BMS integration worldwide with connectors to 100+ protocols via driver marketplace.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP + MS/TP</span><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-knx">KNXnet/IP</span><span class="p p-def">MQTT</span><span class="p p-def">HTTP/REST (Niagara API)</span><span class="p p-opc">LonWorks</span><span class="p p-xmpp">XMPP (legacy)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-A9 800 MHz</div></div><div><div class="pk">RAM/Flash</div><div class="pv">512 MB / 4 GB eMMC</div></div><div><div class="pk">Max Points</div><div class="pv">3,000 Niagara objects</div></div><div><div class="pk">Framework</div><div class="pv">Niagara N4</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Siemens</div><span class="badge bbms">BMS Platform</span></div>
+<div class="dname">Siemens DESIGO CC Management Platform</div>
+<div class="ddesc">Integrated BMS for HVAC, lighting, energy, access, fire. BACnet/IP, KNXnet/IP, OPC-UA native. REST API + WebSocket for enterprise integration. Siemens Building X cloud. Up to 500,000 data points. Covers full campus deployments.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP</span><span class="p p-knx">KNXnet/IP</span><span class="p p-mod">OPC-UA</span><span class="p p-def">HTTP/REST</span><span class="p p-mod">Modbus TCP</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Data Points</div><div class="pv">Up to 500,000</div></div><div><div class="pk">Platform</div><div class="pv">Windows Server 2019+</div></div><div><div class="pk">Cloud</div><div class="pv">Siemens Building X</div></div><div><div class="pk">Standards</div><div class="pv">ISO 16484, EN ISO 52120</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">MDT Technologies</div><span class="badge bbms">KNX Router</span></div>
+<div class="dname">MDT KNX IP Router SCN-IP100.03</div>
+<div class="ddesc">Industrial KNX IP router and tunneling interface. 4 simultaneous KNXnet/IP tunneling connections. Programmed via ETS5/ETS6. Widely used in European commercial building lighting, HVAC, and blind automation. DIN-rail mounting.</div>
+<div class="ptags"><span class="p p-knx">KNXnet/IP Routing</span><span class="p p-knx">KNXnet/IP Tunneling</span><span class="p p-def">UDP multicast</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">KNX Bus</div><div class="pv">TP 9600 bps</div></div><div><div class="pk">IP</div><div class="pv">100 Mbps Ethernet</div></div><div><div class="pk">Tunnels</div><div class="pv">4 simultaneous</div></div><div><div class="pk">Standard</div><div class="pv">KNX EN 50090</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Trane Technologies</div><span class="badge bbms">BAS Controller</span></div>
+<div class="dname">Trane Tracer SC+ System Controller</div>
+<div class="ddesc">BAS controller for campuses with Trane chillers, AHUs, and terminals. BACnet/IP + Modbus RTU. RESTful API for Trane Building Advisor (MQTT + AWS). PoE powered. BACnet BTL listed. 8 GB local trend data storage.</div>
+<div class="ptags"><span class="p p-bac">BACnet/IP + MS/TP</span><span class="p p-mod">Modbus RTU</span><span class="p p-def">HTTP/REST (Tracer API)</span><span class="p p-def">MQTT (Building Advisor)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Controllers</div><div class="pv">Up to 60 Trane</div></div><div><div class="pk">Power</div><div class="pv">24V AC / PoE 802.3af</div></div><div><div class="pk">Storage</div><div class="pv">8 GB trend data</div></div><div><div class="pk">Cloud</div><div class="pv">Trane Building Advisor (AWS)</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 10. WEARABLES ═══ -->
+<section class="csec" id="wear">
+<div class="chead"><div class="cico ico-wear">⌚</div><div class="ctitle">Wearable IoT</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc4"><div class="ctop"><div class="brand">Apple</div><span class="badge bwear">Smartwatch</span></div>
+<div class="dname">Apple Watch Ultra 2</div>
+<div class="ddesc">Premium sports/outdoor smartwatch. ECG, SpO2, skin temperature, crash detection. BLE 5.3 for pairing; UWB W3/L1 for precision location. All sensor data syncs via HTTP/REST to HealthKit. LTE eSIM for standalone cellular. 100m water resistant, MIL-STD-810H certified.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.3</span><span class="p p-def">Wi-Fi 802.11b/g/n (5 GHz)</span><span class="p p-def">LTE eSIM</span><span class="p p-def">HTTP/REST (HealthKit)</span><span class="p p-opc">UWB W3/L1 chip</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Chip</div><div class="pv">Apple S9 SiP + W3 + L1</div></div><div><div class="pk">Battery</div><div class="pv">~60h (low power mode)</div></div><div><div class="pk">Sensors</div><div class="pv">ECG, SpO2, skin temp, depth</div></div><div><div class="pk">Water Resist.</div><div class="pv">100m EN 13319</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Garmin</div><span class="badge bwear">Smartwatch</span></div>
+<div class="dname">Garmin Fenix 7 Pro Solar</div>
+<div class="ddesc">Multisport GPS watch with topo maps, solar charging (+37% battery), and ANT+ for fitness accessories. Data syncs via BLE or Wi-Fi to Garmin Connect REST API. Multi-band L1/L5 GNSS for sub-30 cm accuracy in challenging environments.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.0</span><span class="p p-ble">ANT+ / ANT</span><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-def">HTTP/REST (Garmin Connect)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">GNSS</div><div class="pv">Multi-band L1/L5</div></div><div><div class="pk">Battery</div><div class="pv">22 days smartwatch mode</div></div><div><div class="pk">Memory</div><div class="pv">32 GB onboard</div></div><div><div class="pk">Solar</div><div class="pv">+37% battery (PowerGlass)</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Google / Fitbit</div><span class="badge bwear">Health Watch</span></div>
+<div class="dname">Fitbit Sense 2</div>
+<div class="ddesc">Health smartwatch: ECG, EDA stress sensor, SpO2, skin temperature. BLE to Fitbit app → REST to Google cloud. Fitbit Web API v1 (REST/OAuth2) for third-party integration and clinical research data export. NFC for Google Wallet payments.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.0</span><span class="p p-def">Wi-Fi 802.11 b/g/n</span><span class="p p-def">HTTP/REST (Fitbit API v1)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Sensors</div><div class="pv">ECG, EDA, SpO2, skin temp</div></div><div><div class="pk">Battery</div><div class="pv">6+ days</div></div><div><div class="pk">Display</div><div class="pv">AMOLED 1.58" 336×336</div></div><div><div class="pk">NFC</div><div class="pv">Yes (Google Wallet)</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Oura Health</div><span class="badge bwear">Smart Ring</span></div>
+<div class="dname">Oura Ring Gen 3</div>
+<div class="ddesc">Finger-worn sleep/recovery tracker. BLE-only (no Wi-Fi); PPG, NTC, and accelerometer data to app via BLE, then HTTPS to Oura Cloud API v2 (REST/OAuth2). 100m water resistant. Used in clinical trials and high-performance sports monitoring. One of the most clinically validated consumer wellness devices.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.1</span><span class="p p-def">HTTPS/REST (Oura API v2)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Sensors</div><div class="pv">PPG (IR+Green), NTC, accel</div></div><div><div class="pk">Battery</div><div class="pv">5–7 days</div></div><div><div class="pk">Water Resist.</div><div class="pv">100m</div></div><div><div class="pk">Charging</div><div class="pv">Wireless inductive</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 11. IoV ═══ -->
+<section class="csec" id="iov">
+<div class="chead"><div class="cico ico-iov">🚗</div><div class="ctitle">Internet of Vehicles (IoV)</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc5"><div class="ctop"><div class="brand">Tesla</div><span class="badge biov">EV Telematics</span></div>
+<div class="dname">Tesla Model 3/Y Telematics Stack</div>
+<div class="ddesc">Always-on LTE IoT stack. MQTT to Tesla Fleet API for battery/GPS/diagnostics telemetry. BLE Phone-as-Key. CAN bus ECU internally. OTA via HTTPS. REST + WebSocket Fleet API v2 for third-party fleet management.</div>
+<div class="ptags"><span class="p p-def">MQTT (Tesla Fleet API)</span><span class="p p-def">LTE 4G eSIM</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">Wi-Fi 802.11 a/b/g/n/ac</span><span class="p p-opc">CAN 2.0 (internal)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">MCU</div><div class="pv">AMD Ryzen + FSD chip</div></div><div><div class="pk">Fleet API</div><div class="pv">REST + WebSocket / MQTT</div></div><div><div class="pk">Cellular</div><div class="pv">LTE Cat-1 eSIM</div></div><div><div class="pk">GNSS</div><div class="pv">Multi-constellation</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Teltonika Networks</div><span class="badge biov">Fleet Tracker</span></div>
+<div class="dname">Teltonika FMB920 OBD Fleet Tracker</div>
+<div class="ddesc">OBD-II plug-in 4G tracker reading CAN/OBD-II data (RPM, fuel, DTCs). Transmits to fleet platforms via MQTT over LTE. CoAP for firmware updates. BLE for driver ID fob. IP67 rated. Popular in last-mile delivery and rental fleets globally.</div>
+<div class="ptags"><span class="p p-def">MQTT (fleet platforms)</span><span class="p p-zwave">CoAP</span><span class="p p-def">LTE-M / 4G</span><span class="p p-ble">BLE 4.0</span><span class="p p-opc">OBD-II / J1939 CAN</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Cellular</div><div class="pv">4G LTE Cat 1 + 2G</div></div><div><div class="pk">GNSS</div><div class="pv">GPS + GLONASS + BeiDou</div></div><div><div class="pk">Memory</div><div class="pv">128 MB local buffer</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-40 – 85 °C</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Bosch</div><span class="badge biov">IoV Gateway</span></div>
+<div class="dname">Bosch XDK110 Connected Vehicle Gateway</div>
+<div class="ddesc">OBD-connected IoT gateway for vehicle diagnostics via MQTT over LTE to Bosch IoT Suite. CoAP for firmware. 9-axis IMU for telematics scoring. Used in insurance telematics and connected logistics. NB-IoT/LTE-M certified.</div>
+<div class="ptags"><span class="p p-def">MQTT (Bosch IoT Hub)</span><span class="p p-zwave">CoAP</span><span class="p p-def">LTE-M / NB-IoT</span><span class="p p-ble">BLE 5.0</span><span class="p p-opc">OBD2 CAN</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-M4F 64 MHz</div></div><div><div class="pk">Sensors</div><div class="pv">3D accel, gyro, RH, pressure</div></div><div><div class="pk">Cellular</div><div class="pv">LTE-M + Wi-Fi</div></div><div><div class="pk">Cloud</div><div class="pv">Bosch IoT Suite</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Continental / Savari</div><span class="badge biov">V2X RSU</span></div>
+<div class="dname">Continental V2X RSU / MK5 OBU</div>
+<div class="ddesc">V2X (Vehicle-to-Everything) roadside unit for smart traffic infrastructure. IEEE 802.11p DSRC/WAVE for V2V/V2I at &lt;10 ms latency. MQTT for traffic management backhaul. SAE J2735 (BSM, MAP, SPAT). Essential for autonomous vehicle corridors and smart city traffic management.</div>
+<div class="ptags"><span class="p p-opc">DSRC / IEEE 802.11p</span><span class="p p-def">MQTT (traffic mgmt.)</span><span class="p p-def">LTE / C-V2X (PC5)</span><span class="p p-opc">SAE J2735</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Radio</div><div class="pv">DSRC 5.9 GHz + C-V2X</div></div><div><div class="pk">V2V Range</div><div class="pv">Up to 1,000 m</div></div><div><div class="pk">Latency</div><div class="pv">&lt;10 ms one-way</div></div><div><div class="pk">Standard</div><div class="pv">IEEE 1609 / ETSI ITS-G5</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 12. ENERGY ═══ -->
+<section class="csec" id="energy">
+<div class="chead"><div class="cico ico-engy">⚡</div><div class="ctitle">Smart Energy, Metering &amp; Grid</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc3"><div class="ctop"><div class="brand">Landis+Gyr</div><span class="badge bengy">Smart Meter</span></div>
+<div class="dname">Landis+Gyr E360 Smart Meter (UK SMIP)</div>
+<div class="ddesc">AMI meter for UK Smart Metering Implementation Programme. WAN via GPRS/4G LTE using DLMS/COSEM + AMQP to head-end. HAN via 6LoWPAN/RPL for in-home displays and IHD connectivity. GBCS compliant. AES-128 encryption. Deployed to millions of UK homes.</div>
+<div class="ptags"><span class="p p-amqp">AMQP (head-end WAN)</span><span class="p p-opc">DLMS / COSEM</span><span class="p p-zig">6LoWPAN / RPL (HAN)</span><span class="p p-zig">Zigbee SEP 2.0</span><span class="p p-def">LTE / GPRS</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">Class 1 IEC 62053-21</div></div><div><div class="pk">HAN Radio</div><div class="pv">2.4 GHz 802.15.4</div></div><div><div class="pk">Standard</div><div class="pv">SMIP GBCS, IEC 62056</div></div><div><div class="pk">Encryption</div><div class="pv">AES-128</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Itron</div><span class="badge bengy">Smart Meter</span></div>
+<div class="dname">Itron OpenWay Riva Smart Meter</div>
+<div class="ddesc">AMI meter communicating via 900 MHz mesh RF (Gen-5) to collector → AMI head-end via AMQP/MQTT. DLMS/COSEM data format. HAN Zigbee SEP 2.0. Deployed by US utilities for grid-scale demand response. AES-128 OTA encryption.</div>
+<div class="ptags"><span class="p p-amqp">AMQP (head-end)</span><span class="p p-def">MQTT</span><span class="p p-opc">DLMS / COSEM</span><span class="p p-zig">6LoWPAN (HAN)</span><span class="p p-opc">Gen5 Riva 900 MHz mesh</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">Class 0.2S IEC 62053-22</div></div><div><div class="pk">RF Band</div><div class="pv">902–928 MHz FHSS</div></div><div><div class="pk">Standard</div><div class="pv">ANSI C12.20 / IEC 62056</div></div><div><div class="pk">Encryption</div><div class="pv">AES-128 OTA</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">Schneider Electric</div><span class="badge bengy">Power Meter</span></div>
+<div class="dname">Schneider PowerLogic PM8000</div>
+<div class="ddesc">Class 0.1S revenue-grade power quality meter for substations and large facilities. Modbus TCP + BACnet/IP + MQTT to EcoStruxure Power. IEC 61000-4-30 Class A power quality analysis. IEC 62443-3-3 cybersecurity. 512 MB waveform capture storage.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-bac">BACnet/IP</span><span class="p p-def">MQTT (EcoStruxure)</span><span class="p p-mod">OPC-UA</span><span class="p p-def">HTTP/REST</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">Class 0.1S IEC 62053-22</div></div><div><div class="pk">PQ Standard</div><div class="pv">IEC 61000-4-30 Class A</div></div><div><div class="pk">Storage</div><div class="pv">512 MB waveform</div></div><div><div class="pk">Security</div><div class="pv">IEC 62443-3-3</div></div></div>
+</div>
+
+<div class="card sc3"><div class="ctop"><div class="brand">SolarEdge</div><span class="badge bengy">Solar Inverter</span></div>
+<div class="dname">SolarEdge SE7600H HD-Wave Inverter</div>
+<div class="ddesc">Residential solar inverter with power optimizers. Zigbee for optimizer telemetry. Modbus TCP/SunSpec for battery/EV/grid integration. REST to SolarEdge Monitoring Portal. MQTT for StorEdge home energy management. EV charger + battery integration standard.</div>
+<div class="ptags"><span class="p p-zig">Zigbee (optimizer mesh)</span><span class="p p-mod">Modbus TCP (SunSpec)</span><span class="p p-def">HTTP/REST (Monitoring API)</span><span class="p p-def">MQTT (StorEdge)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">AC Output</div><div class="pv">7600 W / 240V</div></div><div><div class="pk">Efficiency</div><div class="pv">99% weighted (HD-Wave)</div></div><div><div class="pk">Zigbee</div><div class="pv">2.4 GHz 802.15.4</div></div><div><div class="pk">Standard</div><div class="pv">SunSpec Modbus, IEC 62109</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 13. MEDICAL ═══ -->
+<section class="csec" id="medical">
+<div class="chead"><div class="cico ico-med">🏥</div><div class="ctitle">Medical &amp; Clinical IoT</div><div class="ccnt">3 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc6"><div class="ctop"><div class="brand">Dexcom</div><span class="badge bmed">CGM</span></div>
+<div class="dname">Dexcom G7 Continuous Glucose Monitor</div>
+<div class="ddesc">15-day wearable CGM with BLE 5.2 direct to iPhone/Android — no separate receiver needed. REST API (Dexcom Share) for caregiver follows and clinical integration. HL7 FHIR R4 for EHR data export. FDA 510(k) cleared. MARD 8.2% accuracy. Integrated with Apple Health, Loop DIY APS, Tandem t:slim X2 pump.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.2 (direct to phone)</span><span class="p p-def">HTTP/REST (Dexcom Share API)</span><span class="p p-opc">HL7 FHIR R4 (EHR)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Wear Time</div><div class="pv">15 days</div></div><div><div class="pk">Accuracy</div><div class="pv">MARD 8.2%</div></div><div><div class="pk">BLE Range</div><div class="pv">~6 m (no receiver)</div></div><div><div class="pk">Cert.</div><div class="pv">FDA 510(k), CE IVDR</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Philips</div><span class="badge bmed">Patient Monitor</span></div>
+<div class="dname">Philips IntelliVue MX40 Wearable Monitor</div>
+<div class="ddesc">Wearable hospital patient monitor: ECG, SpO2, NIBP, RR, skin temp. Wi-Fi 802.11a/b/g/n for hospital telemetry ward integration. HL7 2.x for EMR. Modbus RS-232 for legacy nurse call systems. BLE for EHR-sync via IntelliVue patient data module. IP44 water resistant.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 a/b/g/n</span><span class="p p-ble">BLE (PDM sync)</span><span class="p p-opc">HL7 2.x (EMR)</span><span class="p p-mod">RS-232 Modbus (legacy)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Sensors</div><div class="pv">ECG, SpO2, NIBP, RR, temp</div></div><div><div class="pk">Wi-Fi</div><div class="pv">802.11 a/b/g/n dual-band</div></div><div><div class="pk">Battery</div><div class="pv">8h monitoring</div></div><div><div class="pk">Cert.</div><div class="pv">IEC 60601-1, FDA 510(k)</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Abbott</div><span class="badge bmed">CGM</span></div>
+<div class="dname">Abbott FreeStyle Libre 3 CGM</div>
+<div class="ddesc">World's smallest (7.7mm height) 14-day CGM sensor. BLE 5.0 streams glucose readings every minute to LibreLink app. REST + HL7 FHIR for LibreView clinical dashboard integration. CE Mark; FDA cleared for iCGM class. MARD 7.9% — among the most accurate consumer CGMs available.</div>
+<div class="ptags"><span class="p p-ble">BLE 5.0 (1-min streaming)</span><span class="p p-def">HTTP/REST (LibreView API)</span><span class="p p-opc">HL7 FHIR (clinical)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Wear Time</div><div class="pv">14 days, 1-min streaming</div></div><div><div class="pk">Accuracy</div><div class="pv">MARD 7.9%</div></div><div><div class="pk">Size</div><div class="pv">7.7 mm height (world's smallest)</div></div><div><div class="pk">Cert.</div><div class="pv">FDA iCGM, CE IVD</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 14. AGRI ═══ -->
+<section class="csec" id="agri">
+<div class="chead"><div class="cico ico-agri">🌾</div><div class="ctitle">AgriTech &amp; Precision Farming</div><div class="ccnt">3 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc2"><div class="ctop"><div class="brand">John Deere</div><span class="badge bagri">GPS Receiver</span></div>
+<div class="dname">John Deere StarFire 7000 RTK Receiver</div>
+<div class="ddesc">Sub-inch RTK GNSS for autonomous and precision farming. Multi-constellation: GPS L1/L2/L5, GLONASS, BeiDou. MQTT to John Deere Operations Center via Wi-Fi or LTE. CAN J1939 bus for tractor integration. ISOBUS (ISO 11783) for implements. Used in row guidance and automated headland management.</div>
+<div class="ptags"><span class="p p-def">MQTT (Operations Center)</span><span class="p p-def">Wi-Fi / LTE</span><span class="p p-opc">CAN J1939 / ISOBUS</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">&lt;1 inch RTK</div></div><div><div class="pk">GNSS</div><div class="pv">GPS/GLONASS/BeiDou L1/L2/L5</div></div><div><div class="pk">Cloud</div><div class="pv">JD Operations Center</div></div><div><div class="pk">Bus</div><div class="pv">CAN J1939 / ISOBUS 11783</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Semios</div><span class="badge bagri">Crop Protection Node</span></div>
+<div class="dname">Semios IoT Crop Protection Node</div>
+<div class="ddesc">Solar-powered pheromone trap node with insect counter camera, temp/RH sensor, and LoRaWAN 915 MHz for long-range farm mesh. MQTT over LTE gateway to Semios AI prediction platform. 5-year battery life. Used in orchards and vineyards for codling moth, thrips, and botrytis monitoring.</div>
+<div class="ptags"><span class="p p-lora">LoRaWAN 915 MHz</span><span class="p p-def">MQTT (Semios Cloud)</span><span class="p p-def">LTE (gateway)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Power</div><div class="pv">Solar + LiPo (5 yr)</div></div><div><div class="pk">LoRa Range</div><div class="pv">Up to 10 km LOS</div></div><div><div class="pk">Sensors</div><div class="pv">Temp, RH, camera trap</div></div><div><div class="pk">IP</div><div class="pv">IP65</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Libelium</div><span class="badge bagri">Smart Agriculture</span></div>
+<div class="dname">Libelium Waspmote PRO Agriculture Sensor</div>
+<div class="ddesc">Versatile outdoor sensor mote with 100+ compatible agricultural sensors. ZigBee, LoRaWAN, 4G, Sigfox multi-radio. Publishes to any cloud via MQTT or HTTP. IP67. Solar + LiPo. Used in soil monitoring, microclimate stations, and irrigation control across 120+ countries.</div>
+<div class="ptags"><span class="p p-zig">Zigbee / 802.15.4</span><span class="p p-lora">LoRaWAN 868/915 MHz</span><span class="p p-def">LTE 4G / Sigfox</span><span class="p p-def">MQTT / HTTP</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Sensors</div><div class="pv">100+ compatible types</div></div><div><div class="pk">Power</div><div class="pv">Solar + LiPo 6600 mAh</div></div><div><div class="pk">IP Rating</div><div class="pv">IP67</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-30 – 70 °C</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 15. NETWORKING ═══ -->
+<section class="csec" id="network">
+<div class="chead"><div class="cico ico-net">🔌</div><div class="ctitle">Industrial Networking &amp; IoT Gateways</div><div class="ccnt">6 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc1"><div class="ctop"><div class="brand">Cisco</div><span class="badge bnet">IIoT Router</span></div>
+<div class="dname">Cisco Catalyst IR1101 Rugged Router</div>
+<div class="ddesc">IIoT edge router for utilities, transport, and manufacturing. Dual-port PROFINET/EtherNet/IP deep packet inspection. OPC-UA broker. LTE/5G cellular WAN. MQTT to Cisco IoT Operations Dashboard. IEC 61850 substation profile. -40 – 70 °C operating range.</div>
+<div class="ptags"><span class="p p-def">MQTT</span><span class="p p-opc">PROFINET / EtherNet/IP DPI</span><span class="p p-mod">OPC-UA</span><span class="p p-mod">Modbus TCP</span><span class="p p-def">LTE / 5G</span><span class="p p-def">Wi-Fi 6</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-A57 dual</div></div><div><div class="pk">WAN</div><div class="pv">LTE Cat 12 + 5G NR</div></div><div><div class="pk">Ports</div><div class="pv">4× GE + 1× SFP</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-40 – 70 °C</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Moxa</div><span class="badge bnet">Industrial Switch</span></div>
+<div class="dname">Moxa MGS-3510 Managed Gigabit Switch</div>
+<div class="ddesc">Industrial managed switch with PROFINET IO and IEC 62439-3 PRP/HSR ring redundancy for sub-millisecond failover. Modbus TCP SNMP for industrial management. MQTT telemetry. DIN-rail, -40 – 75 °C, IP30. Used in power substations and factory automation rings.</div>
+<div class="ptags"><span class="p p-opc">PROFINET IO</span><span class="p p-opc">IEC 62439-3 PRP/HSR</span><span class="p p-mod">Modbus TCP</span><span class="p p-def">SNMP v3</span><span class="p p-def">MQTT</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Ports</div><div class="pv">10× GE RJ45 + 2× SFP</div></div><div><div class="pk">Redundancy</div><div class="pv">PRP/HSR &lt;1 ms failover</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-40 – 75 °C</div></div><div><div class="pk">Cert.</div><div class="pv">IEC 61850-3, IEEE 1613</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Advantech</div><span class="badge bnet">IoT Gateway</span></div>
+<div class="dname">Advantech ADAM-6717 Intelligent Gateway</div>
+<div class="ddesc">Edge IoT gateway with built-in Node-RED for protocol conversion and flow logic. Modbus TCP/RTU → MQTT/OPC-UA → cloud. HTTPS REST. Dual Ethernet for sensor-side and IT-side isolation. -40 – 70 °C. Popular in smart building and factory edge deployments.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-def">MQTT</span><span class="p p-def">HTTP/REST</span><span class="p p-mod">OPC-UA</span><span class="p p-opc">Node-RED built-in</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">ARM Cortex-A8 1 GHz</div></div><div><div class="pk">RAM/Flash</div><div class="pv">512 MB / 4 GB</div></div><div><div class="pk">Ports</div><div class="pv">2× Ethernet + 2× COM</div></div><div><div class="pk">OS</div><div class="pv">Linux Yocto</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Siemens</div><span class="badge bnet">IIoT Controller</span></div>
+<div class="dname">Siemens SIMATIC IOT2050</div>
+<div class="ddesc">Linux-based IIoT edge controller with Arduino-compatible expansion slot. Runs Python, Node-RED, or Docker for edge ML. PROFINET, Modbus, MQTT, OPC-UA all simultaneously. Bridges OT to IT/cloud natively. -20 – 60 °C, DIN-rail.</div>
+<div class="ptags"><span class="p p-opc">PROFINET</span><span class="p p-mod">Modbus</span><span class="p p-def">MQTT</span><span class="p p-mod">OPC-UA</span><span class="p p-def">HTTP/REST</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">CPU</div><div class="pv">AM6528 dual Cortex-A53</div></div><div><div class="pk">RAM/Storage</div><div class="pv">1 GB DDR4 / 8 GB eMMC</div></div><div><div class="pk">OS</div><div class="pv">Linux Debian / Yocto</div></div><div><div class="pk">Expansion</div><div class="pv">Arduino Uno slot</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">Particle</div><span class="badge bnet">Cellular Gateway</span></div>
+<div class="dname">Particle Monitor One (M-SoM)</div>
+<div class="ddesc">Industrial LTE-M/LTE Cat 1 IoT gateway with BLE 5.3, Modbus RS-232/CAN, and a built-in 40 Wh LiPo for offline buffering. MQTT to Particle Cloud. IP67 enclosure. Used in remote monitoring of compressors, pumps, and agricultural equipment.</div>
+<div class="ptags"><span class="p p-def">MQTT (Particle Cloud)</span><span class="p p-zwave">CoAP</span><span class="p p-def">LTE CAT 1 / LTE-M</span><span class="p p-ble">BLE 5.3</span><span class="p p-mod">Modbus / RS-232 / CAN</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Battery</div><div class="pv">40 Wh LiPo (offline)</div></div><div><div class="pk">Cellular</div><div class="pv">LTE-M + Cat 1 global</div></div><div><div class="pk">IP Rating</div><div class="pv">IP67</div></div><div><div class="pk">OS</div><div class="pv">Particle Device OS</div></div></div>
+</div>
+
+<div class="card sc1"><div class="ctop"><div class="brand">HMS Networks</div><span class="badge bnet">Protocol Converter</span></div>
+<div class="dname">HMS Anybus X-gateway AB7007</div>
+<div class="ddesc">Hardware protocol converter supporting 50+ industrial protocols. Bridges any combination: Modbus, BACnet, PROFINET, EtherNet/IP, DeviceNet, CC-Link, CANopen. Configured via built-in web server — zero programming required. The definitive solution for multi-vendor protocol integration in factories and buildings.</div>
+<div class="ptags"><span class="p p-mod">Modbus TCP/RTU</span><span class="p p-bac">BACnet/IP</span><span class="p p-opc">PROFINET / EtherNet/IP</span><span class="p p-opc">DeviceNet / CC-Link</span><span class="p p-opc">CANopen</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Protocols</div><div class="pv">50+ industrial protocols</div></div><div><div class="pk">Config</div><div class="pv">Web browser (no code)</div></div><div><div class="pk">DIN-rail</div><div class="pv">Yes, 24V DC</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-25 – 70 °C</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 16. SECURITY ═══ -->
+<section class="csec" id="security">
+<div class="chead"><div class="cico ico-sec">🔒</div><div class="ctitle">Smart Security &amp; Surveillance</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc6"><div class="ctop"><div class="brand">Ring / Amazon</div><span class="badge bsec">Video Doorbell</span></div>
+<div class="dname">Ring Video Doorbell Pro 2</div>
+<div class="ddesc">Wi-Fi HD video doorbell with 3D motion detection and Bird's Eye View aerial view. MQTT to AWS IoT Core for real-time alerts. Ring API (HTTPS/REST) for third-party integrations. Amazon Sidewalk 900 MHz mesh for neighbor-assisted connectivity. BLE for initial setup. Full head-to-toe field of view captures package drops.</div>
+<div class="ptags"><span class="p p-def">Wi-Fi 802.11 b/g/n/ac</span><span class="p p-def">MQTT (AWS IoT)</span><span class="p p-def">HTTP/REST (Ring API)</span><span class="p p-opc">Amazon Sidewalk</span><span class="p p-ble">BLE 5.0</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Video</div><div class="pv">1536p HD + HDR</div></div><div><div class="pk">FOV</div><div class="pv">150° H × 150° V head-to-toe</div></div><div><div class="pk">Detection</div><div class="pv">3D motion + radar</div></div><div><div class="pk">Power</div><div class="pv">Hardwired 8–24V AC</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Axis Communications</div><span class="badge bsec">IP Camera</span></div>
+<div class="dname">Axis P3245-V Fixed Dome Camera</div>
+<div class="ddesc">Professional IP dome camera with native MQTT (firmware 10.7+), VAPIX HTTP/REST API, and ONVIF Profile S/G/T. RTSP H.265 for low-bandwidth streaming. ACAP analytics platform for edge AI. PoE+ powered. Trusted in airports, stadiums, and critical infrastructure.</div>
+<div class="ptags"><span class="p p-def">MQTT (firmware 10.7+)</span><span class="p p-def">HTTP/REST (VAPIX)</span><span class="p p-opc">ONVIF Profile S/G/T</span><span class="p p-opc">RTSP / H.265</span><span class="p p-def">PoE+ 802.3at</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Resolution</div><div class="pv">2 MP / 1080p HDTV</div></div><div><div class="pk">Codec</div><div class="pv">H.265/H.264/MJPEG</div></div><div><div class="pk">Power</div><div class="pv">PoE+ 802.3at 15.4W</div></div><div><div class="pk">IP Rating</div><div class="pv">IP66 / IK10</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Bosch Security</div><span class="badge bsec">IP Camera</span></div>
+<div class="dname">Bosch FLEXIDOME 5100i</div>
+<div class="ddesc">AI-powered indoor/outdoor camera with Essential Video Analytics onboard. MQTT for BVMS event bus. AMQP for Bosch Video Management System enterprise integration. CoAP for LwM2M device management. ONVIF Profile S/T compliant. PoE+ powered.</div>
+<div class="ptags"><span class="p p-def">MQTT</span><span class="p p-amqp">AMQP (BVMS)</span><span class="p p-zwave">CoAP (LwM2M)</span><span class="p p-def">HTTP/REST</span><span class="p p-opc">ONVIF Profile S/T</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Resolution</div><div class="pv">2 MP 1080p starlight</div></div><div><div class="pk">Analytics</div><div class="pv">Essential Video Analytics</div></div><div><div class="pk">Power</div><div class="pv">PoE+ 802.3at</div></div><div><div class="pk">IP Rating</div><div class="pv">IP66 / IK10</div></div></div>
+</div>
+
+<div class="card sc6"><div class="ctop"><div class="brand">Honeywell</div><span class="badge bsec">Alarm Panel</span></div>
+<div class="dname">Honeywell Galaxy Flex3 Alarm Panel</div>
+<div class="ddesc">Commercial intruder alarm panel (Grade 2/3 EN 50131). SIA DC-09 HTTPS for alarm signaling to central monitoring. MQTT for BMS integration. XMPP legacy. Pro-Watch HTTP/REST API for enterprise access control integration. Widely deployed in European commercial premises.</div>
+<div class="ptags"><span class="p p-opc">SIA DC-09 (HTTPS signaling)</span><span class="p p-def">MQTT (BMS)</span><span class="p p-xmpp">XMPP (legacy)</span><span class="p p-def">HTTP/REST (Pro-Watch)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Zones</div><div class="pv">Up to 520 zones</div></div><div><div class="pk">Grade</div><div class="pv">EN 50131 Grade 2/3</div></div><div><div class="pk">Signaling</div><div class="pv">SIA DC-09 over HTTPS</div></div><div><div class="pk">Cert.</div><div class="pv">EN 50131, PD 6662</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 17. LIGHTING ═══ -->
+<section class="csec" id="lighting">
+<div class="chead"><div class="cico ico-lit">💡</div><div class="ctitle">Smart Lighting Control</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc5"><div class="ctop"><div class="brand">Lutron</div><span class="badge blit">Lighting Hub</span></div>
+<div class="dname">Lutron Caséta Bridge PRO</div>
+<div class="ddesc">Professional Lutron hub bridging Clear Connect RF (434 MHz proprietary, &gt;100 m range) to IP networks. Matter bridge. Zigbee for third-party devices. HTTP/REST Telnet API for integration. Trusted in high-end residential and hotel deployments for reliability and long radio range.</div>
+<div class="ptags"><span class="p p-opc">Clear Connect RF 434 MHz</span><span class="p p-mat">Matter Bridge</span><span class="p p-zig">Zigbee 3.0</span><span class="p p-def">Wi-Fi</span><span class="p p-def">HTTP/REST + Telnet API</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">RF Range</div><div class="pv">&gt;100 m (Clear Connect)</div></div><div><div class="pk">Max Devices</div><div class="pv">75 RF devices</div></div><div><div class="pk">API</div><div class="pv">Lutron Telnet + REST</div></div><div><div class="pk">Cert.</div><div class="pv">UL, FCC, IC, CE</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Helvar</div><span class="badge blit">DALI Router</span></div>
+<div class="dname">Helvar 905 DALI Gateway Router</div>
+<div class="ddesc">DALI-2 to BACnet/IP + Modbus TCP gateway for commercial building lighting. Controls up to 256 DALI-2 luminaires across 4 lines. MQTT to cloud analytics. HTTP/REST API for web-based commissioning. DALI device types 6–8 for emergency, push buttons, occupancy. Used in airports and hospitals.</div>
+<div class="ptags"><span class="p p-knx">DALI-2 (IEC 62386)</span><span class="p p-bac">BACnet/IP</span><span class="p p-mod">Modbus TCP</span><span class="p p-def">MQTT</span><span class="p p-def">HTTP/REST</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">DALI Lines</div><div class="pv">4 × 64 luminaires</div></div><div><div class="pk">Standard</div><div class="pv">DALI-2 IEC 62386</div></div><div><div class="pk">BACnet</div><div class="pv">BTL-listed</div></div><div><div class="pk">Power</div><div class="pv">24V DC DIN-rail</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">OSRAM / LEDVANCE</div><span class="badge blit">Lighting Gateway</span></div>
+<div class="dname">OSRAM SMART+ Gateway</div>
+<div class="ddesc">Zigbee 3.0 gateway for OSRAM SMART+ luminaires and bulbs. MQTT to Lightify Cloud. Local HTTP/REST API for Home Assistant (bypassing cloud). Wi-Fi 802.11 b/g/n. Works with Alexa, Google Home, and Samsung SmartThings. Supports up to 50 Zigbee devices.</div>
+<div class="ptags"><span class="p p-zig">Zigbee 3.0</span><span class="p p-def">MQTT (Lightify Cloud)</span><span class="p p-def">HTTP/REST (local API)</span><span class="p p-def">Wi-Fi 802.11 b/g/n</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Max Devices</div><div class="pv">50 Zigbee devices</div></div><div><div class="pk">Zigbee Freq.</div><div class="pv">2.4 GHz 802.15.4</div></div><div><div class="pk">Power</div><div class="pv">5V USB</div></div><div><div class="pk">Local API</div><div class="pv">Yes (bypass cloud)</div></div></div>
+</div>
+
+<div class="card sc5"><div class="ctop"><div class="brand">Schneider Electric</div><span class="badge blit">KNX Panel</span></div>
+<div class="dname">Schneider Wiser for KNX Room Controller</div>
+<div class="ddesc">KNX TP room panel for commercial lighting, HVAC, and blind automation. KNXnet/IP for ETS programming. Matter bridge (2024 update) for smart home integration. MQTT to Schneider Facility Expert cloud analytics. Widely deployed in European smart office buildings.</div>
+<div class="ptags"><span class="p p-knx">KNXnet/IP + KNX TP</span><span class="p p-mat">Matter Bridge (2024)</span><span class="p p-def">MQTT (Facility Expert)</span><span class="p p-def">HTTP/REST</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">KNX Speed</div><div class="pv">9600 bps TP</div></div><div><div class="pk">Display</div><div class="pv">4.3" capacitive touch</div></div><div><div class="pk">Functions</div><div class="pv">Lighting, HVAC, blinds</div></div><div><div class="pk">Standard</div><div class="pv">KNX EN 50090</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 18. SENSORS ═══ -->
+<section class="csec" id="sensors">
+<div class="chead"><div class="cico ico-sns">📡</div><div class="ctitle">Industrial Sensors &amp; Field Instruments</div><div class="ccnt">5 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc2"><div class="ctop"><div class="brand">Endress+Hauser</div><span class="badge bsns">Flowmeter</span></div>
+<div class="dname">Endress+Hauser Promag 10W (WirelessHART)</div>
+<div class="ddesc">Electromagnetic flowmeter with WirelessHART IEC 62591 for pipe runs where cabling is impractical. HART 7 4-20mA wired fallback. Modbus RTU via gateway. MQTT through WirelessHART gateway to cloud SCADA. 10-year battery life. IP68.</div>
+<div class="ptags"><span class="p p-xmpp">WirelessHART IEC 62591</span><span class="p p-opc">HART 7 (4-20mA)</span><span class="p p-mod">Modbus RTU</span><span class="p p-def">MQTT (via gateway)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">±0.5% of rate</div></div><div><div class="pk">Battery</div><div class="pv">10 years</div></div><div><div class="pk">WirelessHART</div><div class="pv">2.4 GHz IEC 62591</div></div><div><div class="pk">IP Rating</div><div class="pv">IP68</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Siemens</div><span class="badge bsns">Pressure Transmitter</span></div>
+<div class="dname">Siemens SITRANS P DS III (7MF4033)</div>
+<div class="ddesc">Industrial pressure transmitter for chemical, oil &amp; gas, and pharma. HART 7 4-20mA standard; PROFIBUS PA digital version. WirelessHART adapter available. MQTT via gateway to Siemens MindSphere / Industrial Edge. SIL 2 rated. ATEX/IECEx certified.</div>
+<div class="ptags"><span class="p p-opc">HART 7 (4-20mA)</span><span class="p p-opc">PROFIBUS PA</span><span class="p p-xmpp">WirelessHART (optional)</span><span class="p p-def">MQTT (via gateway)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">±0.04%</div></div><div><div class="pk">Range</div><div class="pv">0.5 mbar – 700 bar</div></div><div><div class="pk">Safety</div><div class="pv">SIL 2 IEC 61508</div></div><div><div class="pk">Cert.</div><div class="pv">ATEX, IECEx</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">ABB</div><span class="badge bsns">Variable Speed Drive</span></div>
+<div class="dname">ABB ACS880 Industrial Drive + ABB Ability</div>
+<div class="ddesc">Industrial VFD for pumps, fans, compressors, conveyors (0.55 – 5600 kW). PROFINET/EtherNet/IP/Modbus TCP field protocols. MQTT to ABB Ability cloud for predictive maintenance. ABB Drives Connect BLE app for parameter configuration. IEC 61800-5-2 SIL 3 safety.</div>
+<div class="ptags"><span class="p p-opc">PROFINET / EtherNet/IP</span><span class="p p-mod">Modbus RTU/TCP</span><span class="p p-def">MQTT (ABB Ability)</span><span class="p p-ble">BLE (Drives Connect)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Power</div><div class="pv">0.55 – 5600 kW</div></div><div><div class="pk">Safety</div><div class="pv">SIL 3 IEC 61800-5-2</div></div><div><div class="pk">Efficiency</div><div class="pv">IE2 motor profile</div></div><div><div class="pk">Cloud</div><div class="pv">ABB Ability (Azure)</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Yokogawa</div><span class="badge bsns">DP Transmitter</span></div>
+<div class="dname">Yokogawa EJA110E DP Transmitter</div>
+<div class="ddesc">Process industry differential pressure transmitter. HART 5/7 4-20mA. Foundation Fieldbus H1 digital bus version. WirelessHART adapter for retrofit wireless monitoring. Modbus RTU via gateway. ±0.04% accuracy. SIL 2 certified. 10-year stability specification.</div>
+<div class="ptags"><span class="p p-opc">HART 5/7 (4-20mA)</span><span class="p p-opc">Foundation Fieldbus H1</span><span class="p p-xmpp">WirelessHART (adapter)</span><span class="p p-mod">Modbus RTU (gateway)</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Accuracy</div><div class="pv">±0.04%</div></div><div><div class="pk">Stability</div><div class="pv">10-year specification</div></div><div><div class="pk">Safety</div><div class="pv">SIL 2 IEC 61508</div></div><div><div class="pk">Cert.</div><div class="pv">ATEX, FM, KOSHA</div></div></div>
+</div>
+
+<div class="card sc2"><div class="ctop"><div class="brand">Pepperl+Fuchs</div><span class="badge bsns">WirelessHART Gateway</span></div>
+<div class="dname">Pepperl+Fuchs WirelessHART Gateway WG1xHP</div>
+<div class="ddesc">Infrastructure gateway aggregating up to 100 WirelessHART field devices into Modbus TCP, OPC-UA, PROFIBUS DP, or MQTT for SCADA integration. Redundant WirelessHART mesh. ATEX Zone 2. Used in petrochemical plants to retrofit legacy HART devices with wireless connectivity.</div>
+<div class="ptags"><span class="p p-xmpp">WirelessHART IEC 62591</span><span class="p p-mod">Modbus TCP</span><span class="p p-mod">OPC-UA</span><span class="p p-opc">PROFIBUS DP</span><span class="p p-def">MQTT</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">WirelessHART Nodes</div><div class="pv">Up to 100</div></div><div><div class="pk">Radio</div><div class="pv">2.4 GHz IEEE 802.15.4e</div></div><div><div class="pk">ATEX Zone</div><div class="pv">Zone 2</div></div><div><div class="pk">Power</div><div class="pv">24V DC DIN-rail</div></div></div>
+</div>
+
+</div></section>
+
+<!-- ═══ 19. RFID ═══ -->
+<section class="csec" id="rfid">
+<div class="chead"><div class="cico ico-rfid">🏷️</div><div class="ctitle">RFID, Asset Tracking &amp; Retail IoT</div><div class="ccnt">4 devices</div></div>
+<div class="dgrid">
+
+<div class="card sc4"><div class="ctop"><div class="brand">Zebra Technologies</div><span class="badge brfid">RFID Reader</span></div>
+<div class="dname">Zebra FX9600 Fixed RFID Reader</div>
+<div class="ddesc">Enterprise fixed RFID reader: 1100+ tags/sec, 8 antenna ports, LLRP EPC Global + MQTT event streaming to Zebra DNA. AMQP for enterprise messaging. Wi-Fi + Ethernet. Used in distribution centers, hospitals, and retail stock rooms for real-time inventory visibility.</div>
+<div class="ptags"><span class="p p-def">MQTT (tag events)</span><span class="p p-amqp">AMQP</span><span class="p p-def">HTTP/REST (LLRP API)</span><span class="p p-opc">LLRP (EPC Global)</span><span class="p p-def">Wi-Fi / Ethernet</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Read Rate</div><div class="pv">1100+ tags/second</div></div><div><div class="pk">Antenna Ports</div><div class="pv">8 × monostatic/bistatic</div></div><div><div class="pk">RF Power</div><div class="pv">10–33 dBm</div></div><div><div class="pk">Frequency</div><div class="pv">EU: 865.6–867.6 MHz ETSI</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Impinj</div><span class="badge brfid">RFID Reader</span></div>
+<div class="dname">Impinj R700 RAIN RFID Reader</div>
+<div class="ddesc">High-performance UHF RFID reader with 1500+ tags/sec. RAIN RFID IoT Device Interface (MQTT-based standard). ItemSense REST API for inventory management. Impinj IoT Hub allows up to 32 antenna ports. Used in pharmaceutical cold chains and smart fitting rooms.</div>
+<div class="ptags"><span class="p p-def">MQTT (RAIN IoT Standard)</span><span class="p p-def">HTTP/REST (ItemSense)</span><span class="p p-opc">LLRP + Impinj Extensions</span><span class="p p-def">Ethernet / Wi-Fi</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Read Rate</div><div class="pv">1500+ tags/second</div></div><div><div class="pk">Antenna Ports</div><div class="pv">4 direct / 32 via IoT Hub</div></div><div><div class="pk">Sensitivity</div><div class="pv">-80 dBm receive</div></div><div><div class="pk">Standard</div><div class="pv">EPC Gen2 ISO 18000-63</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Nordic Semiconductor</div><span class="badge brfid">NB-IoT Tracker</span></div>
+<div class="dname">Nordic Thingy:91 NB-IoT Asset Tracker</div>
+<div class="ddesc">NB-IoT + LTE-M asset tracker development/production board. MQTT to nRF Cloud (AWS). CoAP/LwM2M for OMA device management. BLE 5.0 for local commissioning. Onboard GPS, accelerometer, pressure, temperature. 1800 mAh battery. Used in asset tracking pilots and IoT research.</div>
+<div class="ptags"><span class="p p-def">MQTT (nRF Cloud)</span><span class="p p-zwave">CoAP / LwM2M (OMA)</span><span class="p p-def">NB-IoT / LTE-M</span><span class="p p-ble">BLE 5.0</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Cellular</div><div class="pv">NB-IoT + LTE-M</div></div><div><div class="pk">GNSS</div><div class="pv">GPS / A-GPS</div></div><div><div class="pk">Battery</div><div class="pv">1800 mAh LiPo</div></div><div><div class="pk">Cloud</div><div class="pv">nRF Cloud (AWS-based)</div></div></div>
+</div>
+
+<div class="card sc4"><div class="ctop"><div class="brand">Samsara</div><span class="badge brfid">Asset Gateway</span></div>
+<div class="dname">Samsara AG67 Industrial Asset Gateway</div>
+<div class="ddesc">IP67 industrial gateway for non-powered assets: trailers, generators, compressors. LTE + GPS + BLE + Modbus RS-485 + J1939 CAN. MQTT to Samsara Cloud. HTTP/REST API for fleet management integration. Used in construction equipment and cold-chain logistics. -40 – 60 °C operation.</div>
+<div class="ptags"><span class="p p-def">MQTT (Samsara Cloud)</span><span class="p p-def">LTE / 4G</span><span class="p p-mod">Modbus RTU RS-485</span><span class="p p-opc">J1939 / CAN 2.0</span><span class="p p-ble">BLE 5.0</span><span class="p p-def">HTTP/REST API</span></div>
+<div class="div"></div>
+<div class="pgrid"><div><div class="pk">Cellular</div><div class="pv">LTE Cat 1 (4G)</div></div><div><div class="pk">IP Rating</div><div class="pv">IP67</div></div><div><div class="pk">Op. Temp.</div><div class="pv">-40 – 60 °C</div></div><div><div class="pk">Power</div><div class="pv">9–36V DC or battery</div></div></div>
+</div>
+
+</div></section>
+
+<footer><div class="wrap">
+  <div style="margin-top:4px;opacity:.5;">19 Categories · 100+ Devices · 60+ Brands · 25+ Protocols · Smart Home · TV · Kitchen · Bedroom · Living Room · Lockers · HVAC · ICS/SCADA · BMS · Wearables · IoV · Energy · Medical · AgriTech · Networking · Security · Lighting · Industrial Sensors · RFID</div>
+</div></footer>
+
+</div><!-- /.content -->
+</div><!-- /.page-body -->
 </body>
 </html>

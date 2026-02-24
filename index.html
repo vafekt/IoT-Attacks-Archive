@@ -27,20 +27,20 @@
 .orb1 { width:480px;height:480px;background:rgba(0,229,255,.07);top:-80px;right:-60px; }
 .orb2 { width:360px;height:360px;background:rgba(0,255,157,.06);bottom:-80px;left:8%; }
 .hero-eyebrow {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: .68rem; color: var(--cyan);
   letter-spacing: .22em; text-transform: uppercase;
   margin-bottom: 1.5rem;
   display: flex; align-items: center; gap: .75rem;
 }
 .hero-eyebrow::before { content:''; width:36px;height:1px;background:var(--cyan); }
-h1 { font-size: clamp(2.8rem,6vw,5.8rem); font-weight:800; line-height:1.04; max-width:860px; margin-bottom:1.25rem; }
+h1 { font-size: clamp(32px,5vw,70px); font-weight:900; line-height:1.05; max-width:860px; margin-bottom:1.25rem; letter-spacing:1px; text-transform:uppercase; }
 h1 em { font-style:normal; color:var(--cyan); }
 h1 em.g { color:var(--green); }
 .hero-lead { font-size:1.05rem;color:var(--muted);max-width:580px;line-height:1.75;margin-bottom:3rem; }
 .hero-stats { display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:3.5rem; }
 .stat { display:flex;flex-direction:column;gap:.15rem; }
-.stat-n { font-family:'Space Mono',monospace;font-size:2.2rem;font-weight:700;color:var(--cyan);line-height:1; }
+.stat-n { font-family:var(--font-mono);font-size:2.2rem;font-weight:700;color:var(--cyan);line-height:1; }
 .stat-l { font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em; }
 
 /* ── NAV TILES ── */
@@ -78,13 +78,13 @@ h1 em.g { color:var(--green); }
 .tile-desc { font-size:.78rem;color:var(--muted);line-height:1.6; }
 .tile-count {
   margin-top:.25rem;
-  font-family:'Space Mono',monospace;font-size:.65rem;
+  font-family:var(--font-mono);font-size:.65rem;
   display:flex;align-items:center;gap:.4rem;
 }
 .tile-count .n { color:var(--cyan);font-weight:700; }
 
 /* scroll hint */
-.scroll-hint { position:absolute;bottom:2.5rem;left:5vw;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.1em;display:flex;align-items:center;gap:.65rem;animation:ph 2s ease-in-out infinite; }
+.scroll-hint { position:absolute;bottom:2.5rem;left:5vw;font-family:var(--font-mono);font-size:.62rem;color:var(--muted);letter-spacing:.1em;display:flex;align-items:center;gap:.65rem;animation:ph 2s ease-in-out infinite; }
 @keyframes ph{0%,100%{opacity:.4}50%{opacity:1}}
 .s-arr{width:18px;height:28px;border:1px solid var(--muted);border-radius:9px;display:flex;justify-content:center;align-items:flex-start;padding-top:3px;}
 .s-dot{width:3px;height:7px;background:var(--muted);border-radius:2px;animation:sd 1.5s ease-in-out infinite;}
@@ -98,12 +98,12 @@ h1 em.g { color:var(--green); }
 .about-body p strong { color:var(--text); }
 .meta-list { list-style:none;display:flex;flex-direction:column;gap:.6rem; }
 .meta-list li { display:flex;align-items:center;gap:.75rem;font-size:.82rem;color:var(--muted); }
-.meta-list li strong { color:var(--text);min-width:110px;font-family:'Space Mono',monospace;font-size:.75rem; }
+.meta-list li strong { color:var(--text);min-width:110px;font-family:var(--font-mono);font-size:.75rem; }
 </style>
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+  <div class="nav-brand">IoT Security<span class="dot">//</span>Archive</div>
   <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">
     <span></span><span></span><span></span>
   </div>
