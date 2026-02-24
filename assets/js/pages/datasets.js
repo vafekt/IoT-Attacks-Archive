@@ -16,7 +16,7 @@ function renderTable() {
       <td><strong>${d.name}</strong></td>
       <td>${badge(String(d.year),'cyan')}</td>
       <td class="mono">${d.format}</td>
-      <td>${protoBadges(d.protocols)}</td>
+      <td>${protoBadges(d.protocols, 999)}</td>
       <td><strong style="font-family:'Space Mono',monospace;color:var(--green)">${d.attacks}</strong></td>
       <td>${d.benign==='Yes'?'<span class="check-y">✓</span>':d.benign==='Partial'?'<span class="check-p">~</span>':'<span class="check-n">✗</span>'}</td>
       <td>${badge(d.testbed)}</td>
