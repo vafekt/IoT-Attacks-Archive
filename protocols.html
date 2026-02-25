@@ -6,6 +6,17 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
 .page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
+.proto-card { cursor: pointer; transition: all .2s; }
+.proto-card:hover { transform: translateY(-2px); border-color: var(--cyan); }
+.proto-card.expanded { grid-column: span 1; }
+@media (min-width: 800px) {
+  .proto-card.expanded { grid-column: span 2; }
+}
+.proto-card img { box-shadow: 0 4px 16px rgba(0,0,0,.3); }
+.proto-bullet { margin-bottom: 1rem; line-height: 1.6; font-size: 0.9rem; }
+.proto-bullet strong { font-weight: 700; }
+#fullscreen-overlay { animation: fadeIn .2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -29,9 +40,9 @@
   <div class="page-hero-orb" style="width:360px;height:360px;background:rgba(0,255,157,.06);top:-60px;right:-60px;"></div>
   <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Protocols</div>
   <h1>IoT Protocols</h1>
-  <p>15 IoT and IIoT communication protocols with technical details, security properties, and coverage across the 16 datasets.</p>
+  <p id="heroProtoDesc">IoT and IIoT communication protocols with technical details, and coverage across the 16 datasets.</p>
   <div class="hero-chips">
-    <div class="hero-chip"><span class="val">15</span> protocols</div>
+    <div class="hero-chip"><span class="val" id="heroProtoCount">0</span> protocols</div>
     <div class="hero-chip">Smart home · Industrial · Healthcare · Building automation</div>
   </div>
 </div>

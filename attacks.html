@@ -6,6 +6,25 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
 .page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
+.division-block { margin-bottom: 2.5rem; }
+.division-title {
+  margin-bottom: .8rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+.division-index {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  margin-right: .55rem;
+}
+.division-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: auto;
+}
 </style>
 </head>
 <body>
@@ -29,35 +48,15 @@
   <div class="page-hero-orb" style="width:400px;height:400px;background:rgba(255,59,107,.05);top:-80px;right:-60px;"></div>
   <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>Attacks</div>
   <h1>Attack Taxonomy</h1>
-  <p>88+ attack techniques across 20+ categories — from volumetric DDoS to covert channels, Zigbee energy depletion, KNX fuzzing, and cyber-physical rogue device attacks.</p>
+  <p>Structured attack reference organized by division and detailed attack records across datasets and tools.</p>
   <div class="hero-chips">
-    <div class="hero-chip"><span class="val">88+</span> techniques</div>
-    <div class="hero-chip"><span class="val">20+</span> categories</div>
-    <div class="hero-chip">Per-technique dataset attribution</div>
+    <div class="hero-chip"><span class="val">17</span> divisions</div>
+    <div class="hero-chip">Category · Attack · Description · Dataset(s) · Tool(s)</div>
   </div>
 </div>
 
 <div class="content">
-  <div class="controls fade">
-    <div class="search-wrap">
-      <span class="search-ico">⌕</span>
-      <input type="text" id="atkSearch" placeholder="Search attacks or datasets..." oninput="filterAtks()">
-    </div>
-    <div class="filter-group" id="atkCatFilter">
-      <button class="filter-btn active" onclick="setCatFilter(this,'all')">All</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'DDoS')">DDoS</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'DoS')">DoS</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'Recon')">Recon</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'Brute')">Brute Force</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'Web')">Web</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'Spoof')">Spoofing</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'MITM')">MITM</button>
-      <button class="filter-btn" onclick="setCatFilter(this,'Others')">Others</button>
-    </div>
-    <span class="results-count" id="atkCount"></span>
-  </div>
-
-  <div class="accordion fade" id="atkAccordion"></div>
+  <div id="attackDivisions"></div>
 </div>
 </div>
 
@@ -66,7 +65,6 @@
   <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
 </footer>
 
-<script src="assets/data/attacks.js"></script>
 <script src="assets/js/shared.js"></script>
 <script src="assets/js/pages/attacks.js"></script>
 </body>

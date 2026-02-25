@@ -1,125 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Models — IoT Security Hub</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-.page-hero h1 { font-size: clamp(28px,4vw,58px); font-weight: 900; line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; }
-.coming-soon-banner {
-  display: flex; align-items: center; gap: 1rem;
-  background: rgba(0,229,255,.05);
-  border: 1px solid rgba(0,229,255,.15);
-  border-radius: 10px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 2.5rem;
-  font-size: .88rem; color: var(--muted); line-height: 1.65;
+.page-hero h1 {
+	font-size: clamp(28px,4vw,58px);
+	font-weight: 900;
+	line-height: 1.05;
+	letter-spacing: 1px;
+	text-transform: uppercase;
 }
-.coming-soon-banner .icon { font-size:1.75rem; flex-shrink:0; }
-.coming-soon-banner strong { color: var(--cyan); display:block; margin-bottom:.3rem; }
-.placeholder-card {
-  background: var(--bg2);
-  border: 1px dashed var(--border);
-  border-radius: 10px;
-  padding: 3rem;
-  text-align: center;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: .75rem;
+
+.in-progress-card {
+	max-width: 760px;
+	margin: 0 auto;
+	background: var(--bg2);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 2.2rem 1.8rem;
+	text-align: center;
 }
-.placeholder-card .ph-icon { font-size:2.5rem; margin-bottom:1rem; opacity:.4; }
-.placeholder-card .ph-title { color:var(--text); font-size:1rem; font-weight:700; margin-bottom:.5rem; font-family:var(--font-heading); }
-.model-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
-.model-placeholder {
-  background: var(--bg2); border:1px dashed var(--border); border-radius:10px;
-  padding:1.5rem; display:flex; flex-direction:column; gap:.5rem;
-  font-family:var(--font-mono);
+
+.in-progress-card h2 {
+	margin-bottom: .6rem;
 }
-.mp-label { font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
-.mp-name { font-size:.9rem; font-weight:700; color:var(--text); }
-.mp-desc { font-size:.75rem; color:var(--muted); line-height:1.6; }
-.mp-status { display:flex; align-items:center; gap:.5rem; margin-top:.5rem; }
-.dot-soon { width:8px; height:8px; border-radius:50%; background:var(--amber); animation:blink 1.5s ease-in-out infinite; }
-@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+.in-progress-card p {
+	color: var(--muted);
+	font-size: .95rem;
+	line-height: 1.7;
+}
 </style>
 </head>
 <body>
 <nav class="site-nav">
-  <div class="nav-brand">IoT Security<span class="dot">//</span>AI Models</div>
-  <div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
-  <div class="nav-links">
-    <a class="nav-link" href="index.html"><span class="icon">⌂</span> Hub</a>
-    <a class="nav-link" href="datasets.html"><span class="icon">🗄</span> Datasets</a>
-    <a class="nav-link" href="protocols.html"><span class="icon">📡</span> Protocols</a>
-    <a class="nav-link" href="attacks.html"><span class="icon">⚔</span> Attacks</a>
-    <a class="nav-link" href="tools.html"><span class="icon">🔧</span> Tools</a>
-    <a class="nav-link" href="devices.html"><span class="icon">📟</span> Devices</a>
-    <a class="nav-link active" href="ai-models.html"><span class="icon">🤖</span> AI Models</a>
-  </div>
+	<div class="nav-brand">IoT_SEC<span class="dot">//</span>HUB</div>
+	<div class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+	<div class="nav-links">
+		<a class="nav-link" href="index.html" data-page="home"><span class="icon">⌂</span> Hub</a>
+		<a class="nav-link" href="datasets.html" data-page="datasets"><span class="icon">🗄</span> Datasets</a>
+		<a class="nav-link" href="protocols.html" data-page="protocols"><span class="icon">📡</span> Protocols</a>
+		<a class="nav-link" href="attacks.html" data-page="attacks"><span class="icon">⚔</span> Attacks</a>
+		<a class="nav-link" href="tools.html" data-page="tools"><span class="icon">🔧</span> Tools</a>
+		<a class="nav-link" href="devices.html" data-page="devices"><span class="icon">📟</span> Devices</a>
+		<a class="nav-link active" href="ai-models.html" data-page="ai"><span class="icon">🤖</span> AI Models</a>
+	</div>
 </nav>
+
 <div class="page-body">
+	<div class="page-hero">
+		<div class="page-hero-bg"></div>
+		<div class="page-hero-orb" style="width:400px;height:400px;background:rgba(0,229,255,.06);top:-100px;right:-80px;"></div>
+		<div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>AI Models</div>
+		<h1>AI Models</h1>
+		<p>This section is currently being prepared.</p>
+		<div class="hero-chips">
+			<div class="hero-chip"><span class="val">In Progress</span></div>
+		</div>
+	</div>
 
-<div class="page-hero">
-  <div class="page-hero-bg"></div>
-  <div class="page-hero-orb" style="width:400px;height:400px;background:rgba(0,229,255,.05);top:-80px;right:-60px;"></div>
-  <div class="breadcrumb"><a href="index.html">Hub</a><span class="sep">/</span>AI Models</div>
-  <h1>AI Detection Models</h1>
-  <p>Machine learning and deep learning architectures for IoT intrusion detection — benchmarks, feature engineering, and the unified AI-IDS pipeline across 16 heterogeneous datasets.</p>
-  <div class="hero-chips">
-    <div class="hero-chip"><span class="val">In Progress</span></div>
-    <div class="hero-chip">PyTorch · TensorFlow</div>
-    <div class="hero-chip">Zeek · ICSNPP · Spicy</div>
-  </div>
-</div>
-
-<div class="content">
-
-  <!-- Banner -->
-  <div class="coming-soon-banner fade">
-    <div class="icon">🤖</div>
-    <div>
-      <strong>Content Coming Soon</strong>
-      This section will document AI/ML models trained on the unified IoT dataset corpus — including architectures, hyperparameters, feature sets, and cross-dataset detection performance. The pipeline description and planned model families are outlined below.
-    </div>
-  </div>
-
-  <!-- Pipeline -->
-  <div class="section-label fade">Unified AI-IDS Pipeline</div>
-  <h2 class="section-title fade">From Raw PCAPs to Detection</h2>
-  <p class="section-desc fade">The 8-step process for building a unified intrusion detection system across 16 heterogeneous IoT datasets.</p>
-  <div class="timeline fade" id="pipelineEl"></div>
-
-  <!-- Planned Models -->
-  <div style="margin-top:3.5rem">
-    <div class="section-label fade">Planned Model Coverage</div>
-    <h2 class="section-title fade">Model Families</h2>
-    <p class="section-desc fade">The following model architectures are planned for evaluation against the unified dataset corpus.</p>
-    <div class="model-grid fade" id="modelGrid"></div>
-  </div>
-
-  <!-- Benchmark Table Placeholder -->
-  <div style="margin-top:3.5rem">
-    <div class="section-label fade">Performance Benchmarks</div>
-    <h2 class="section-title fade">Detection Results</h2>
-    <div class="placeholder-card fade">
-      <div class="ph-icon">📊</div>
-      <div class="ph-title">Benchmark Table — Coming Soon</div>
-      <p style="font-family:var(--font-heading);font-size:.82rem;line-height:1.6;margin-top:.5rem">
-        Results will include per-dataset and cross-dataset accuracy, precision, recall, F1-score, and false positive rate for each model architecture.
-      </p>
-    </div>
-  </div>
-
-</div>
+	<div class="content">
+		<div class="in-progress-card fade">
+			<h2>In Progress</h2>
+			<p>Content for AI model architectures, training setup, and benchmark results will be added soon.</p>
+		</div>
+	</div>
 </div>
 
 <footer class="site-footer">
-  <div class="footer-note">IoT Security Hub · AI Models</div>
-  <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
+	<div class="footer-note">IoT Security Hub · AI Models</div>
+	<div class="footer-note"><a href="index.html">← Back to Hub</a></div>
 </footer>
 
-<script src="assets/data/ai-models.js"></script>
 <script src="assets/js/shared.js"></script>
-<script src="assets/js/pages/ai-models.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+	initMobileNav();
+	initFade();
+});
+</script>
 </body>
 </html>

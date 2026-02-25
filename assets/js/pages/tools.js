@@ -47,6 +47,35 @@ function renderTools() {
   `).join('') || `<tr><td colspan="6" class="no-results">No tools match the current filters.</td></tr>`;
 }
 
+function openToolFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const tool = params.get('tool');
+  if (!tool) return;
+
+  const searchInput = document.getElementById('toolSearch');
+  if (!searchInput) return;
+
+  searchInput.value = tool;
+  toolCatFilter = 'all';
+  document.querySelectorAll('#toolCatFilter .filter-btn').forEach((button) => {
+    button.classList.toggle('active', button.textContent.trim() === 'All');
+  });
+
+  renderTools();
+
+  setTimeout(() => {
+    const rows = Array.from(document.querySelectorAll('#toolsTbody tr'));
+    const matchingRow = rows.find((row) => {
+      const name = row.querySelector('.tool-name');
+      return name && name.textContent.trim().toLowerCase() === tool.trim().toLowerCase();
+    });
+    if (!matchingRow) return;
+    matchingRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    matchingRow.style.boxShadow = '0 0 0 2px rgba(0,229,255,.4) inset';
+    setTimeout(() => { matchingRow.style.boxShadow = ''; }, 1800);
+  }, 60);
+}
+
 function filterTools() { renderTools(); }
 function setToolCat(btn, cat) {
   document.querySelectorAll('#toolCatFilter .filter-btn').forEach(b => b.classList.remove('active'));
@@ -57,6 +86,7 @@ function setToolCat(btn, cat) {
 
 document.addEventListener('DOMContentLoaded', () => {
   renderTools();
+  openToolFromQuery();
   initTableSort('toolsTable');
   initMobileNav(); initFade();
 });

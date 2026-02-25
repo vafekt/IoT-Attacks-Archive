@@ -1,5 +1,120 @@
 let protoFilter = 'all';
 
+const TESTBED_IMAGE_FILES = new Set([
+  'BACnet Attack Dataset.png',
+  'BCCC-IoTIDS-ZWave-2025.png',
+  'CIC IIoT 2025 (DataSense).png',
+  'CIC IoMT 2024.png',
+  'CIC IoT 2023.png',
+  'CIC Modbus Dataset 2023.png',
+  'KNXnetIP IDS Dataset.png',
+  'MQTT-IoT-IDS2020.png',
+  'MQTTset.png',
+  'MU-IoT Dataset.png',
+  'TON_IoT Dataset.png',
+  'ZBDS2023 Zigbee Dataset.png',
+  'ZigBeeNet Dataset.png'
+]);
+
+const TESTBED_IMAGE_FILE_OVERRIDES = {
+  'KNXnet/IP IDS Dataset': 'KNXnetIP IDS Dataset.png'
+};
+
+const TESTBED_OVERLAY_ID = 'dataset-testbed-overlay';
+let testbedOverlayKeydownHandler = null;
+
+const PROTOCOL_PAGE_NAMES = new Set([
+  'MQTT','Modbus TCP','BACnet/IP','KNX/IP','Zigbee','Z-Wave','Thread','BLE','CoAP','AMQP','XMPP','Wi-Fi (802.11)','6LoWPAN','RPL'
+]);
+
+const PROTOCOL_PAGE_ALIAS = {
+  'Wi-Fi': 'Wi-Fi (802.11)',
+  'KNXnet/IP': 'KNX/IP',
+  'Modbus': 'Modbus TCP',
+  'BACnet': 'BACnet/IP'
+};
+
+function getProtocolPageTarget(protocolName) {
+  if (PROTOCOL_PAGE_NAMES.has(protocolName)) return protocolName;
+  return PROTOCOL_PAGE_ALIAS[protocolName] || null;
+}
+
+function renderPrimaryProtocolLinks(protocols) {
+  return protocols.map((protocol) => {
+    const target = getProtocolPageTarget(protocol);
+    if (!target) return badge(protocol);
+    const color = BADGE_COLORS[protocol] || BADGE_COLORS[target] || 'gray';
+    return `<a href="protocols.html?protocol=${encodeURIComponent(target)}" class="badge b-${color}" style="text-decoration:none">${protocol}</a>`;
+  }).join(' ');
+}
+
+function getTestbedImageFile(dataset) {
+  const override = TESTBED_IMAGE_FILE_OVERRIDES[dataset.name];
+  const candidate = override || `${dataset.name}.png`;
+  return TESTBED_IMAGE_FILES.has(candidate) ? candidate : null;
+}
+
+function closeTestbedImageOverlay() {
+  const overlay = document.getElementById(TESTBED_OVERLAY_ID);
+  if (!overlay) return;
+  overlay.remove();
+  document.body.style.overflow = '';
+  if (testbedOverlayKeydownHandler) {
+    document.removeEventListener('keydown', testbedOverlayKeydownHandler);
+    testbedOverlayKeydownHandler = null;
+  }
+}
+
+function openTestbedImage(encodedImageFileName, event) {
+  if (event) event.stopPropagation();
+  const imageFileName = decodeURIComponent(encodedImageFileName);
+  closeTestbedImageOverlay();
+
+  const overlay = document.createElement('div');
+  overlay.id = TESTBED_OVERLAY_ID;
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .95);
+    z-index: 10000;
+    padding: 1rem;
+    cursor: pointer;
+  `;
+
+  const image = document.createElement('img');
+  image.src = `assets/images/testbeds/${imageFileName}`;
+  image.alt = `${imageFileName.replace('.png', '')} Testbed`;
+  image.style.cssText = `
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;
+    cursor: default;
+  `;
+
+  image.addEventListener('click', (e) => e.stopPropagation());
+  overlay.addEventListener('click', closeTestbedImageOverlay);
+  overlay.appendChild(image);
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  testbedOverlayKeydownHandler = (e) => {
+    if (e.key === 'Escape') closeTestbedImageOverlay();
+  };
+  document.addEventListener('keydown', testbedOverlayKeydownHandler);
+}
+
+function renderTestbedCell(dataset) {
+  const imageFile = getTestbedImageFile(dataset);
+  if (!imageFile) return badge(dataset.testbed);
+
+  return `<button type="button" class="testbed-trigger" onclick="openTestbedImage('${encodeURIComponent(imageFile)}', event)" style="background:none;border:none;padding:0;cursor:pointer">${badge(dataset.testbed)}</button>`;
+}
+
 function matchDs(d) {
   const q = document.getElementById('dsSearch').value.toLowerCase();
   const matchQ = !q || d.name.toLowerCase().includes(q) || d.protocols.join(' ').toLowerCase().includes(q) || d.institution.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q);
@@ -16,10 +131,10 @@ function renderTable() {
       <td><strong>${d.name}</strong></td>
       <td>${badge(String(d.year),'cyan')}</td>
       <td class="mono">${d.format}</td>
-      <td>${protoBadges(d.protocols, 999)}</td>
+      <td>${renderPrimaryProtocolLinks(d.protocols)}</td>
       <td><strong style="font-family:'Space Mono',monospace;color:var(--green)">${d.attacks}</strong></td>
       <td>${d.benign==='Yes'?'<span class="check-y">✓</span>':d.benign==='Partial'?'<span class="check-p">~</span>':'<span class="check-n">✗</span>'}</td>
-      <td>${badge(d.testbed)}</td>
+      <td>${renderTestbedCell(d)}</td>
       <td class="mono" style="font-size:.72rem">${d.institution}</td>
       <td>${d.link&&d.link!='#'?`<a href="${d.link}" target="_blank" style="color:var(--cyan);font-family:'Space Mono',monospace;font-size:.68rem">→ Link</a>`:'<span style="color:var(--muted);font-size:.7rem">—</span>'}</td>
     </tr>
@@ -77,6 +192,8 @@ function setView(btn, view) {
   document.getElementById('tablePanel').classList.toggle('active', view==='table');
   document.getElementById('cardsPanel').classList.toggle('active', view==='cards');
 }
+
+window.openTestbedImage = openTestbedImage;
 
 document.addEventListener('DOMContentLoaded', () => {
   renderTable(); renderCards();
