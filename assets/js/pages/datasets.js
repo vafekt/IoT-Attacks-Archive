@@ -1,5 +1,121 @@
 let protoFilter = 'all';
 
+const ATTACK_DIVISIONS_DATA = (window.HUB_DB && window.HUB_DB.attackDivisions) || window.ATTACK_DIVISIONS || [];
+
+const PAGE_ATTACK_DATASET_NAME_ALIAS = {
+  'CIC IIoT 2025': 'CIC IIoT 2025 (DataSense)',
+  'MU-IoT': 'MU-IoT Dataset',
+  'TON_IoT': 'TON_IoT Dataset',
+  'BCCC ZWave 2025': 'BCCC-IoTIDS-ZWave-2025',
+  'NREL Cyber-Induced Mech. Faults Dataset': 'NREL Cyber Faults Dataset'
+};
+
+const PAGE_DATASET_PROTOCOL_NORMALIZATION = {
+  'KNXnet/IP': 'KNX/IP',
+  'BACnet/IP': 'BACnet',
+  'Modbus TCP': 'Modbus',
+  'Wi-Fi': 'Wi-Fi (802.11)',
+  'TLS': 'HTTPS'
+};
+
+const PAGE_DATASET_CATEGORY_PRIORITY = [
+  'Brute Force', 'DDoS', 'DoS', 'Reconnaissance', 'Web', 'MITM', 'Malware',
+  'Data Integrity', 'Replay', 'Covert Channel', 'Fuzzing', 'Cyber-Physical'
+];
+
+function normalizePageAttackDatasetName(name) {
+  return PAGE_ATTACK_DATASET_NAME_ALIAS[name] || name;
+}
+
+function normalizePageDatasetCategory(rawCategory, divisionTitle, attackName) {
+  if (/brute\s*force/i.test(rawCategory)) return 'Brute Force';
+  if (/reconnaissance/i.test(rawCategory)) return 'Reconnaissance';
+  if (/web-based/i.test(rawCategory)) return 'Web';
+  if (/spoofing|mitm/i.test(rawCategory)) return 'MITM';
+  if (/malware|botnet/i.test(rawCategory)) return 'Malware';
+  if (/fuzzing/i.test(rawCategory)) return 'Fuzzing';
+  if (/data\s*integrity/i.test(rawCategory)) return 'Data Integrity';
+  if (/covert\s*channel/i.test(rawCategory)) return 'Covert Channel';
+  if (/replay/i.test(rawCategory)) return 'Replay';
+  if (/cyber-physical/i.test(rawCategory)) return 'Cyber-Physical';
+  if (/dos\/ddos/i.test(rawCategory) || /dos\s*\/\s*ddos/i.test(divisionTitle)) {
+    if (/mirai/i.test(divisionTitle) || /mirai/i.test(attackName)) return 'Malware';
+    return 'DoS/DDoS';
+  }
+  return rawCategory.split('–')[0].trim();
+}
+
+function normalizePageAttackName(attackName) {
+  return attackName.replace(/\s*\(Ping Flood\)/i, '').replace(/\s+/g, ' ').trim();
+}
+
+function getPageDatasetCategoryPriority(category) {
+  const idx = PAGE_DATASET_CATEGORY_PRIORITY.indexOf(category);
+  return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
+}
+
+function synchronizeDatasetsWithCentralAttacks() {
+  if (!ATTACK_DIVISIONS_DATA.length) return;
+
+  const byDataset = new Map();
+
+  ATTACK_DIVISIONS_DATA.forEach((division) => {
+    division.rows.forEach((row) => {
+      const baseCategory = normalizePageDatasetCategory(row[0], division.title, row[1]);
+      const categories = baseCategory === 'DoS/DDoS' ? ['DoS', 'DDoS'] : [baseCategory];
+      const attackName = normalizePageAttackName(row[1]);
+
+      row[3].split(',').map((n) => normalizePageAttackDatasetName(n.trim())).forEach((datasetName) => {
+        if (!datasetName) return;
+        if (!byDataset.has(datasetName)) {
+          byDataset.set(datasetName, {
+            attackLabels: new Set(),
+            categoryMap: new Map()
+          });
+        }
+        const info = byDataset.get(datasetName);
+
+        categories.forEach((category) => {
+          const attackLabel = `${category} – ${attackName}`;
+          info.attackLabels.add(attackLabel);
+          if (!info.categoryMap.has(category)) {
+            info.categoryMap.set(category, new Set());
+          }
+          info.categoryMap.get(category).add(attackLabel);
+        });
+      });
+    });
+  });
+
+  DATASETS.forEach((dataset) => {
+    const key = normalizePageAttackDatasetName(dataset.name);
+    const info = byDataset.get(key);
+
+    dataset.protocols = sortProtocols(dataset.protocols.map((p) => PAGE_DATASET_PROTOCOL_NORMALIZATION[p] || p));
+
+    if (!info) {
+      if (!dataset.attackCats?.length) dataset.attackCats = ['Benign Traffic Only'];
+      if (!dataset.attackDetails?.length) dataset.attackDetails = ['No attack records in centralized attack taxonomy.'];
+      dataset.attacks = dataset.attackLabels?.length || dataset.attacks || 0;
+      dataset.desc = `${dataset.attacks} standardized attacks across ${dataset.attackCats.length} categories. Primary protocols: ${dataset.protocols.join(', ')}.`;
+      return;
+    }
+
+    dataset.attacks = info.attackLabels.size;
+
+    const orderedCategories = Array.from(info.categoryMap.keys()).sort((a, b) => {
+      const p1 = getPageDatasetCategoryPriority(a);
+      const p2 = getPageDatasetCategoryPriority(b);
+      if (p1 !== p2) return p1 - p2;
+      return a.localeCompare(b);
+    });
+
+    dataset.attackCats = orderedCategories.map((category) => `${category} (${info.categoryMap.get(category).size})`);
+    dataset.attackDetails = orderedCategories.map((category) => Array.from(info.categoryMap.get(category)).sort((a, b) => a.localeCompare(b)).join(', '));
+    dataset.desc = `${dataset.attacks} standardized attacks across ${dataset.attackCats.length} categories. Primary protocols: ${dataset.protocols.join(', ')}.`;
+  });
+}
+
 const TESTBED_IMAGE_FILES = new Set([
   'BACnet Attack Dataset.png',
   'BCCC-IoTIDS-ZWave-2025.png',
@@ -196,6 +312,7 @@ function setView(btn, view) {
 window.openTestbedImage = openTestbedImage;
 
 document.addEventListener('DOMContentLoaded', () => {
+  synchronizeDatasetsWithCentralAttacks();
   renderTable(); renderCards();
   initTableSort('dsTable');
   initMobileNav(); initFade();

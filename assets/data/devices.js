@@ -168,4 +168,7 @@
     ]
   }
 ];
-window.DEVICES = DEVICES;
+if (window.HUB_DB && typeof window.HUB_DB.register === 'function') {
+  window.HUB_DB.register('devices', DEVICES);
+}
+window.DEVICES = (window.HUB_DB && window.HUB_DB.devices) || DEVICES;

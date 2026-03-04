@@ -7,8 +7,8 @@
     link:"https://www.unb.ca/cic/datasets/iotdataset-2023.html" },
   { id:2, name:"CIC IIoT 2025 (DataSense)", year:2025, format:"PCAP, CSV", protocols:["MQTT","Wi-Fi","TCP","UDP","HTTP","HTTPS","SSH","Telnet","TLS","ARP","JSON", "IP"], attacks:49, benign:"Yes", testbed:"Physical", institution:"Canadian Institute for Cybersecurity, Canada",
     desc:"Five-layer IIoT architecture with Eclipse Mosquitto broker on Raspberry Pi. 50 attacks across 8 categories. Logs via Filebeat → Elasticsearch. 259,212 benign packets.",
-    attackCats:["DDoS (14)","DoS (14)","Reconnaissance (9)","Web-based (5)","Brute Force (2)","MITM (3)","Mirai Malware (2)"],
-    attackDetails:["MQTT Connect/Publish Flood, HTTP/ICMP/UDP/TCP variants (hping3, golang-httpflood, mqtt-benchmark)","Similar to DDoS variants, single-source origin","Host Discovery (ARP/TCP/UDP Ping), OS Scan, Port Scan, Service Version Detection, Vulnerability Scan","Backdoor Upload (Remot3d), Command Injection, SQL Injection (sqlmap), Blind SQL Injection, XSS","SSH Brute Force (thc-hydra, SecLists), Telnet Brute Force","ARP Spoofing (ettercap), Impersonation (mqtt-benchmark), IP Spoofing (hping3)","Mirai SYN Flood, Mirai UDP Flood"],
+    attackCats:["Brute Force (2)","DDoS (14)","DoS (14)","Reconnaissance (9)","Web-based (5)","MITM (3)","Malware (2)"],
+    attackDetails:["Brute Force – SSH; Brute Force – Telnet","DDoS – TCP ACK Fragmentation, MQTT Connect, HTTP, ICMP, ICMP Fragmentation, MQTT Publish, TCP PSHACK, TCP RSTFIN, TCP Slowloris, TCP SYN, TCP Synonymous IP, TCP Port, UDP Port, UDP Fragmentation","DoS – MQTT Connect, HTTP, ICMP, ICMP Fragmentation, MQTT Publish, TCP PSHACK, TCP RSTFIN, TCP Slowloris, TCP SYN, TCP Synonymous IP, TCP Port, UDP Port, UDP Fragmentation","Reconnaissance – ARP Ping, TCP ACK Ping, TCP SYN Ping, TCP SYN Stealth, UDP Ping, OS Scan, Ping Sweep, TCP Port Scan, Vulnerability Scan","Web – Backdoor Upload, Command Injection, SQL Injection, Blind SQL Injection, Cross Site Scripting","MITM – ARP Spoofing, Impersonation, IP Spoofing","Malware – Mirai TCP SYN Flood, Mirai UDP Flood"],
     devices:"15+ Arduino-based industrial sensors, surveillance cameras, smart plugs, Raspberry Pi edge device, Dell PowerEdge server",
     link:"https://www.unb.ca/cic/datasets/iiot-dataset-2025.html" },
   { id:3, name:"CIC IoMT 2024", year:2024, format:"PCAP, CSV", protocols:["Wi-Fi","MQTT","BLE","TCP","UDP","ICMP","HTTP","DNS","SSH","ARP", "TLS","IP"], attacks:19, benign:"Yes", testbed:"Hybrid", institution:"Canadian Institute for Cybersecurity, Canada",
@@ -55,8 +55,8 @@
     link:"https://github.com/aaaastark/Intrusion-Detection-System-MQTT-Enabled-IoT" },
   { id:10, name:"MQTTset", year:2020, format:"PCAP", protocols:["MQTT", "TCP", "IP"], attacks:5, benign:"Yes", testbed:"Simulated", institution:"IEIIT Institute, Italy",
     desc:"8 simulated IoT sensors on Eclipse Mosquitto v1.6.2 broker. Simulates smart home/office environment. Includes SlowITe attack an MQTT-specific slow DoS attack.",
-    attackCats:["DoS (2)","DoS (2)","Brute Force (1)"],
-    attackDetails:["DoS Multiple Connections (MQTT-malaria), SlowITe (exploits MQTT keep-alive mechanism)","MQTT Publish Flood (IoT-Flock), Malformed Data (crafted invalid MQTT packets)","Brute Force Authentication (repeated CONNECT attempts)"],
+    attackCats:["DoS (4)","Brute Force (1)"],
+    attackDetails:["MQTT Multiple Connections DoS, MQTT SlowITe, MQTT Publish Flood, Malformed MQTT Flood","MQTT Brute Force Authentication"],
     devices:"Temperature, Humidity, Light, CO-Gas, Motion, Smoke, Door Locker, Fan sensors at Eclipse Mosquitto broker",
     link:"https://www.kaggle.com/datasets/cnrieiit/mqttset" },
   { id:11, name:"CRAWDAD cmu/thread-devboards", year:2022, format:"PCAP", protocols:["Thread","6LoWPAN","MLE", "IEEE 802.15.4", "IPv6"], attacks:6, benign:"Yes", testbed:"Physical", institution:"Carnegie Mellon University, USA",
@@ -149,6 +149,105 @@ const ATTACK_CATEGORY_NORMALIZATION = {
   "Spyware": "Malware"
 };
 
+const ATTACK_DATASET_NAME_ALIAS = {
+  "CIC IIoT 2025": "CIC IIoT 2025 (DataSense)",
+  "MU-IoT": "MU-IoT Dataset",
+  "TON_IoT": "TON_IoT Dataset",
+  "BCCC ZWave 2025": "BCCC-IoTIDS-ZWave-2025",
+  "NREL Cyber-Induced Mech. Faults Dataset": "NREL Cyber Faults Dataset"
+};
+
+const SOURCE_CATEGORY_PRIORITY = [
+  "Brute Force", "DDoS", "DoS", "Reconnaissance", "Web", "MITM", "Malware",
+  "Data Integrity", "Replay", "Covert Channel", "Fuzzing", "Cyber-Physical"
+];
+
+function normalizeAttackDatasetName(name) {
+  return ATTACK_DATASET_NAME_ALIAS[name] || name;
+}
+
+function normalizeSourceCategory(rawCategory, divisionTitle, attackName) {
+  if (/brute\s*force/i.test(rawCategory)) return "Brute Force";
+  if (/reconnaissance/i.test(rawCategory)) return "Reconnaissance";
+  if (/web-based/i.test(rawCategory)) return "Web";
+  if (/spoofing|mitm/i.test(rawCategory)) return "MITM";
+  if (/malware|botnet/i.test(rawCategory)) return "Malware";
+  if (/fuzzing/i.test(rawCategory)) return "Fuzzing";
+  if (/data\s*integrity/i.test(rawCategory)) return "Data Integrity";
+  if (/covert\s*channel/i.test(rawCategory)) return "Covert Channel";
+  if (/replay/i.test(rawCategory)) return "Replay";
+  if (/cyber-physical/i.test(rawCategory)) return "Cyber-Physical";
+  if (/dos\/ddos/i.test(rawCategory) || /dos\s*\/\s*ddos/i.test(divisionTitle)) {
+    if (/mirai/i.test(divisionTitle) || /mirai/i.test(attackName)) return "Malware";
+    return "DoS/DDoS";
+  }
+  return rawCategory.split("–")[0].trim();
+}
+
+function normalizeSourceAttackName(attackName) {
+  return attackName.replace(/\s*\(Ping Flood\)/i, "").replace(/\s+/g, " ").trim();
+}
+
+function getSourceCategoryPriority(category) {
+  const idx = SOURCE_CATEGORY_PRIORITY.indexOf(category);
+  return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
+}
+
+function synchronizeDatasetsWithCentralAttacksSource() {
+  const attackDivisions = (window.HUB_DB && Array.isArray(window.HUB_DB.attackDivisions) && window.HUB_DB.attackDivisions.length)
+    ? window.HUB_DB.attackDivisions
+    : [];
+
+  if (!attackDivisions.length) return;
+
+  const byDataset = new Map();
+
+  attackDivisions.forEach((division) => {
+    division.rows.forEach((row) => {
+      const baseCategory = normalizeSourceCategory(row[0], division.title, row[1]);
+      const categories = baseCategory === "DoS/DDoS" ? ["DoS", "DDoS"] : [baseCategory];
+      const attackName = normalizeSourceAttackName(row[1]);
+
+      row[3].split(",").map((name) => normalizeAttackDatasetName(name.trim())).forEach((datasetName) => {
+        if (!datasetName) return;
+        if (!byDataset.has(datasetName)) {
+          byDataset.set(datasetName, {
+            attackLabels: new Set(),
+            categoryMap: new Map()
+          });
+        }
+
+        const info = byDataset.get(datasetName);
+        categories.forEach((category) => {
+          const label = `${category} – ${attackName}`;
+          info.attackLabels.add(label);
+          if (!info.categoryMap.has(category)) info.categoryMap.set(category, new Set());
+          info.categoryMap.get(category).add(label);
+        });
+      });
+    });
+  });
+
+  DATASETS.forEach((dataset) => {
+    const key = normalizeAttackDatasetName(dataset.name);
+    const info = byDataset.get(key);
+    if (!info) return;
+
+    dataset.attacks = info.attackLabels.size;
+
+    const orderedCategories = Array.from(info.categoryMap.keys()).sort((a, b) => {
+      const p1 = getSourceCategoryPriority(a);
+      const p2 = getSourceCategoryPriority(b);
+      if (p1 !== p2) return p1 - p2;
+      return a.localeCompare(b);
+    });
+
+    dataset.attackCats = orderedCategories.map((category) => `${category} (${info.categoryMap.get(category).size})`);
+    dataset.attackDetails = orderedCategories.map((category) => Array.from(info.categoryMap.get(category)).sort((a, b) => a.localeCompare(b)).join(", "));
+    dataset.desc = `${dataset.attacks} standardized attacks across ${dataset.attackCats.length} categories. Primary protocols: ${dataset.protocols.join(", ")}.`;
+  });
+}
+
 function sortProtocols(protocols) {
   const getPriority = (protocol) => {
     const index = IOT_PROTOCOL_PRIORITY.findIndex((name) => name.toLowerCase() === protocol.toLowerCase().trim());
@@ -194,6 +293,8 @@ function sortAttackCategories(attackCats, attackDetails) {
   };
 }
 
+synchronizeDatasetsWithCentralAttacksSource();
+
 for (const dataset of DATASETS) {
   dataset.protocols = sortProtocols(dataset.protocols);
   const sortedAttacks = sortAttackCategories(dataset.attackCats, dataset.attackDetails);
@@ -201,4 +302,7 @@ for (const dataset of DATASETS) {
   dataset.attackDetails = sortedAttacks.attackDetails;
 }
 
-window.DATASETS = DATASETS;
+if (window.HUB_DB && typeof window.HUB_DB.register === 'function') {
+  window.HUB_DB.register('datasets', DATASETS);
+}
+window.DATASETS = (window.HUB_DB && window.HUB_DB.datasets) || DATASETS;

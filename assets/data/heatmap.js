@@ -36,4 +36,7 @@
     ["✓","✓","✓","✗","✗","✓","✗","✗","✗","✗","✗","✗","✗","✗","✗","✓"]
   ]
 };
-window.HEATMAP = HEATMAP;
+if (window.HUB_DB && typeof window.HUB_DB.register === 'function') {
+  window.HUB_DB.register('heatmap', HEATMAP);
+}
+window.HEATMAP = (window.HUB_DB && window.HUB_DB.heatmap) || HEATMAP;

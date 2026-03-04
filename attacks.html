@@ -25,6 +25,13 @@
   border-radius: 10px;
   overflow: auto;
 }
+.attack-tabs {
+  margin-bottom: 1.2rem;
+}
+.attack-filter-wrap {
+  margin-bottom: 1.2rem;
+  max-width: 560px;
+}
 </style>
 </head>
 <body>
@@ -56,6 +63,18 @@
 </div>
 
 <div class="content">
+  <div class="attack-tabs">
+    <div class="filter-group">
+      <button id="tabByAttack" class="filter-btn active" onclick="setAttackView('attack', this)">Categories by Attack Type</button>
+      <button id="tabByDataset" class="filter-btn" onclick="setAttackView('dataset', this)">Categories by Dataset</button>
+    </div>
+  </div>
+  <div class="attack-filter-wrap">
+    <div class="search-wrap">
+      <span class="search-ico">⌕</span>
+      <input type="text" id="primaryProtocolFilter" placeholder="Filter by primary protocol (e.g. MQTT, TCP, HTTP/HTTPS)" oninput="setPrimaryProtocolFilter(this.value)">
+    </div>
+  </div>
   <div id="attackDivisions"></div>
 </div>
 </div>
@@ -65,6 +84,8 @@
   <div class="footer-note"><a href="index.html">← Back to Hub</a></div>
 </footer>
 
+<script src="assets/data/database.js"></script>
+<script src="assets/data/attack-divisions.js"></script>
 <script src="assets/js/shared.js"></script>
 <script src="assets/js/pages/attacks.js"></script>
 </body>

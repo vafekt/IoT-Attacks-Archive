@@ -1,5 +1,70 @@
 let toolCatFilter = 'all';
 
+const ATTACK_DIVISIONS_DATA = (window.HUB_DB && window.HUB_DB.attackDivisions) || window.ATTACK_DIVISIONS || [];
+
+const TOOL_ATTACK_ALIAS = {
+  'ACK Fragmentation': 'TCP ACK Fragmentation Flood',
+  'ACK-PSH': 'TCP ACK-PSH Flood',
+  'RST-FIN': 'TCP RST-FIN Flood',
+  'UDP/ICMP Flood': 'UDP Flood',
+  'ICMP Fragmentation': 'ICMP Fragmentation Flood',
+  'Mirai GREIP': 'Mirai GREIP Flood',
+  'GREETH': 'Mirai GREETH Flood',
+  'UDPPlain': 'Mirai UDPPlain Flood',
+  'botnet DDoS lifecycle': 'Mirai Botnet DDoS Variants',
+  'Publish Flood': 'MQTT Publish Flood',
+  'KNX network and bus scanning': 'KNX Network Scanning (KNXA03)',
+  'M_Reset (KNXA02)': 'KNX M_Reset – Device Reset Attack (KNXA02)',
+  'KNX flood variants (KNXA05-08)': 'KNX Valid GroupValue Write Flood (KNXA05)',
+  'RUDY / Slow HTTP POST': 'SlowHTTPTest / RUDY',
+  'OS Fingerprinting': 'OS Scan (OS Fingerprinting)',
+  'vulnerability-oriented scans': 'Vulnerability Scan',
+  'Web vulnerability scanning': 'Vulnerability Scan',
+  'SQLi': 'SQL Injection',
+  'file upload/backdoor': 'File Upload / Backdoor Upload Attack',
+  'XSS': 'Cross-Site Scripting (XSS)',
+  'Backdoor upload': 'File Upload / Backdoor Upload Attack',
+  'Browser hijacking': 'Browser Hijacking',
+  'dictionary attacks': 'Dictionary / Password Brute Force',
+  'Credential brute-force wordlists': 'Dictionary / Password Brute Force',
+  'Dictionary attack': 'Dictionary / Password Brute Force',
+  'ARP spoofing/poisoning': 'ARP Spoofing / ARP Poisoning',
+  'BACnet falsifying/modifying/covert-channel and rogue WriteProperty': 'BACnet Falsifying Attack',
+  'BACnet scripting for data integrity and covert-channel scenarios': 'BACnet Modifying Attack (Data in Transit)',
+  'Modbus reconnaissance and flooding tests': 'Modbus Network Reconnaissance',
+  'FDI': 'Modbus False Data Injection',
+  'delay/replay scripting': 'Modbus Baseline Replay',
+  'Zigbee spoofing and replay': 'Zigbee Frame Replay',
+  'Zigbee jamming/spoofing and Thread energy-depletion support': 'Zigbee Jamming of Network Update Commands',
+  'HTTP randomized DoS': 'HTTP Flood'
+};
+
+function getCanonicalAttackNames() {
+  const names = new Set();
+  ATTACK_DIVISIONS_DATA.forEach((division) => {
+    division.rows.forEach((row) => names.add(row[1]));
+  });
+  return Array.from(names);
+}
+
+const CANONICAL_ATTACK_NAMES = getCanonicalAttackNames();
+
+function mapAttackPhraseToCanonical(phrase) {
+  const raw = phrase.trim();
+  if (!raw) return raw;
+  if (TOOL_ATTACK_ALIAS[raw]) return TOOL_ATTACK_ALIAS[raw];
+
+  const lower = raw.toLowerCase();
+  const direct = CANONICAL_ATTACK_NAMES.find((name) => name.toLowerCase() === lower);
+  if (direct) return direct;
+
+  const fuzzy = CANONICAL_ATTACK_NAMES.find((name) => {
+    const canon = name.toLowerCase();
+    return canon.includes(lower) || lower.includes(canon);
+  });
+  return fuzzy || raw;
+}
+
 const DATASET_NAME_NORMALIZATION = {
   CICIoT2023: 'CIC IoT 2023',
   DataSense: 'CIC IIoT 2025 (DataSense)',
@@ -17,12 +82,24 @@ const DATASET_NAME_NORMALIZATION = {
 };
 
 function normalizeToolEntry(tool) {
+  const canonicalAttacks = tool.attacks
+    .split(',')
+    .map((item) => mapAttackPhraseToCanonical(item))
+    .filter(Boolean);
+
+  const uniqueCanonicalAttacks = Array.from(new Set(canonicalAttacks));
+
   const used = tool.used
     .split(',')
     .map(item => item.trim())
     .map(item => DATASET_NAME_NORMALIZATION[item] || item)
     .join(', ');
-  return { ...tool, used };
+
+  return {
+    ...tool,
+    used,
+    attacks: uniqueCanonicalAttacks.join(', ')
+  };
 }
 
 const NORMALIZED_TOOLS = TOOLS.map(normalizeToolEntry);

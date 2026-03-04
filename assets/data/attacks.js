@@ -159,4 +159,7 @@ const ATTACKS = [
     { tech:"Z-Wave Network Disruption", ds:["BCCC-ZWave2025"] }
   ]}
 ];
-window.ATTACKS = ATTACKS;
+if (window.HUB_DB && typeof window.HUB_DB.register === 'function') {
+  window.HUB_DB.register('attacks', ATTACKS);
+}
+window.ATTACKS = (window.HUB_DB && window.HUB_DB.attacks) || ATTACKS;

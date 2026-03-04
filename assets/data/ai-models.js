@@ -20,5 +20,9 @@ const PLANNED_MODELS = [
   { name:"Multi-task Learning IDS", family:"Deep Learning", desc:"Single model simultaneously predicting: (1) binary normal/attack, (2) attack category, (3) specific attack type. Shared encoder with task-specific heads.", status:"Research" }
 ];
 
-window.PIPELINE = PIPELINE;
-window.PLANNED_MODELS = PLANNED_MODELS;
+if (window.HUB_DB && typeof window.HUB_DB.register === 'function') {
+  window.HUB_DB.register('pipeline', PIPELINE);
+  window.HUB_DB.register('plannedModels', PLANNED_MODELS);
+}
+window.PIPELINE = (window.HUB_DB && window.HUB_DB.pipeline) || PIPELINE;
+window.PLANNED_MODELS = (window.HUB_DB && window.HUB_DB.plannedModels) || PLANNED_MODELS;
